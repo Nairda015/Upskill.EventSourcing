@@ -16,6 +16,7 @@ locals {
 
 // for fargate:
 // vpc subnet security group with ingress rules for lambda
+//
 // dynamodb table for state
 // aurora for categories
 // elastic for products
@@ -26,20 +27,32 @@ locals {
 // api gateway
 // cloudwatch
 
-module "network" {
-  source            = "./modules/network"
-  avail_zone        = var.avail_zone
-  name_prefix       = local.name-prefix
-  subnet_cidr_block = var.subnet_cidr_block
-  vpc_cidr_block    = var.vpc_cidr_block
-}
-
 module "event-store-db" {
   source          = "./modules/eventstore"
   avail_zone      = var.avail_zone
   my_ip           = var.my_ip
   name_prefix     = local.name-prefix
   public_key_path = var.public_key_path
-  subnet_id       = module.network.subnet.id
-  vpc_id          = module.network.vpc.id
+  vpc_id          = module.vpc.vpc_id
+  subnet_id       = module.vpc.public_subnets[0]
+}
+
+module "vpc" {
+  source  = "terraform-aws-modules/vpc/aws"
+  version = "3.19.0"
+
+  name = "${local.name-prefix}-vpc"
+  cidr = var.vpc_cidr_block
+
+  azs             = ["${var.region}a"]
+  #private_subnets = [var.subnet_cidr_block]
+  public_subnets  = [var.subnet_cidr_block]
+
+  enable_ipv6 = true
+
+  enable_nat_gateway = false
+  single_nat_gateway = true
+
+  public_subnet_tags = { Name = "${local.name-prefix}-subnet" }
+  vpc_tags = { Name = "${local.name-prefix}-vpc" }
 }
