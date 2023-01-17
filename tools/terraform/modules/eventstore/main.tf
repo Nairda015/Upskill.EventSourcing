@@ -6,14 +6,8 @@ resource "aws_security_group" "this" {
   name   = "${var.name_prefix}-sg"
   vpc_id = var.vpc_id
   ingress {
-    from_port   = 22
-    to_port     = 22
-    protocol    = "tcp"
-    cidr_blocks = [var.my_ip]
-  }
-  ingress {
-    from_port   = 8080
-    to_port     = 8080
+    from_port   = 2113
+    to_port     = 2113
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
@@ -33,8 +27,23 @@ resource "aws_key_pair" "this" {
   tags = { Name = "${var.name_prefix}-key_pair" }
 }
 
+resource "aws_ecs_cluster_capacity_providers" "this" {
+  cluster_name = aws_ecs_cluster.this.name
+  capacity_providers = [local.lunch-type]
+
+  default_capacity_provider_strategy {
+    base              = 1
+    weight            = 100
+    capacity_provider = local.lunch-type
+  }
+}
+
 resource "aws_ecs_cluster" "this" {
   name = "${var.name_prefix}-ecs_cluster"
+  setting {
+    name  = "containerInsights"
+    value = "enabled"
+  }
   tags = { Name = "${var.name_prefix}-ecs_cluster" }
 }
 
@@ -58,8 +67,8 @@ resource "aws_ecs_task_definition" "this" {
   container_definitions    = jsonencode([module.ecs-container-definition.json_map_object])
   family                   = "${var.name_prefix}-task-definition"
   requires_compatibilities = [local.lunch-type]
-  cpu                      = "256"
-  memory                   = "512"
+  cpu                      = "512"
+  memory                   = "1024"
   network_mode             = "awsvpc"
   tags = { Name = "${var.name_prefix}-task-definition" }
 }
@@ -67,6 +76,27 @@ resource "aws_ecs_task_definition" "this" {
 module "ecs-container-definition" {
   source          = "cloudposse/ecs-container-definition/aws"
   version         = "0.58.1"
-  container_image = "eventstore/eventstore:latest"
+  container_image = "docker.io/eventstore/eventstore:latest"
   container_name  = "event-store-db"
+  environment = [
+    {
+      "name": "EVENTSTORE_INSECURE",
+      "value": "true"
+    }
+  ]
+  container_memory = 1024
+  container_cpu = 512
+
+  port_mappings = [
+    {
+      containerPort = 1113
+      hostPort      = 1113
+      protocol       = "tcp"
+    },
+    {
+      containerPort = 2113
+      hostPort      = 2113
+      protocol       = "tcp"
+    }
+  ]
 }
