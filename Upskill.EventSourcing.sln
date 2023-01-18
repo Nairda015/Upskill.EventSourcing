@@ -6,15 +6,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tools", "tools", "{6AEDB204
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{92A53848-F9F6-4FFA-B316-16F27458B91F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleApp", "src\SimpleApp\SimpleApp.csproj", "{8BB9E700-6CF7-4A9E-8E91-4BDA53F651E8}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SF", "SF", "{84CF54F3-628A-4170-B90D-FCE4616D6267}"
 	ProjectSection(SolutionItems) = preProject
 		.dockerignore = .dockerignore
 		.gitignore = .gitignore
 	EndProjectSection
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleApp.Tests", "tests\SimpleApp.Tests\SimpleApp.Tests.csproj", "{78804247-163A-440E-9C34-308D645E5627}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "terraform", "terraform", "{DA006C09-7417-4169-85AB-E032CB21643F}"
 	ProjectSection(SolutionItems) = preProject
@@ -40,27 +36,24 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "eventstore", "eventstore", 
 		tools\terraform\modules\eventstore\variables.tf = tools\terraform\modules\eventstore\variables.tf
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Commands", "src\Commands\Commands.csproj", "{124F15CF-72BF-478D-BA47-479F01587B0F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{8BB9E700-6CF7-4A9E-8E91-4BDA53F651E8} = {DB9E6651-9E36-4372-A181-9BC6A849FFAB}
-		{78804247-163A-440E-9C34-308D645E5627} = {92A53848-F9F6-4FFA-B316-16F27458B91F}
 		{DA006C09-7417-4169-85AB-E032CB21643F} = {6AEDB204-6CA0-48C6-AFCA-B674EF244AD0}
 		{A997DCB3-CC69-416E-B899-908007BADE46} = {DA006C09-7417-4169-85AB-E032CB21643F}
 		{85ADAB07-57A6-401E-B8DD-44AB4803E142} = {A997DCB3-CC69-416E-B899-908007BADE46}
 		{A23E1023-67DD-4C08-B42A-F3B5C7000BB5} = {A997DCB3-CC69-416E-B899-908007BADE46}
+		{124F15CF-72BF-478D-BA47-479F01587B0F} = {DB9E6651-9E36-4372-A181-9BC6A849FFAB}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{8BB9E700-6CF7-4A9E-8E91-4BDA53F651E8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8BB9E700-6CF7-4A9E-8E91-4BDA53F651E8}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8BB9E700-6CF7-4A9E-8E91-4BDA53F651E8}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{8BB9E700-6CF7-4A9E-8E91-4BDA53F651E8}.Release|Any CPU.Build.0 = Release|Any CPU
-		{78804247-163A-440E-9C34-308D645E5627}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{78804247-163A-440E-9C34-308D645E5627}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{78804247-163A-440E-9C34-308D645E5627}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{78804247-163A-440E-9C34-308D645E5627}.Release|Any CPU.Build.0 = Release|Any CPU
+		{124F15CF-72BF-478D-BA47-479F01587B0F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{124F15CF-72BF-478D-BA47-479F01587B0F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{124F15CF-72BF-478D-BA47-479F01587B0F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{124F15CF-72BF-478D-BA47-479F01587B0F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
