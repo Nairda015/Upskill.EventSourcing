@@ -1,9 +1,8 @@
-using System.Threading;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 
-namespace Commands.Common;
+namespace Shared.MiWrap;
 
 public static class EndpointRouteBuilderExtensions
 {

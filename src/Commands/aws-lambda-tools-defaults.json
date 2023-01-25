@@ -8,7 +8,9 @@
   "profile": "",
   "region": "",
   "configuration": "Release",
-  "s3-prefix": "Commands/",
-  "template": "serverless.template",
-  "template-parameters": ""
+  "function-runtime": "dotnet6",
+  "function-memory-size": 256,
+  "function-timeout": 30,
+  "function-handler": "Commands",
+  "function-url-enable": true
 }

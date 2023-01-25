@@ -1,5 +1,4 @@
-using Commands;
-using Commands.Persistence;
+using Queries;
 using Shared.MiWrap;
 
 var builder = WebApplication.CreateBuilder(args);

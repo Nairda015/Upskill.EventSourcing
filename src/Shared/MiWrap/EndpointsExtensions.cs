@@ -1,10 +1,8 @@
-using System;
-using System.Linq;
 using System.Reflection;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Commands.Common;
+namespace Shared.MiWrap;
 
 public static class EndpointsExtensions
 {

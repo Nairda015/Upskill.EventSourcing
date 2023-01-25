@@ -1,10 +1,5 @@
-using System;
-using System.Threading;
-using System.Threading.Tasks;
-using Commands.Common;
 using Commands.Persistence;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Routing;
+using Shared.MiWrap;
 
 namespace Commands.Features.Products;
 
@@ -20,13 +15,13 @@ public class DeleteProductEndpoint : IEndpoint
 
 internal class DeleteProductHandler : IHttpCommandHandler<DeleteProduct>
 {
-    private readonly InMemoryDb _db;
+    private readonly CategoriesContext _db;
 
-    public DeleteProductHandler(InMemoryDb db) => _db = db;
+    public DeleteProductHandler(CategoriesContext db) => _db = db;
 
     public Task<IResult> HandleAsync(DeleteProduct query, CancellationToken cancellationToken)
     {
-        if (_db.Products.TryGetValue(query.Id, out var product)) Task.FromResult(Results.Ok(product));
+        //if (_db.CategoriesContext.TryGetValue(query.Id, out var product)) Task.FromResult(Results.Ok(product));
 
         return Task.FromResult(Results.NotFound());
     }

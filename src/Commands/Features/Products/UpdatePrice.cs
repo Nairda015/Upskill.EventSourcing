@@ -1,10 +1,5 @@
-using System;
-using System.Threading;
-using System.Threading.Tasks;
-using Commands.Common;
 using Commands.Persistence;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Routing;
+using Shared.MiWrap;
 
 namespace Commands.Features.Products;
 
@@ -24,16 +19,16 @@ public class UpdateProductPriceEndpoint : IEndpoint
 
 internal class UpdateProductPriceHandler : IHttpCommandHandler<UpdateProductPrice>
 {
-    private readonly InMemoryDb _db;
+    private readonly CategoriesContext _db;
 
-    public UpdateProductPriceHandler(InMemoryDb db) => _db = db;
+    public UpdateProductPriceHandler(CategoriesContext db) => _db = db;
 
     public Task<IResult> HandleAsync(UpdateProductPrice command, CancellationToken cancellationToken = default)
     {
-        if (!_db.Products.TryGetValue(command.Body.Id, out var oldProduct)) Task.FromResult(Results.NotFound());
+        //if (!_db.Products.TryGetValue(command.Body.Id, out var oldProduct)) Task.FromResult(Results.NotFound());
         
-        var product = oldProduct! with { Price = command.Body.Price };
-        _db.Update(product);
+        //var product = oldProduct! with { Price = command.Body.Price };
+        //_db.Update(product);
         return Task.FromResult(Results.Ok());
     }
 }

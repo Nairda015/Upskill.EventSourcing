@@ -44,9 +44,9 @@ module "vpc" {
   name = "${local.name-prefix}-vpc"
   cidr = var.vpc_cidr_block
 
-  azs             = ["${var.region}a"]
+  azs            = ["${var.region}a", "${var.region}b"]
   #private_subnets = [var.subnet_cidr_block]
-  public_subnets  = [var.subnet_cidr_block]
+  public_subnets = var.subnets_cidr_block
 
   enable_ipv6 = true
 
@@ -54,5 +54,30 @@ module "vpc" {
   single_nat_gateway = true
 
   public_subnet_tags = { Name = "${local.name-prefix}-subnet" }
-  vpc_tags = { Name = "${local.name-prefix}-vpc" }
+  vpc_tags           = { Name = "${local.name-prefix}-vpc" }
 }
+
+module "lambda_function" {
+  source = "terraform-aws-modules/lambda/aws"
+
+  function_name = "${local.name-prefix}-commands-lambda"
+  handler       = "index.lambda_handler"
+  runtime       = "dotnet6"
+
+  source_path = "../../src/Commands"
+
+  tags = { Name  = "${local.name-prefix}-commands-lambda" }
+}
+
+#
+#module "lambda_function_container_image" {
+#  source = "terraform-aws-modules/lambda/aws"
+#
+#  function_name = "my-lambda-existing-package-local"
+#  description   = "My awesome lambda function"
+#
+#  create_package = false
+#
+#  image_uri    = "132367819851.dkr.ecr.eu-west-1.amazonaws.com/complete-cow:1.0"
+#  package_type = "Image"
+#}

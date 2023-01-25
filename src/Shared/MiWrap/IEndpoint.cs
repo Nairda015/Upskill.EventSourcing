@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Routing;
 
-namespace Commands.Common;
+namespace Shared.MiWrap;
 
 public interface IEndpoint
 {

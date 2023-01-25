@@ -1,8 +1,6 @@
-using System.Threading;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 
-namespace Commands.Common;
+namespace Shared.MiWrap;
 
 public interface IHttpQuery { }
 
