@@ -1,5 +1,6 @@
 using System.Text.Json;
 using Commands.Events;
+using Commands.Events.Products;
 using EventStore.Client;
 using Shared.MiWrap;
 

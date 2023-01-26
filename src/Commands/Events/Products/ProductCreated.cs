@@ -1,4 +1,4 @@
-namespace Commands.Events;
+namespace Commands.Events.Products;
 
 public record ProductCreated(
     Guid Id,
