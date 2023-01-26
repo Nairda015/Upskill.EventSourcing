@@ -15,7 +15,7 @@ internal record AddProduct(AddProduct.AddProductBody Body) : IHttpCommand
 public class AddProductEndpoint : IEndpoint
 {
     public void RegisterEndpoint(IEndpointRouteBuilder builder) =>
-        builder.MapPost<AddProduct, AddProductHandler>("add-product")
+        builder.MapPost<AddProduct, AddProductHandler>("products")
             .Produces(200)
             .Produces(400);
 }

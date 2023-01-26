@@ -4,26 +4,26 @@ using Shared.MiWrap;
 
 namespace Commands.Features.Categories;
 
-internal record DeleteProduct(Guid Id) : IHttpCommand;
+internal record DeleteCategory(Guid Id) : IHttpCommand;
 
-public class DeleteProductEndpoint : IEndpoint
+public class DeleteCategoryEndpoint : IEndpoint
 {
     public void RegisterEndpoint(IEndpointRouteBuilder builder) =>
-        builder.MapDelete<DeleteProduct, DeleteProductHandler>("category/{id}")
+        builder.MapDelete<DeleteCategory, DeleteCategoryHandler>("category/{id}")
             .Produces(200)
             .Produces(404);
 }
 
-internal class DeleteProductHandler : IHttpCommandHandler<DeleteProduct>
+internal class DeleteCategoryHandler : IHttpCommandHandler<DeleteCategory>
 {
     private readonly CategoriesContext _context;
 
-    public DeleteProductHandler(CategoriesContext context)
+    public DeleteCategoryHandler(CategoriesContext context)
     {
         _context = context;
     }
 
-    public async Task<IResult> HandleAsync(DeleteProduct query, CancellationToken cancellationToken)
+    public async Task<IResult> HandleAsync(DeleteCategory query, CancellationToken cancellationToken)
     {
         //if any product has this category, it cannot be deleted - opensearch
 

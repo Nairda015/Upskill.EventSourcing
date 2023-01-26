@@ -12,7 +12,7 @@ internal record UpdateProductPrice(UpdateProductPrice.UpdateProductPriceBody Bod
 public class UpdateProductPriceEndpoint : IEndpoint
 {
     public void RegisterEndpoint(IEndpointRouteBuilder builder) =>
-        builder.MapPost<UpdateProductPrice, UpdateProductPriceHandler>("brands")
+        builder.MapPost<UpdateProductPrice, UpdateProductPriceHandler>("products/price")
             .Produces(201)
             .Produces(400);
 }

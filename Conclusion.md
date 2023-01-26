@@ -10,7 +10,7 @@
 - [ ] ChangePrice (split this into multiple with additional metadata for eg promo price)  
 - [ ] ChangeDescription  
 - [ ] UpdateMetadata - add, remove  
-- [ ] MarkAsObsolete
+- [x] MarkAsObsolete
 
 ### Categories Queries - Aurora
 - [ ] ByName - first 3 chars 

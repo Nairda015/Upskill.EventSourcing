@@ -5,6 +5,6 @@ public record Product(Guid Id,
     Guid CategoryId,
     decimal Price,
     string Description,
-    Dictionary<string, string> Metadata); // 86 87 89 88-> cache 
+    Dictionary<string, string> Metadata);
 
 
