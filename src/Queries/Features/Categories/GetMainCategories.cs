@@ -17,10 +17,7 @@ public class GetMainCategoriesEndpoint : IEndpoint
 internal class GetMainCategoriesHandler : IHttpQueryHandler<GetMainCategories>
 {
     private readonly IDbConnection _connection;
-    public GetMainCategoriesHandler(IDbConnection connection)
-    {
-        _connection = connection;
-    }
+    public GetMainCategoriesHandler(IDbConnection connection) => _connection = connection;
 
     public async Task<IResult> HandleAsync(GetMainCategories query, CancellationToken cancellationToken)
     {

@@ -1,17 +1,21 @@
 ## Conclusions
 
+### Categories Commands
+- [ ] AddCategory - unique name
+- [ ] DeleteCategory - only if empty
+
 ### Products Commands:
 - [ ] CreateProduct  
 - [ ] ChangeCategory  
 - [ ] ChangePrice (split this into multiple with additional metadata for eg promo price)  
 - [ ] ChangeDescription  
 - [ ] UpdateMetadata - add, remove  
-- [ ] MarkAsObsolete  
+- [ ] MarkAsObsolete
 
 ### Categories Queries - Aurora
-- [ ] ByName  
-- [ ] AllChildren  
-- [ ] ById  
+- [ ] ByName - first 3 chars 
+- [x] AllChildren  
+- [X] ById  
 - [x] MainCategories - all without parent  
 
 ### GetProducts Queries: - OpenSearch
