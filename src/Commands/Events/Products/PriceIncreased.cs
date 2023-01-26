@@ -1,3 +1,4 @@
 namespace Commands.Events.Products;
 
-public record PriceIncreased(Guid Id, decimal NewPrice);
+// Is promo will help with tracking unfair promotions
+public record PriceIncreased(decimal NewPrice, bool IsPromo);

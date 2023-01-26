@@ -1,3 +1,3 @@
 namespace Commands.Events.Products;
 
-public record MetadataAdded(Guid Id, Dictionary<string, string> Metadata);
+public record MetadataAdded(Dictionary<string, string> Metadata);

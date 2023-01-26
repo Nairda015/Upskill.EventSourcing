@@ -7,8 +7,8 @@
 ### Products Commands:
 - [x] CreateProduct  
 - [ ] ChangeCategory  
-- [ ] ChangePrice (split this into multiple with additional metadata for eg promo price)  
-- [ ] ChangeDescription  
+- [x] ChangePrice (split this into multiple with additional metadata for eg promo price)  
+- [x] ChangeDescription  
 - [ ] UpdateMetadata - add, remove  
 - [x] MarkAsObsolete
 

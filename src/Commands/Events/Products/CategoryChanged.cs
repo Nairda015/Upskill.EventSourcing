@@ -1,3 +1,3 @@
 namespace Commands.Events.Products;
 
-public record CategoryChanged(Guid Id, Guid CategoryId);
+public record CategoryChanged(Guid CategoryId);

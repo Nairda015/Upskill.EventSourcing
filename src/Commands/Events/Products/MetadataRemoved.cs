@@ -1,3 +1,3 @@
 namespace Commands.Events.Products;
 
-public record MetadataRemoved(Guid Id, Dictionary<string, string> Metadata);
+public record MetadataRemoved(Dictionary<string, string> Metadata);

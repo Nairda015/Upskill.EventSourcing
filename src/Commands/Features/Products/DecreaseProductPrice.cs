@@ -5,44 +5,50 @@ using Shared.MiWrap;
 
 namespace Commands.Features.Products;
 
-internal record DeleteProduct(Guid Id) : IHttpCommand;
 
-public class DeleteProductEndpoint : IEndpoint
+internal record DecreaseProductPrice(DecreaseProductPrice.DecreaseProductPriceBody Body) : IHttpCommand
+{
+    internal record DecreaseProductPriceBody(Guid Id, decimal Price, bool IsPromo);
+}
+
+public class DecreaseProductPriceEndpoint : IEndpoint
 {
     public void RegisterEndpoint(IEndpointRouteBuilder builder) =>
-        builder.MapDelete<DeleteProduct, DeleteProductHandler>("products/{id}")
+        builder.MapPost<DecreaseProductPrice, DecreaseProductPriceHandler>("products/decrease-price")
             .Produces(201)
             .Produces(404);
 }
 
-internal class DeleteProductHandler : IHttpCommandHandler<DeleteProduct>
+internal class DecreaseProductPriceHandler : IHttpCommandHandler<DecreaseProductPrice>
 {
     private readonly EventStoreClient _client;
 
-    public DeleteProductHandler(EventStoreClient client)
+    public DecreaseProductPriceHandler(EventStoreClient client)
     {
         _client = client;
     }
 
-    public async Task<IResult> HandleAsync(DeleteProduct command, CancellationToken cancellationToken)
+    public async Task<IResult> HandleAsync(DecreaseProductPrice command, CancellationToken cancellationToken = default)
     {
+        var (id, newPrice, isPromo) = command.Body;
+
         var stream = _client.ReadStreamAsync(
             Direction.Forwards,
-            command.Id.ToString(),
+            id.ToString(),
             StreamPosition.Start,
             cancellationToken: cancellationToken);
-
+        
         if (await stream.ReadState is ReadState.StreamNotFound) return Results.NotFound();
         
-        var @event = new MarkedAsObsolete();
-
+        var @event = new PriceDecreased(newPrice, isPromo);
+        
         var eventData = new EventData(
             Uuid.NewUuid(),
-            nameof(MarkedAsObsolete),
+            nameof(PriceDecreased),
             JsonSerializer.SerializeToUtf8Bytes(@event));
 
         await _client.AppendToStreamAsync(
-            command.Id.ToString(),
+            id.ToString(),
             StreamState.StreamExists,
             new[] { eventData },
             cancellationToken: cancellationToken);
