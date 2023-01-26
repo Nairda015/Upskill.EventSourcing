@@ -25,7 +25,7 @@ internal class DeleteProductHandler : IHttpCommandHandler<DeleteProduct>
 
     public async Task<IResult> HandleAsync(DeleteProduct query, CancellationToken cancellationToken)
     {
-        //if any product has this category, it cannot be deleted
+        //if any product has this category, it cannot be deleted - opensearch
 
         var result = await _context.Categories
             .Where(x => x.Id == query.Id)

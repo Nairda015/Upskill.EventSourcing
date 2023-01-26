@@ -1,11 +1,11 @@
 ## Conclusions
 
 ### Categories Commands
-- [ ] AddCategory - unique name
-- [ ] DeleteCategory - only if empty
+- [x] AddCategory - unique name and parent
+- [x] DeleteCategory - only if empty and dont have subcategories //TODO: check in OpenSearch
 
 ### Products Commands:
-- [ ] CreateProduct  
+- [x] CreateProduct  
 - [ ] ChangeCategory  
 - [ ] ChangePrice (split this into multiple with additional metadata for eg promo price)  
 - [ ] ChangeDescription  
