@@ -12,7 +12,7 @@
 - [ ] ByName  
 - [ ] AllChildren  
 - [ ] ById  
-- [ ] MainCategories - all without parent  
+- [x] MainCategories - all without parent  
 
 ### GetProducts Queries: - OpenSearch
 - [ ] GetPagedByCategoryWithOrder  
