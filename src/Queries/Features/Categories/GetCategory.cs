@@ -1,7 +1,10 @@
 using System.Data;
 using Dapper;
+using Microsoft.Extensions.Options;
+using Npgsql;
 using Queries.Models;
 using Shared.MiWrap;
+using Shared.Settings;
 
 namespace Queries.Features.Categories;
 
@@ -10,7 +13,7 @@ internal record GetCategory(Guid Id) : IHttpQuery;
 public class GetCategoryEndpoint : IEndpoint
 {
     public void RegisterEndpoint(IEndpointRouteBuilder builder) =>
-        builder.MapGet<GetCategory, GetCategoryHandler>("{id}")
+        builder.MapGet<GetCategory, GetCategoryHandler>("categories/{id}")
             .Produces(200)
             .Produces(400)
             .Produces(404);
@@ -19,8 +22,8 @@ public class GetCategoryEndpoint : IEndpoint
 internal class GetCategoryHandler : IHttpQueryHandler<GetCategory>
 {
     private readonly IDbConnection _connection;
-
-    public GetCategoryHandler(IDbConnection connection) => _connection = connection;
+    public GetCategoryHandler(IOptionsMonitor<PostgresOptions> options) 
+        => _connection = new NpgsqlConnection(options.CurrentValue.ConnectionString);
 
     public async Task<IResult> HandleAsync(GetCategory query, CancellationToken cancellationToken)
     {

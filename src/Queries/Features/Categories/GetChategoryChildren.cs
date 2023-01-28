@@ -1,7 +1,10 @@
 using System.Data;
 using Dapper;
+using Microsoft.Extensions.Options;
+using Npgsql;
 using Queries.Models;
 using Shared.MiWrap;
+using Shared.Settings;
 
 namespace Queries.Features.Categories;
 
@@ -10,14 +13,15 @@ public record GetCategoryChildren(Guid Id) : IHttpQuery;
 public class GetCategoryChildrenEndpoint : IEndpoint
 {
     public void RegisterEndpoint(IEndpointRouteBuilder builder) =>
-        builder.MapGet<GetCategoryChildren, GetCategoryChildrenHandler>("")
+        builder.MapGet<GetCategoryChildren, GetCategoryChildrenHandler>("categories/{id}/children")
             .Produces(200);
 }
 
 internal class GetCategoryChildrenHandler : IHttpQueryHandler<GetCategoryChildren>
 {
     private readonly IDbConnection _connection;
-    public GetCategoryChildrenHandler(IDbConnection connection) => _connection = connection;
+    public GetCategoryChildrenHandler(IOptionsMonitor<PostgresOptions> options) 
+        => _connection = new NpgsqlConnection(options.CurrentValue.ConnectionString);
 
     public async Task<IResult> HandleAsync(GetCategoryChildren query, CancellationToken cancellationToken)
     {

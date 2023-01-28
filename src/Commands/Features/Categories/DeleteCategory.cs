@@ -29,7 +29,7 @@ internal class DeleteCategoryHandler : IHttpCommandHandler<DeleteCategory>
 
         var result = await _context.Categories
             .Where(x => x.Id == query.Id)
-            .ExecuteDeleteAsync(cancellationToken: cancellationToken);
+            .ExecuteDeleteAsync(cancellationToken);
 
         return result is 1
             ? Results.Ok()

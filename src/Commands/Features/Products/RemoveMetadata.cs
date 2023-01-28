@@ -13,7 +13,7 @@ internal record RemoveMetadata(RemoveMetadata.RemoveMetadataBody Body) : IHttpCo
 public class RemoveMetadataEndpoint : IEndpoint
 {
     public void RegisterEndpoint(IEndpointRouteBuilder builder) =>
-        builder.MapDelete<RemoveMetadata, RemoveMetadataHandler>("products/metadata")
+        builder.MapPut<RemoveMetadata, RemoveMetadataHandler>("products/metadata-remove")
             .Produces(201)
             .Produces(400);
 }

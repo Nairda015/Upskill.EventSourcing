@@ -13,7 +13,7 @@ internal record AddMetadata(AddMetadata.AddMetadataBody Body) : IHttpCommand
 public class AddMetadataEndpoint : IEndpoint
 {
     public void RegisterEndpoint(IEndpointRouteBuilder builder) =>
-        builder.MapPut<AddMetadata, AddMetadataHandler>("products/metadata")
+        builder.MapPut<AddMetadata, AddMetadataHandler>("products/metadata-add")
             .Produces(201)
             .Produces(400);
 }

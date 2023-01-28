@@ -21,9 +21,9 @@ public static class EndpointRouteBuilderExtensions
         where THandler : IHttpCommandHandler<TCommand> =>
         endpoints.MapPost(template, async (
                     THandler handler,
-                    [AsParameters] TCommand query,
+                    [AsParameters] TCommand command,
                     CancellationToken cancellationToken) =>
-                await handler.HandleAsync(query, cancellationToken))
+                await handler.HandleAsync(command, cancellationToken))
             .WithName(typeof(TCommand).FullName!);
     
     public static RouteHandlerBuilder MapPut<TCommand, THandler>(this IEndpointRouteBuilder endpoints, string template) 
@@ -31,9 +31,9 @@ public static class EndpointRouteBuilderExtensions
         where THandler : IHttpCommandHandler<TCommand> =>
         endpoints.MapPut(template, async (
                     THandler handler,
-                    [AsParameters] TCommand query,
+                    [AsParameters] TCommand command,
                     CancellationToken cancellationToken) =>
-                await handler.HandleAsync(query, cancellationToken))
+                await handler.HandleAsync(command, cancellationToken))
             .WithName(typeof(TCommand).FullName!);
     
     public static RouteHandlerBuilder MapDelete<TCommand, THandler>(this IEndpointRouteBuilder endpoints, string template) 
@@ -41,8 +41,8 @@ public static class EndpointRouteBuilderExtensions
         where THandler : IHttpCommandHandler<TCommand> =>
         endpoints.MapDelete(template, async (
                     THandler handler,
-                    [AsParameters] TCommand query,
+                    [AsParameters] TCommand command,
                     CancellationToken cancellationToken) =>
-                await handler.HandleAsync(query, cancellationToken))
+                await handler.HandleAsync(command, cancellationToken))
             .WithName(typeof(TCommand).FullName!);
 }
