@@ -5,45 +5,45 @@ using Shared.MiWrap;
 
 namespace Commands.Features.Products;
 
-internal record ChangeDescription(ChangeDescription.ChangeDescriptionBody Body) : IHttpCommand
+internal record RemoveMetadata(RemoveMetadata.RemoveMetadataBody Body) : IHttpCommand
 {
-    internal record ChangeDescriptionBody(Guid Id, string Description);
+    internal record RemoveMetadataBody(Guid Id, Dictionary<string, string> Metadata);
 }
 
-public class ChangeDescriptionEndpoint : IEndpoint
+public class RemoveMetadataEndpoint : IEndpoint
 {
     public void RegisterEndpoint(IEndpointRouteBuilder builder) =>
-        builder.MapPut<ChangeDescription, ChangeDescriptionHandler>("products/description")
-            .Produces(200)
+        builder.MapDelete<RemoveMetadata, RemoveMetadataHandler>("products/metadata")
+            .Produces(201)
             .Produces(400);
 }
 
-internal class ChangeDescriptionHandler : IHttpCommandHandler<ChangeDescription>
+internal class RemoveMetadataHandler : IHttpCommandHandler<RemoveMetadata>
 {
-    private readonly EventStoreClient  _client;
-    
-    public ChangeDescriptionHandler(EventStoreClient client)
+    private readonly EventStoreClient _client;
+
+    public RemoveMetadataHandler(EventStoreClient client)
     {
         _client = client;
     }
 
-    public async Task<IResult> HandleAsync(ChangeDescription command, CancellationToken cancellationToken = default)
+    public async Task<IResult> HandleAsync(RemoveMetadata command, CancellationToken cancellationToken = default)
     {
-        var (id, description) = command.Body;
+        var (id, metadata) = command.Body;
 
         var stream = _client.ReadStreamAsync(
             Direction.Forwards,
             id.ToString(),
             StreamPosition.Start,
             cancellationToken: cancellationToken);
-        
+
         if (await stream.ReadState is ReadState.StreamNotFound) return Results.NotFound();
-        
-        var @event = new DescriptionChanged(description);
-        
+
+        var @event = new MetadataAdded(metadata);
+
         var eventData = new EventData(
             Uuid.NewUuid(),
-            nameof(DescriptionChanged),
+            nameof(MetadataChanged),
             JsonSerializer.SerializeToUtf8Bytes(@event));
 
         await _client.AppendToStreamAsync(

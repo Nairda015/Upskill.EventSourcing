@@ -6,10 +6,10 @@
 
 ### Products Commands:
 - [x] CreateProduct  
-- [ ] ChangeCategory  
+- [x] ChangeCategory  
 - [x] ChangePrice (split this into multiple with additional metadata for eg promo price)  
 - [x] ChangeDescription  
-- [ ] UpdateMetadata - add, remove  
+- [x] UpdateMetadata - add, remove  
 - [x] MarkAsObsolete
 
 ### Categories Queries - Aurora

@@ -5,31 +5,31 @@ using Shared.MiWrap;
 
 namespace Commands.Features.Products;
 
-internal record ChangeDescription(ChangeDescription.ChangeDescriptionBody Body) : IHttpCommand
+internal record ChangeCategory(ChangeCategory.ChangeCategoryBody Body) : IHttpCommand
 {
-    internal record ChangeDescriptionBody(Guid Id, string Description);
+    internal record ChangeCategoryBody(Guid Id, Guid CategoryId);
 }
 
-public class ChangeDescriptionEndpoint : IEndpoint
+public class ChangeCategoryEndpoint : IEndpoint
 {
     public void RegisterEndpoint(IEndpointRouteBuilder builder) =>
-        builder.MapPut<ChangeDescription, ChangeDescriptionHandler>("products/description")
-            .Produces(200)
+        builder.MapPut<ChangeCategory, ChangeCategoryHandler>("products/category")
+            .Produces(201)
             .Produces(400);
 }
 
-internal class ChangeDescriptionHandler : IHttpCommandHandler<ChangeDescription>
+internal class ChangeCategoryHandler : IHttpCommandHandler<ChangeCategory>
 {
     private readonly EventStoreClient  _client;
     
-    public ChangeDescriptionHandler(EventStoreClient client)
+    public ChangeCategoryHandler(EventStoreClient client)
     {
         _client = client;
     }
 
-    public async Task<IResult> HandleAsync(ChangeDescription command, CancellationToken cancellationToken = default)
+    public async Task<IResult> HandleAsync(ChangeCategory command, CancellationToken cancellationToken = default)
     {
-        var (id, description) = command.Body;
+        var (id, categoryId) = command.Body;
 
         var stream = _client.ReadStreamAsync(
             Direction.Forwards,
@@ -39,11 +39,11 @@ internal class ChangeDescriptionHandler : IHttpCommandHandler<ChangeDescription>
         
         if (await stream.ReadState is ReadState.StreamNotFound) return Results.NotFound();
         
-        var @event = new DescriptionChanged(description);
+        var @event = new CategoryChanged(categoryId);
         
         var eventData = new EventData(
             Uuid.NewUuid(),
-            nameof(DescriptionChanged),
+            nameof(CategoryChanged),
             JsonSerializer.SerializeToUtf8Bytes(@event));
 
         await _client.AppendToStreamAsync(

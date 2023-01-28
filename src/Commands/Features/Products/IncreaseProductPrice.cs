@@ -14,7 +14,7 @@ internal record IncreaseProductPrice(IncreaseProductPrice.IncreaseProductPriceBo
 public class IncreaseProductPriceEndpoint : IEndpoint
 {
     public void RegisterEndpoint(IEndpointRouteBuilder builder) =>
-        builder.MapPost<IncreaseProductPrice, IncreaseProductPriceHandler>("products/increase-price")
+        builder.MapPut<IncreaseProductPrice, IncreaseProductPriceHandler>("products/increase-price")
             .Produces(201)
             .Produces(404);
 }
