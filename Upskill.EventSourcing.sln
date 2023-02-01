@@ -19,6 +19,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "terraform", "terraform", "{
 		tools\terraform\outputs.tf = tools\terraform\outputs.tf
 		tools\terraform\variables.tf = tools\terraform\variables.tf
 		tools\terraform\aurora.tf = tools\terraform\aurora.tf
+		tools\terraform\ecr.tf = tools\terraform\ecr.tf
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "modules", "modules", "{A997DCB3-CC69-416E-B899-908007BADE46}"
@@ -43,6 +44,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shared", "src\Shared\Shared
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Queries", "src\Queries\Queries.csproj", "{7C919324-F897-4113-BD5B-F42C1F95A3BE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Subscriber", "src\Subscriber\Subscriber.csproj", "{BD98408C-B358-45EE-BB0B-A487B01F831C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -56,6 +59,7 @@ Global
 		{124F15CF-72BF-478D-BA47-479F01587B0F} = {DB9E6651-9E36-4372-A181-9BC6A849FFAB}
 		{25365C1D-4C45-4807-A7FB-CA5B5BCB2C9B} = {DB9E6651-9E36-4372-A181-9BC6A849FFAB}
 		{7C919324-F897-4113-BD5B-F42C1F95A3BE} = {DB9E6651-9E36-4372-A181-9BC6A849FFAB}
+		{BD98408C-B358-45EE-BB0B-A487B01F831C} = {DB9E6651-9E36-4372-A181-9BC6A849FFAB}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{124F15CF-72BF-478D-BA47-479F01587B0F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -70,5 +74,9 @@ Global
 		{7C919324-F897-4113-BD5B-F42C1F95A3BE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7C919324-F897-4113-BD5B-F42C1F95A3BE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7C919324-F897-4113-BD5B-F42C1F95A3BE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BD98408C-B358-45EE-BB0B-A487B01F831C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BD98408C-B358-45EE-BB0B-A487B01F831C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BD98408C-B358-45EE-BB0B-A487B01F831C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BD98408C-B358-45EE-BB0B-A487B01F831C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

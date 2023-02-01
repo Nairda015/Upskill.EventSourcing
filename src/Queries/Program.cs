@@ -9,7 +9,7 @@ var builder = WebApplication.CreateBuilder(args);
 //builder.Services.AddAWSLambdaHosting(LambdaEventSource.HttpApi);
 builder.Services.RegisterHandlers<IApiMarker>();
 
-builder.RegisterOptions<PostgresOptions>();
+builder.RegisterOptions<PostgresSettings>();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c => { c.OrderActionsBy(x => x.HttpMethod); });

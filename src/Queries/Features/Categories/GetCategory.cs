@@ -22,7 +22,7 @@ public class GetCategoryEndpoint : IEndpoint
 internal class GetCategoryHandler : IHttpQueryHandler<GetCategory>
 {
     private readonly IDbConnection _connection;
-    public GetCategoryHandler(IOptionsMonitor<PostgresOptions> options) 
+    public GetCategoryHandler(IOptionsMonitor<PostgresSettings> options) 
         => _connection = new NpgsqlConnection(options.CurrentValue.ConnectionString);
 
     public async Task<IResult> HandleAsync(GetCategory query, CancellationToken cancellationToken)

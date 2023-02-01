@@ -20,7 +20,7 @@ public class GetMainCategoriesEndpoint : IEndpoint
 internal class GetMainCategoriesHandler : IHttpQueryHandler<GetMainCategories>
 {
     private readonly IDbConnection _connection;
-    public GetMainCategoriesHandler(IOptionsMonitor<PostgresOptions> options) 
+    public GetMainCategoriesHandler(IOptionsMonitor<PostgresSettings> options) 
         => _connection = new NpgsqlConnection(options.CurrentValue.ConnectionString);
 
     public async Task<IResult> HandleAsync(GetMainCategories query, CancellationToken cancellationToken)

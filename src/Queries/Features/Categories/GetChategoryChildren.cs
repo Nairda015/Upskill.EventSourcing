@@ -20,7 +20,7 @@ public class GetCategoryChildrenEndpoint : IEndpoint
 internal class GetCategoryChildrenHandler : IHttpQueryHandler<GetCategoryChildren>
 {
     private readonly IDbConnection _connection;
-    public GetCategoryChildrenHandler(IOptionsMonitor<PostgresOptions> options) 
+    public GetCategoryChildrenHandler(IOptionsMonitor<PostgresSettings> options) 
         => _connection = new NpgsqlConnection(options.CurrentValue.ConnectionString);
 
     public async Task<IResult> HandleAsync(GetCategoryChildren query, CancellationToken cancellationToken)

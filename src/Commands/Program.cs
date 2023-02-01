@@ -8,7 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
 //builder.Services.AddAWSLambdaHosting(LambdaEventSource.HttpApi);
 builder.Services.RegisterHandlers<IApiMarker>();
 
-var eventStoreSettings = builder.Configuration.GetOptions<EventStoreOptions>();
+var eventStoreSettings = builder.Configuration.GetOptions<EventStoreSettings>();
 builder.Services.AddEventStoreClient(eventStoreSettings.ConnectionString,
     x => { x.DefaultDeadline = TimeSpan.FromSeconds(5); });
 
