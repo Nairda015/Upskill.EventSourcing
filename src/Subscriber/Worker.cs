@@ -64,19 +64,4 @@ public class Worker : BackgroundService
         _logger.LogWarning("Subscription was dropped due to {dropReason}. {exception}", dropReason, ex?.Message ?? "");
         //TODO: Handle dropped subscription
     }
-
-    // private async Task CreateSubscriptionGroup(CancellationToken cancellationToken)
-    // {
-    //     var settings = new PersistentSubscriptionSettings();
-    //
-    //     var userCredentials = new UserCredentials("admin", "changeit");
-    //     var filter = StreamFilter.Prefix("test");
-    //
-    //     await _client.CreateToAllAsync(
-    //         "subscription-group",
-    //         filter,
-    //         settings,
-    //         userCredentials: userCredentials,
-    //         cancellationToken: cancellationToken);
-    // }
 }

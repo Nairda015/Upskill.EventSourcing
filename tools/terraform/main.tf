@@ -27,16 +27,6 @@ locals {
 // api gateway
 // cloudwatch
 
-module "event-store-db" {
-  source          = "./modules/eventstore"
-  avail_zone      = var.avail_zone
-  my_ip           = var.my_ip
-  name_prefix     = local.name-prefix
-  public_key_path = var.public_key_path
-  vpc_id          = module.vpc.vpc_id
-  subnet_id       = module.vpc.public_subnets[0]
-}
-
 module "vpc" {
   source  = "terraform-aws-modules/vpc/aws"
   version = "3.19.0"
@@ -57,17 +47,17 @@ module "vpc" {
   vpc_tags           = { Name = "${local.name-prefix}-vpc" }
 }
 
-module "lambda_function" {
-  source = "terraform-aws-modules/lambda/aws"
-
-  function_name = "${local.name-prefix}-commands-lambda"
-  handler       = "index.lambda_handler"
-  runtime       = "dotnet6"
-
-  source_path = "../../src/Commands"
-
-  tags = { Name  = "${local.name-prefix}-commands-lambda" }
-}
+#module "lambda_function" {
+#  source = "terraform-aws-modules/lambda/aws"
+#
+#  function_name = "${local.name-prefix}-commands-lambda"
+#  handler       = "index.lambda_handler"
+#  runtime       = "dotnet6"
+#
+#  source_path = "../../src/Commands"
+#
+#  tags = { Name  = "${local.name-prefix}-commands-lambda" }
+#}
 
 #
 #module "lambda_function_container_image" {

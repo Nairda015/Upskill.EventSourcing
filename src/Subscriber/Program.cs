@@ -1,20 +1,13 @@
 using Amazon.SimpleNotificationService;
-using Microsoft.AspNetCore.Builder;
 using Shared.Settings;
 using Subscriber;
 
 var builder = WebApplication.CreateBuilder(args);
 
-
-builder.Configuration.AddJsonFile("appsettings.json", false, true);
-builder.Configuration.AddEnvironmentVariables();
-
-var environmentName = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
 if (!builder.Environment.IsDevelopment())
 {
-    builder.Configuration.AddSystemsManager($"/{environmentName}/Commands", TimeSpan.FromMinutes(5));
+    builder.Configuration.AddSystemsManager($"/{builder.Environment.EnvironmentName}/Commands", TimeSpan.FromMinutes(5));
 }
-
 
 builder.Services.AddHostedService<Worker>();
 

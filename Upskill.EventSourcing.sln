@@ -2,40 +2,12 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{DB9E6651-9E36-4372-A181-9BC6A849FFAB}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tools", "tools", "{6AEDB204-6CA0-48C6-AFCA-B674EF244AD0}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{92A53848-F9F6-4FFA-B316-16F27458B91F}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SF", "SF", "{84CF54F3-628A-4170-B90D-FCE4616D6267}"
 	ProjectSection(SolutionItems) = preProject
 		.gitignore = .gitignore
 		Conclusion.md = Conclusion.md
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "terraform", "terraform", "{DA006C09-7417-4169-85AB-E032CB21643F}"
-	ProjectSection(SolutionItems) = preProject
-		tools\terraform\main.tf = tools\terraform\main.tf
-		tools\terraform\terraform.tfvars = tools\terraform\terraform.tfvars
-		tools\terraform\outputs.tf = tools\terraform\outputs.tf
-		tools\terraform\variables.tf = tools\terraform\variables.tf
-		tools\terraform\aurora.tf = tools\terraform\aurora.tf
-		tools\terraform\ecr.tf = tools\terraform\ecr.tf
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "modules", "modules", "{A997DCB3-CC69-416E-B899-908007BADE46}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "network", "network", "{85ADAB07-57A6-401E-B8DD-44AB4803E142}"
-	ProjectSection(SolutionItems) = preProject
-		tools\terraform\modules\network\main.tf = tools\terraform\modules\network\main.tf
-		tools\terraform\modules\network\outputs.tf = tools\terraform\modules\network\outputs.tf
-		tools\terraform\modules\network\variables.tf = tools\terraform\modules\network\variables.tf
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "eventstore", "eventstore", "{A23E1023-67DD-4C08-B42A-F3B5C7000BB5}"
-	ProjectSection(SolutionItems) = preProject
-		tools\terraform\modules\eventstore\main.tf = tools\terraform\modules\eventstore\main.tf
-		tools\terraform\modules\eventstore\outputs.tf = tools\terraform\modules\eventstore\outputs.tf
-		tools\terraform\modules\eventstore\variables.tf = tools\terraform\modules\eventstore\variables.tf
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Commands", "src\Commands\Commands.csproj", "{124F15CF-72BF-478D-BA47-479F01587B0F}"
@@ -52,10 +24,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{DA006C09-7417-4169-85AB-E032CB21643F} = {6AEDB204-6CA0-48C6-AFCA-B674EF244AD0}
-		{A997DCB3-CC69-416E-B899-908007BADE46} = {DA006C09-7417-4169-85AB-E032CB21643F}
-		{85ADAB07-57A6-401E-B8DD-44AB4803E142} = {A997DCB3-CC69-416E-B899-908007BADE46}
-		{A23E1023-67DD-4C08-B42A-F3B5C7000BB5} = {A997DCB3-CC69-416E-B899-908007BADE46}
 		{124F15CF-72BF-478D-BA47-479F01587B0F} = {DB9E6651-9E36-4372-A181-9BC6A849FFAB}
 		{25365C1D-4C45-4807-A7FB-CA5B5BCB2C9B} = {DB9E6651-9E36-4372-A181-9BC6A849FFAB}
 		{7C919324-F897-4113-BD5B-F42C1F95A3BE} = {DB9E6651-9E36-4372-A181-9BC6A849FFAB}
