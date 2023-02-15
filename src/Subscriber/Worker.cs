@@ -35,14 +35,14 @@ public class Worker : BackgroundService
 
     private async Task EventDispatcher(
         PersistentSubscription subscription,
-        ResolvedEvent evnt,
+        ResolvedEvent @event,
         int? retryCount,
         CancellationToken cancellationToken)
     {
         try
         {
-            await _sns.PublishAsync(evnt, cancellationToken);
-            await subscription.Ack(evnt);
+            await _sns.PublishAsync(@event, cancellationToken);
+            await subscription.Ack(@event);
         }
         catch (Exception ex)
         {
@@ -50,9 +50,9 @@ public class Worker : BackgroundService
                 ? PersistentSubscriptionNakEventAction.Park
                 : PersistentSubscriptionNakEventAction.Retry;
 
-            await subscription.Nack(strategy, ex.Message, evnt);
+            await subscription.Nack(strategy, ex.Message, @event);
             _logger.LogError(ex, "Error while handling event {event} with id {id}",
-                evnt.OriginalEvent.EventType, evnt.OriginalEvent.EventId);
+                @event.OriginalEvent.EventType, @event.OriginalEvent.EventId);
         }
     }
 

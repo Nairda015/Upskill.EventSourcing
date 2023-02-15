@@ -18,26 +18,20 @@ public class SnsPublisher
         _settings = settings;
     }
 
-    public async Task PublishAsync(ResolvedEvent evnt, CancellationToken cancellationToken)
+    public async Task PublishAsync(ResolvedEvent @event, CancellationToken cancellationToken)
     {
         var request = new PublishRequest
         {
             TopicArn = _settings.CurrentValue.TopicArn,
-            Message = JsonSerializer.Serialize(evnt.OriginalEvent)
+            Message = JsonSerializer.Serialize(@event.OriginalEvent)
         };
+
+        request.MessageAttributes.Add("EventType", new MessageAttributeValue
+        {
+            DataType = "String",
+            StringValue = @event.OriginalEvent.EventType
+        });
         
-        request.MessageAttributes.Add("EventType",
-            new MessageAttributeValue
-            {
-                DataType = "String",
-                StringValue = evnt.OriginalEvent.EventType
-            });
-
-        // foreach (var attribute in message.ToMessageAttributeDictionary())
-        // {
-        //     request.MessageAttributes.Add(attribute.Key, attribute.Value);
-        // }
-
         await _sns.PublishAsync(request, cancellationToken);
     }
 }

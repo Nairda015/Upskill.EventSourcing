@@ -1,34 +1,30 @@
 using Amazon.SimpleNotificationService;
+using Microsoft.AspNetCore.Builder;
 using Shared.Settings;
 using Subscriber;
 
-var builder = Host.CreateDefaultBuilder(args);
+var builder = WebApplication.CreateBuilder(args);
 
-builder.ConfigureAppConfiguration((ctx, config) =>
+
+builder.Configuration.AddJsonFile("appsettings.json", false, true);
+builder.Configuration.AddEnvironmentVariables();
+
+var environmentName = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+if (!builder.Environment.IsDevelopment())
 {
-    config.AddJsonFile("appsettings.json", false, true);
-    config.AddEnvironmentVariables();
+    builder.Configuration.AddSystemsManager($"/{environmentName}/Commands", TimeSpan.FromMinutes(5));
+}
 
-    var environmentName = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
-    if (environmentName == Environments.Development)
-    {
-        config.AddSystemsManager($"/{environmentName}/Commands", TimeSpan.FromMinutes(5));
-    }
-});
 
-builder.ConfigureServices((ctx, services) =>
-{
-    services.AddHostedService<Worker>();
+builder.Services.AddHostedService<Worker>();
 
-    var settings = ctx.Configuration.GetOptions<EventStoreSettings>();
-    services.AddEventStorePersistentSubscriptionsClient(settings.ConnectionString);
-    
-    //services.AddDefaultAWSOptions(ctx.Configuration.GetAWSOptions());
-    services.AddAWSService<IAmazonSimpleNotificationService>();
-    services.RegisterOptions<SnsSettings>(ctx.Configuration);
-    services.AddSingleton<SnsPublisher>();
-});
+var settings = builder.Configuration.GetOptions<EventStoreSettings>();
+builder.Services.AddEventStorePersistentSubscriptionsClient(settings.ConnectionString);
 
-var host = builder.Build();
+builder.Services.AddAWSService<IAmazonSimpleNotificationService>();
+builder.Services.RegisterOptions<SnsSettings>(builder.Configuration);
+builder.Services.AddSingleton<SnsPublisher>();
 
-host.Run();
+var app = builder.Build();
+
+app.Run();
