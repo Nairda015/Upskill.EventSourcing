@@ -1,3 +1,5 @@
+using MediatR;
+
 namespace Contracts.Events;
 
-public interface ISqsMessage { }
+public interface ISqsMessage : IRequest { }
