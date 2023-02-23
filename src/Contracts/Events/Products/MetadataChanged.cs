@@ -1,7 +1,6 @@
-namespace Commands.Events.Products;
+namespace Contracts.Events.Products;
 
-
-public abstract record MetadataChanged(Dictionary<string, string> Metadata)
+public abstract record MetadataChanged(Dictionary<string, string> Metadata) : ISqsMessage
 {
     public abstract MetadataChanged Apply(Dictionary<string, string> metadata);
 }

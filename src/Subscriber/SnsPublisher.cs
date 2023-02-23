@@ -26,7 +26,7 @@ public class SnsPublisher
             Message = JsonSerializer.Serialize(@event.OriginalEvent)
         };
 
-        request.MessageAttributes.Add("EventType", new MessageAttributeValue
+        request.MessageAttributes.Add("MessageType", new MessageAttributeValue
         {
             DataType = "String",
             StringValue = @event.OriginalEvent.EventType

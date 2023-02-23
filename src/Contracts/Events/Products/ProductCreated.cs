@@ -1,4 +1,4 @@
-namespace Commands.Events.Products;
+namespace Contracts.Events.Products;
 
 // stream name == product id
 public record ProductCreated(
@@ -6,4 +6,4 @@ public record ProductCreated(
     string Name,
     Guid CategoryId,
     decimal Price,
-    string Description);
+    string Description) : ISqsMessage;

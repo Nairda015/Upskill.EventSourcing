@@ -1,6 +1,6 @@
 using System.Text.Json;
-using Commands.Events.Products;
 using Commands.Persistence;
+using Contracts.Events.Products;
 using EventStore.Client;
 using Microsoft.EntityFrameworkCore;
 using Shared.MiWrap;
