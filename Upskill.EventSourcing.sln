@@ -2,43 +2,25 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{DB9E6651-9E36-4372-A181-9BC6A849FFAB}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tools", "tools", "{6AEDB204-6CA0-48C6-AFCA-B674EF244AD0}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{92A53848-F9F6-4FFA-B316-16F27458B91F}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleApp", "src\SimpleApp\SimpleApp.csproj", "{8BB9E700-6CF7-4A9E-8E91-4BDA53F651E8}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SF", "SF", "{84CF54F3-628A-4170-B90D-FCE4616D6267}"
 	ProjectSection(SolutionItems) = preProject
-		.dockerignore = .dockerignore
 		.gitignore = .gitignore
+		Conclusion.md = Conclusion.md
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleApp.Tests", "tests\SimpleApp.Tests\SimpleApp.Tests.csproj", "{78804247-163A-440E-9C34-308D645E5627}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Commands", "src\Commands\Commands.csproj", "{124F15CF-72BF-478D-BA47-479F01587B0F}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "terraform", "terraform", "{DA006C09-7417-4169-85AB-E032CB21643F}"
-	ProjectSection(SolutionItems) = preProject
-		tools\terraform\main.tf = tools\terraform\main.tf
-		tools\terraform\terraform.tfvars = tools\terraform\terraform.tfvars
-		tools\terraform\outputs.tf = tools\terraform\outputs.tf
-		tools\terraform\variables.tf = tools\terraform\variables.tf
-	EndProjectSection
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shared", "src\Shared\Shared.csproj", "{25365C1D-4C45-4807-A7FB-CA5B5BCB2C9B}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "modules", "modules", "{A997DCB3-CC69-416E-B899-908007BADE46}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Queries", "src\Queries\Queries.csproj", "{7C919324-F897-4113-BD5B-F42C1F95A3BE}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "network", "network", "{85ADAB07-57A6-401E-B8DD-44AB4803E142}"
-	ProjectSection(SolutionItems) = preProject
-		tools\terraform\modules\network\main.tf = tools\terraform\modules\network\main.tf
-		tools\terraform\modules\network\outputs.tf = tools\terraform\modules\network\outputs.tf
-		tools\terraform\modules\network\variables.tf = tools\terraform\modules\network\variables.tf
-	EndProjectSection
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Subscriber", "src\Subscriber\Subscriber.csproj", "{BD98408C-B358-45EE-BB0B-A487B01F831C}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "eventstore", "eventstore", "{A23E1023-67DD-4C08-B42A-F3B5C7000BB5}"
-	ProjectSection(SolutionItems) = preProject
-		tools\terraform\modules\eventstore\main.tf = tools\terraform\modules\eventstore\main.tf
-		tools\terraform\modules\eventstore\outputs.tf = tools\terraform\modules\eventstore\outputs.tf
-		tools\terraform\modules\eventstore\variables.tf = tools\terraform\modules\eventstore\variables.tf
-	EndProjectSection
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LambdaCategories", "src\LambdaCategories\LambdaCategories.csproj", "{6202F90F-7678-4B8F-86CE-E5FB93A4B89F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Contracts", "src\Contracts\Contracts.csproj", "{5AE43B47-2B95-464C-88DB-AE50260504B5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -46,21 +28,37 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{8BB9E700-6CF7-4A9E-8E91-4BDA53F651E8} = {DB9E6651-9E36-4372-A181-9BC6A849FFAB}
-		{78804247-163A-440E-9C34-308D645E5627} = {92A53848-F9F6-4FFA-B316-16F27458B91F}
-		{DA006C09-7417-4169-85AB-E032CB21643F} = {6AEDB204-6CA0-48C6-AFCA-B674EF244AD0}
-		{A997DCB3-CC69-416E-B899-908007BADE46} = {DA006C09-7417-4169-85AB-E032CB21643F}
-		{85ADAB07-57A6-401E-B8DD-44AB4803E142} = {A997DCB3-CC69-416E-B899-908007BADE46}
-		{A23E1023-67DD-4C08-B42A-F3B5C7000BB5} = {A997DCB3-CC69-416E-B899-908007BADE46}
+		{124F15CF-72BF-478D-BA47-479F01587B0F} = {DB9E6651-9E36-4372-A181-9BC6A849FFAB}
+		{25365C1D-4C45-4807-A7FB-CA5B5BCB2C9B} = {DB9E6651-9E36-4372-A181-9BC6A849FFAB}
+		{7C919324-F897-4113-BD5B-F42C1F95A3BE} = {DB9E6651-9E36-4372-A181-9BC6A849FFAB}
+		{BD98408C-B358-45EE-BB0B-A487B01F831C} = {DB9E6651-9E36-4372-A181-9BC6A849FFAB}
+		{6202F90F-7678-4B8F-86CE-E5FB93A4B89F} = {DB9E6651-9E36-4372-A181-9BC6A849FFAB}
+		{5AE43B47-2B95-464C-88DB-AE50260504B5} = {DB9E6651-9E36-4372-A181-9BC6A849FFAB}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{8BB9E700-6CF7-4A9E-8E91-4BDA53F651E8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8BB9E700-6CF7-4A9E-8E91-4BDA53F651E8}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8BB9E700-6CF7-4A9E-8E91-4BDA53F651E8}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{8BB9E700-6CF7-4A9E-8E91-4BDA53F651E8}.Release|Any CPU.Build.0 = Release|Any CPU
-		{78804247-163A-440E-9C34-308D645E5627}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{78804247-163A-440E-9C34-308D645E5627}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{78804247-163A-440E-9C34-308D645E5627}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{78804247-163A-440E-9C34-308D645E5627}.Release|Any CPU.Build.0 = Release|Any CPU
+		{124F15CF-72BF-478D-BA47-479F01587B0F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{124F15CF-72BF-478D-BA47-479F01587B0F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{124F15CF-72BF-478D-BA47-479F01587B0F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{124F15CF-72BF-478D-BA47-479F01587B0F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{25365C1D-4C45-4807-A7FB-CA5B5BCB2C9B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{25365C1D-4C45-4807-A7FB-CA5B5BCB2C9B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{25365C1D-4C45-4807-A7FB-CA5B5BCB2C9B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{25365C1D-4C45-4807-A7FB-CA5B5BCB2C9B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7C919324-F897-4113-BD5B-F42C1F95A3BE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7C919324-F897-4113-BD5B-F42C1F95A3BE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7C919324-F897-4113-BD5B-F42C1F95A3BE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7C919324-F897-4113-BD5B-F42C1F95A3BE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BD98408C-B358-45EE-BB0B-A487B01F831C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BD98408C-B358-45EE-BB0B-A487B01F831C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BD98408C-B358-45EE-BB0B-A487B01F831C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BD98408C-B358-45EE-BB0B-A487B01F831C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6202F90F-7678-4B8F-86CE-E5FB93A4B89F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6202F90F-7678-4B8F-86CE-E5FB93A4B89F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6202F90F-7678-4B8F-86CE-E5FB93A4B89F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6202F90F-7678-4B8F-86CE-E5FB93A4B89F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5AE43B47-2B95-464C-88DB-AE50260504B5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5AE43B47-2B95-464C-88DB-AE50260504B5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5AE43B47-2B95-464C-88DB-AE50260504B5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5AE43B47-2B95-464C-88DB-AE50260504B5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
