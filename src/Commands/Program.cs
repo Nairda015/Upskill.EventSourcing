@@ -1,4 +1,6 @@
 using Commands;
+using Commands.Persistence;
+using Microsoft.EntityFrameworkCore;
 using Shared.MiWrap;
 using Shared.Settings;
 
@@ -9,8 +11,14 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.RegisterHandlers<IApiMarker>();
 
 var eventStoreSettings = builder.Configuration.GetOptions<EventStoreSettings>();
+builder.Services.AddEventStorePersistentSubscriptionsClient(eventStoreSettings.ConnectionString);
 builder.Services.AddEventStoreClient(eventStoreSettings.ConnectionString,
     x => { x.DefaultDeadline = TimeSpan.FromSeconds(5); });
+
+var options = builder.Configuration.GetOptions<PostgresSettings>();
+builder.Services.AddDbContext<CategoriesContext>(ctx =>
+    ctx.UseNpgsql(options.ConnectionString)
+        .EnableSensitiveDataLogging(options.EnableSensitiveData));
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c => { c.OrderActionsBy(x => x.HttpMethod); });
@@ -20,6 +28,6 @@ app.MapGet("/", () => "Command healthy");
 
 app.RegisterEndpoints<IApiMarker>();
 app.UseSwagger();
-app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", "IGroceryStore"); });
+app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", "Upskill"); });
 
-app.Run();
+app.Run("http://localhost:5010");

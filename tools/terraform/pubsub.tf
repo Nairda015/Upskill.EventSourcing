@@ -2,7 +2,7 @@ module "sns" {
   source  = "terraform-aws-modules/sns/aws"
   version = ">= 5.0"
 
-  name = "${var.owner_login}-toppic"
+  name = "${var.owner_login}-topic"
 
   topic_policy_statements = {
     sqs = {

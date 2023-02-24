@@ -18,6 +18,6 @@ var app = builder.Build();
 
 app.RegisterEndpoints<IApiMarker>();
 app.UseSwagger();
-app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", "IGroceryStore"); });
+app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", "Upskill"); });
 
-app.Run();
+app.Run("http://localhost:5020");

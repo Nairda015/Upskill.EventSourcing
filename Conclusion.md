@@ -1,7 +1,7 @@
 ## Conclusions
 
 ### Categories Commands
-- [x] AddCategory - unique name and parent
+- [x] AddCategory - unique name and parent, parent can be null
 - [x] DeleteCategory - only if empty and dont have subcategories //TODO: check in OpenSearch
 
 ### Products Commands:

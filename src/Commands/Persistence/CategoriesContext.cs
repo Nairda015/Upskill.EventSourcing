@@ -10,4 +10,10 @@ public class CategoriesContext : DbContext
     }
 
     public DbSet<Category> Categories { get; set; } = default!;
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder.HasDefaultSchema("Categories");
+        base.OnModelCreating(modelBuilder);
+    }
 }

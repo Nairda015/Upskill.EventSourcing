@@ -1,3 +1,3 @@
 namespace Contracts.Events.Products;
 
-public record DescriptionChanged(string Description) : ISqsMessage;
+public record DescriptionChanged(string Description);

@@ -1,11 +1,8 @@
-using System.Text;
 using System.Text.Json;
 using Amazon.Lambda.Annotations;
 using Amazon.Lambda.Core;
 using Amazon.Lambda.SQSEvents;
-using Contracts.Events;
-using EventStore.Client;
-using Google.Protobuf;
+using Contracts.Messages;
 using MediatR;
 
 [assembly: LambdaSerializer(typeof(Amazon.Lambda.Serialization.SystemTextJson.DefaultLambdaJsonSerializer))]
@@ -15,12 +12,12 @@ namespace LambdaCategories;
 public class Function
 {
     private readonly IMediator _mediator;
-    private readonly SqsMessagesDictionary _sqsMessagesDictionary;
+    private readonly SnsMessagesDictionary _snsMessagesDictionary;
     
-    public Function(IMediator mediator, SqsMessagesDictionary sqsMessagesDictionary)
+    public Function(IMediator mediator, SnsMessagesDictionary snsMessagesDictionary)
     {
         _mediator = mediator;
-        _sqsMessagesDictionary = sqsMessagesDictionary;
+        _snsMessagesDictionary = snsMessagesDictionary;
     }
 
     [LambdaFunction]
@@ -44,7 +41,7 @@ public class Function
     private async Task<bool> ProcessMessageAsync(SQSEvent.SQSMessage message, ILambdaContext context)
     {
         var messageType = message.MessageAttributes["MessageType"].StringValue;
-        var type = _sqsMessagesDictionary.GetMessageType(messageType);
+        var type = _snsMessagesDictionary.GetMessageType(messageType);
 
         if (type is null)
         {
@@ -52,11 +49,12 @@ public class Function
             return false;
         }
         
+        var genericType = typeof(SnsMessage<>).MakeGenericType(type);
+        
         try
         {
-            var eventFromStore = JsonSerializer.Deserialize<EventRecord>(message.Body)!;
-            var typedMessage = (IMessage)JsonSerializer.Deserialize(Encoding.UTF8.GetString(eventFromStore.Data.Span), type)!;
-            await _mediator.Send(typedMessage);
+            var eventFromStore = (ISnsMessage)JsonSerializer.Deserialize(message.Body, genericType)!;
+            await _mediator.Send(eventFromStore);
         }
         catch (Exception ex)
         {

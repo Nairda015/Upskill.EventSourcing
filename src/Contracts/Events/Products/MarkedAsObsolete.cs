@@ -1,3 +1,3 @@
 namespace Contracts.Events.Products;
 
-public record MarkedAsObsolete : ISqsMessage;
+public record MarkedAsObsolete;

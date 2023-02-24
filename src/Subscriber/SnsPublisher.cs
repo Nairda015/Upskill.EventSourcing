@@ -3,27 +3,37 @@ using Amazon.SimpleNotificationService;
 using Amazon.SimpleNotificationService.Model;
 using EventStore.Client;
 using Microsoft.Extensions.Options;
+using Shared.Exceptions;
 using Shared.Settings;
 
 namespace Subscriber;
 
 public class SnsPublisher
 {
+    private readonly ILogger<SnsPublisher> _logger;
     private readonly IAmazonSimpleNotificationService _sns;
-    private readonly IOptionsMonitor<SnsSettings> _settings;
+    private readonly IOptionsMonitor<SnsSettings> _topicSettings;
 
-    public SnsPublisher(IAmazonSimpleNotificationService sns, IOptionsMonitor<SnsSettings> settings)
+    private string? _topicArn;
+
+    public SnsPublisher(
+        IAmazonSimpleNotificationService sns,
+        IOptionsMonitor<SnsSettings> topicSettings,
+        ILogger<SnsPublisher> logger)
     {
         _sns = sns;
-        _settings = settings;
+        _topicSettings = topicSettings;
+        _logger = logger;
     }
 
     public async Task PublishAsync(ResolvedEvent @event, CancellationToken cancellationToken)
     {
+        var topicArn = await GetTopicArnAsync();
+
         var request = new PublishRequest
         {
-            TopicArn = _settings.CurrentValue.TopicArn,
-            Message = JsonSerializer.Serialize(@event.OriginalEvent)
+            TopicArn = topicArn,
+            Message = @event.OriginalEvent.ToSnsMessage()
         };
 
         request.MessageAttributes.Add("MessageType", new MessageAttributeValue
@@ -31,7 +41,31 @@ public class SnsPublisher
             DataType = "String",
             StringValue = @event.OriginalEvent.EventType
         });
-        
-        await _sns.PublishAsync(request, cancellationToken);
+
+        try
+        {
+            await _sns.PublishAsync(request, cancellationToken);
+            _logger.LogInformation(
+                "Published event {event} with id {id}",
+                @event.OriginalEvent.EventType,
+                @event.OriginalEvent.EventId);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, 
+                "Error while publishing event {event} with id {id}",
+                @event.OriginalEvent.EventType,
+                @event.OriginalEvent.EventId);
+            throw;
+        }
+    }
+    
+    private async ValueTask<string> GetTopicArnAsync()
+    {
+        if (_topicArn is not null) return _topicArn;
+
+        var queueUrlResponse = await _sns.FindTopicAsync(_topicSettings.CurrentValue.Name);
+        _topicArn = queueUrlResponse.TopicArn;
+        return _topicArn;
     }
 }

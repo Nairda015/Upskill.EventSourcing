@@ -20,17 +20,11 @@ public class Worker : BackgroundService
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
-        while (!stoppingToken.IsCancellationRequested)
-        {
-            await _client.SubscribeToAllAsync(
-                "all",
-                EventDispatcher,
-                SubscriptionDropped,
-                cancellationToken: stoppingToken);
-
-            // _logger.LogInformation("Worker running at: {time}", DateTimeOffset.Now);
-            // await Task.Delay(1000, stoppingToken);
-        }
+        await _client.SubscribeToAllAsync(
+            "af-group",
+            EventDispatcher,
+            SubscriptionDropped,
+            cancellationToken: stoppingToken);
     }
 
     private async Task EventDispatcher(
@@ -39,6 +33,12 @@ public class Worker : BackgroundService
         int? retryCount,
         CancellationToken cancellationToken)
     {
+        if (@event.OriginalEvent.EventType.StartsWith('$'))
+        {
+            await subscription.Ack(@event);
+            return;
+        }
+        
         try
         {
             await _sns.PublishAsync(@event, cancellationToken);
