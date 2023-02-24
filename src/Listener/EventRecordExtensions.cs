@@ -5,9 +5,9 @@ using System.Text.Json.Nodes;
 using Contracts.Messages;
 using EventStore.Client;
 
-namespace Subscriber;
+namespace Listener;
 
-public static class EventRecordExtensions
+internal static class EventRecordExtensions
 {
     public static string ToSnsMessage(this EventRecord @event)
     {

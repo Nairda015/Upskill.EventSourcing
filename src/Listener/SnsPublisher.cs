@@ -5,9 +5,9 @@ using EventStore.Client;
 using Microsoft.Extensions.Options;
 using Settings;
 
-namespace Subscriber;
+namespace Listener;
 
-public class SnsPublisher
+internal class SnsPublisher
 {
     private readonly ILogger<SnsPublisher> _logger;
     private readonly IAmazonSimpleNotificationService _sns;

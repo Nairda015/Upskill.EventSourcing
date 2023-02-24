@@ -1,9 +1,8 @@
 using Amazon.Lambda.Annotations;
 using Contracts.Events;
-using Contracts.Messages;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace SqsLambda;
+namespace Projections;
 
 [LambdaStartup]
 public class Startup

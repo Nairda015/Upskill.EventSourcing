@@ -3,7 +3,7 @@ using Contracts.Messages;
 using MediatR;
 using Microsoft.Extensions.Logging;
 
-namespace SqsLambda.Handlers;
+namespace Projections.Handlers;
 
 public class ProductCreatedHandler : IRequestHandler<SnsMessage<ProductCreated>>
 {

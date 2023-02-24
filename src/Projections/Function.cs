@@ -4,13 +4,13 @@ using Amazon.Lambda.Core;
 using Amazon.Lambda.SQSEvents;
 using Contracts.Constants;
 using Contracts.Events;
-using Contracts.Messages;
 using Contracts.Exceptions;
+using Contracts.Messages;
 using MediatR;
 
 [assembly: LambdaSerializer(typeof(Amazon.Lambda.Serialization.SystemTextJson.DefaultLambdaJsonSerializer))]
 
-namespace SqsLambda;
+namespace Projections;
 
 public class Function
 {
