@@ -3,14 +3,14 @@ using Contracts.Events;
 using Contracts.Messages;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace LambdaCategories;
+namespace SqsLambda;
 
 [LambdaStartup]
 public class Startup
 {
     public void ConfigureServices(IServiceCollection services)
     {
-        services.AddSingleton<SnsMessagesDictionary>();
+        services.AddSingleton<EventsDictionary>();
         services.AddMediatR(x =>
         {
             x.RegisterServicesFromAssemblyContaining<Startup>();

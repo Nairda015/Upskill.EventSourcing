@@ -7,7 +7,7 @@ using EventStore.Client;
 
 namespace Subscriber;
 
-public static class ResolvedEventExtensions
+public static class EventRecordExtensions
 {
     public static string ToSnsMessage(this EventRecord @event)
     {
@@ -15,12 +15,13 @@ public static class ResolvedEventExtensions
         var eventId = @event.EventId.ToGuid();
         var dataAsJson = Encoding.UTF8.GetString(@event.Data.Span);
         var created = @event.Created;
+        var number = @event.EventNumber.ToUInt64();
 
-        var metadata = new EventMetadata(streamId, eventId, created);
+        var metadata = new EventMetadata(streamId, eventId, created, number);
         
         var message = new ExpandoObject();
-        message.TryAdd(nameof(SnsMessage<string>.Data), JsonNode.Parse(dataAsJson));
-        message.TryAdd(nameof(SnsMessage<string>.EventMetadata), metadata);
+        message.TryAdd(nameof(SnsMessage<int>.Data), JsonNode.Parse(dataAsJson));
+        message.TryAdd(nameof(SnsMessage<int>.Metadata), metadata);
 
         return JsonSerializer.Serialize(message);
     }

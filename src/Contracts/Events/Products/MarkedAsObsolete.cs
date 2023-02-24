@@ -1,3 +1,3 @@
 namespace Contracts.Events.Products;
 
-public record MarkedAsObsolete;
+public record MarkedAsObsolete : IEvent;

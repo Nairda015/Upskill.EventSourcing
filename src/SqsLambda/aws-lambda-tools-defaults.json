@@ -11,5 +11,5 @@
   "function-runtime": "dotnet6",
   "function-memory-size": 256,
   "function-timeout": 30,
-  "function-handler": "LambdaCategories::LambdaCategories.Function_FunctionHandler_Generated::FunctionHandler"
+  "function-handler": "SqsLambda::SqsLambda.Function_FunctionHandler_Generated::FunctionHandler"
 }

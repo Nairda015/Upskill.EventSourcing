@@ -1,9 +1,8 @@
-using System.Text.Json;
 using Amazon.SimpleNotificationService;
 using Amazon.SimpleNotificationService.Model;
+using Contracts.Constants;
 using EventStore.Client;
 using Microsoft.Extensions.Options;
-using Shared.Exceptions;
 using Shared.Settings;
 
 namespace Subscriber;
@@ -13,7 +12,6 @@ public class SnsPublisher
     private readonly ILogger<SnsPublisher> _logger;
     private readonly IAmazonSimpleNotificationService _sns;
     private readonly IOptionsMonitor<SnsSettings> _topicSettings;
-
     private string? _topicArn;
 
     public SnsPublisher(
@@ -36,7 +34,7 @@ public class SnsPublisher
             Message = @event.OriginalEvent.ToSnsMessage()
         };
 
-        request.MessageAttributes.Add("MessageType", new MessageAttributeValue
+        request.MessageAttributes.Add(AttributesNames.MessageType, new MessageAttributeValue
         {
             DataType = "String",
             StringValue = @event.OriginalEvent.EventType

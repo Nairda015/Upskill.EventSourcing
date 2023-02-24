@@ -1,4 +1,4 @@
-namespace Shared.Exceptions;
+namespace Contracts.Exceptions;
 
 public class UnsupportedTypeException : UpskillException
 {

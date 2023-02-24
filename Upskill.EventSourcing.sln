@@ -2,8 +2,6 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{DB9E6651-9E36-4372-A181-9BC6A849FFAB}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{92A53848-F9F6-4FFA-B316-16F27458B91F}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SF", "SF", "{84CF54F3-628A-4170-B90D-FCE4616D6267}"
 	ProjectSection(SolutionItems) = preProject
 		.gitignore = .gitignore
@@ -18,7 +16,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Queries", "src\Queries\Quer
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Subscriber", "src\Subscriber\Subscriber.csproj", "{BD98408C-B358-45EE-BB0B-A487B01F831C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LambdaCategories", "src\LambdaCategories\LambdaCategories.csproj", "{6202F90F-7678-4B8F-86CE-E5FB93A4B89F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SqsLambda", "src\SqsLambda\SqsLambda.csproj", "{6202F90F-7678-4B8F-86CE-E5FB93A4B89F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Contracts", "src\Contracts\Contracts.csproj", "{5AE43B47-2B95-464C-88DB-AE50260504B5}"
 EndProject

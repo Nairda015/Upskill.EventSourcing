@@ -1,6 +1,7 @@
 namespace Contracts.Events.Products;
 
-public abstract record MetadataChanged(Dictionary<string, string> Metadata)
+//Important: name for this events should be MetadataChanged
+public abstract record MetadataChanged(Dictionary<string, string> Metadata) : IEvent
 {
     public abstract MetadataChanged Apply(Dictionary<string, string> metadata);
 }

@@ -1,3 +1,3 @@
 namespace Contracts.Events.Products;
 
-public record CategoryChanged(Guid CategoryId);
+public record CategoryChanged(Guid CategoryId) : IEvent;

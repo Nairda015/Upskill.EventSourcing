@@ -1,3 +1,3 @@
 namespace Contracts.Events.Products;
 
-public record PriceDecreased(decimal NewPrice, bool IsPromo);
+public record PriceDecreased(decimal NewPrice, bool IsPromo) : IEvent;
