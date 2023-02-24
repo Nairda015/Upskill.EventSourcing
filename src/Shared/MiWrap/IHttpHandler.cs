@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Http;
 
-namespace Shared.MiWrap;
+namespace MiWrap;
 
 public interface IHttpQuery { }
 

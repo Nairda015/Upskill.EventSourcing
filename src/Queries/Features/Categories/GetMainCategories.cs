@@ -1,10 +1,10 @@
 using System.Data;
 using Dapper;
 using Microsoft.Extensions.Options;
+using MiWrap;
 using Npgsql;
 using Queries.Models;
-using Shared.MiWrap;
-using Shared.Settings;
+using Settings;
 
 namespace Queries.Features.Categories;
 

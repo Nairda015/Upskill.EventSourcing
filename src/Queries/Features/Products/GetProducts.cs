@@ -1,6 +1,6 @@
 // using System.Data;
 // using Dapper;
-// using Shared.MiWrap;
+// using MiWrap.MiWrap;
 //
 // namespace Queries.Features.Products;
 //

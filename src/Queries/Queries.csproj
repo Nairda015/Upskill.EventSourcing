@@ -7,7 +7,10 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\Shared\Shared.csproj" />
+        <ProjectReference Include="..\Contracts\Contracts.csproj" />
+        <ProjectReference Include="..\MiWrap\MiWrap.csproj" />
+        <ProjectReference Include="..\Shared\MiWrap\MiWrap.csproj" />
+        <ProjectReference Include="..\Shared\Settings\Settings.csproj" />
     </ItemGroup>
 
     <ItemGroup>

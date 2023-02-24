@@ -1,5 +1,5 @@
 using Amazon.SimpleNotificationService;
-using Shared.Settings;
+using Settings;
 using Subscriber;
 
 var builder = WebApplication.CreateBuilder(args);

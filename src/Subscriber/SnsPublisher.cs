@@ -3,7 +3,7 @@ using Amazon.SimpleNotificationService.Model;
 using Contracts.Constants;
 using EventStore.Client;
 using Microsoft.Extensions.Options;
-using Shared.Settings;
+using Settings;
 
 namespace Subscriber;
 

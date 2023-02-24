@@ -1,4 +1,4 @@
-namespace Shared.Settings;
+namespace Settings;
 
 public class SnsSettings : ISettings
 {

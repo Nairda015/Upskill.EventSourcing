@@ -1,54 +1,17 @@
-## IAM Role to be granted ECR permissions
-#data "aws_iam_role" "ecr" {
-#  name = "ecr"
-#}
-#
-#module "ecr-commands" {
-#  source                 = "cloudposse/ecr/aws"
-#  version                = "0.35.0"
-#  namespace              = "pgs"
-#  stage                  = var.env_prefix
-#  name                   = "${local.name-prefix}-comands"
-#  principals_full_access = [data.aws_iam_role.ecr.arn]
-#  tags                   = { "Name" = "${local.name-prefix}-commands" }
-#}
-#
-#module "ecr-queries" {
-#  source                 = "cloudposse/ecr/aws"
-#  version                = "0.35.0"
-#  namespace              = "pgs"
-#  stage                  = var.env_prefix
-#  name                   = "${local.name-prefix}-queries"
-#  principals_full_access = [data.aws_iam_role.ecr.arn]
-#  tags                   = { "Name" = "${local.name-prefix}-queries" }
-#}
-#
-#module "ecr-event-store-subscriber" {
-#  source                 = "cloudposse/ecr/aws"
-#  version                = "0.35.0"
-#  namespace              = "pgs"
-#  stage                  = var.env_prefix
-#  name                   = "${local.name-prefix}-event-store-subscriber"
-#  principals_full_access = [data.aws_iam_role.ecr.arn]
-#  tags                   = { "Name" = "${local.name-prefix}-event-store-subscriber" }
-#}
-#
-#module "ecr-projection-open-search" {
-#  source                 = "cloudposse/ecr/aws"
-#  version                = "0.35.0"
-#  namespace              = "pgs"
-#  stage                  = var.env_prefix
-#  name                   = "${local.name-prefix}-projections-open-search"
-#  principals_full_access = [data.aws_iam_role.ecr.arn]
-#  tags                   = { "Name" = "${local.name-prefix}-projection-open-search" }
-#}
-#
-#module "ecr-projection-aurora" {
-#  source                 = "cloudposse/ecr/aws"
-#  version                = "0.35.0"
-#  namespace              = "pgs"
-#  stage                  = var.env_prefix
-#  name                   = "${local.name-prefix}-projections-aurora"
-#  principals_full_access = [data.aws_iam_role.ecr.arn]
-#  tags                   = { "Name" = "${local.name-prefix}-projections-aurora" }
-#}
+module "ecr-commands" {
+  source                 = "cloudposse/ecr/aws"
+  version                = "0.35.0"
+  namespace              = "pgs"
+  stage                  = var.env_prefix
+  name                   = "${local.name-prefix}-ecr"
+  principals_full_access = [aws_iam_user.this.arn]
+  principals_lambda      = [aws_iam_user.this.arn]
+  force_delete           = true
+  image_names            = [
+    "${local.name-prefix}-commands",
+    "${local.name-prefix}-queries",
+    "${local.name-prefix}-subscriber",
+    "${local.name-prefix}-projections",
+  ]
+  tags                   = { "Name" = "${local.name-prefix}-commands" }
+}
