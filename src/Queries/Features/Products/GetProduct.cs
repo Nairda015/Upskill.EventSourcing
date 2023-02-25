@@ -1,4 +1,4 @@
-// using Shared.MiWrap;
+// using MiWrap.MiWrap;
 //
 // namespace Queries.Features.Products;
 //

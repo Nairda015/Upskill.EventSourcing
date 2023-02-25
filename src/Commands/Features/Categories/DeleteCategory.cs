@@ -1,6 +1,6 @@
 using Commands.Persistence;
 using Microsoft.EntityFrameworkCore;
-using Shared.MiWrap;
+using MiWrap;
 
 namespace Commands.Features.Categories;
 

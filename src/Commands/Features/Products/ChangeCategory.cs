@@ -1,7 +1,7 @@
 using System.Text.Json;
 using Contracts.Events.Products;
 using EventStore.Client;
-using Shared.MiWrap;
+using MiWrap;
 
 
 namespace Commands.Features.Products;

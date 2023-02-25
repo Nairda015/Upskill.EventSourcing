@@ -1,5 +1,5 @@
 using EventStore.Client;
-using Shared.MiWrap;
+using MiWrap;
 
 namespace Commands.Configuration;
 

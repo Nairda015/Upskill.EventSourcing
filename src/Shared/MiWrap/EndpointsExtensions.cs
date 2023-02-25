@@ -2,7 +2,7 @@ using System.Reflection;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Shared.MiWrap;
+namespace MiWrap;
 
 public static class EndpointsExtensions
 {

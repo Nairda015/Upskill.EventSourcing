@@ -1,8 +1,8 @@
 using Commands;
 using Commands.Persistence;
 using Microsoft.EntityFrameworkCore;
-using Shared.MiWrap;
-using Shared.Settings;
+using MiWrap;
+using Settings;
 
 var builder = WebApplication.CreateBuilder(args);
 

@@ -3,7 +3,7 @@ using Commands.Persistence;
 using Contracts.Events.Products;
 using EventStore.Client;
 using Microsoft.EntityFrameworkCore;
-using Shared.MiWrap;
+using MiWrap;
 
 namespace Commands.Features.Products;
 

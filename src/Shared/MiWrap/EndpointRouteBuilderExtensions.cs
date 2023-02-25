@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 
-namespace Shared.MiWrap;
+namespace MiWrap;
 
 public static class EndpointRouteBuilderExtensions
 {

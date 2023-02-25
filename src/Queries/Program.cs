@@ -1,6 +1,6 @@
+using MiWrap;
 using Queries;
-using Shared.MiWrap;
-using Shared.Settings;
+using Settings;
 
 var builder = WebApplication.CreateBuilder(args);
 

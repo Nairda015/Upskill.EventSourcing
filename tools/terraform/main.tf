@@ -21,31 +21,31 @@ locals {
 // aurora for categories
 // elastic for products
 // sns
-// sqs x2 with lambda handler
+// sqs
 // query lambda
 // command lambda
 // api gateway
 // cloudwatch
 
-module "vpc" {
-  source  = "terraform-aws-modules/vpc/aws"
-  version = "3.19.0"
-
-  name = "${local.name-prefix}-vpc"
-  cidr = var.vpc_cidr_block
-
-  azs            = ["${var.region}a", "${var.region}b"]
-  #private_subnets = [var.subnet_cidr_block]
-  public_subnets = var.subnets_cidr_block
-
-  enable_ipv6 = true
-
-  enable_nat_gateway = false
-  single_nat_gateway = true
-
-  public_subnet_tags = { Name = "${local.name-prefix}-subnet" }
-  vpc_tags           = { Name = "${local.name-prefix}-vpc" }
-}
+#module "vpc" {
+#  source  = "terraform-aws-modules/vpc/aws"
+#  version = "3.19.0"
+#
+#  name = "${local.name-prefix}-vpc"
+#  cidr = var.vpc_cidr_block
+#
+#  azs            = ["${var.region}a", "${var.region}b"]
+#  #private_subnets = [var.subnet_cidr_block]
+#  public_subnets = var.subnets_cidr_block
+#
+#  enable_ipv6 = true
+#
+#  enable_nat_gateway = false
+#  single_nat_gateway = true
+#
+#  public_subnet_tags = { Name = "${local.name-prefix}-subnet" }
+#  vpc_tags           = { Name = "${local.name-prefix}-vpc" }
+#}
 
 #module "lambda_function" {
 #  source = "terraform-aws-modules/lambda/aws"
