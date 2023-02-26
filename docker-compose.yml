@@ -38,3 +38,38 @@ services:
     ports:
       - "1113:1113"
       - "2113:2113"
+    
+  commands:
+    container_name: commands
+    image: ${DOCKER_REGISTRY-}commands
+    build:
+      context: .
+      dockerfile: ./Commands.Dockerfile
+    ports:
+      - "5010:80"
+    depends_on:
+      - postgres
+      - eventstore
+  
+  queries:
+    container_name: queries
+    image: ${DOCKER_REGISTRY-}queries
+    build:
+      context: .
+      dockerfile: ./Queries.Dockerfile
+    ports:
+      - "5020:80"
+    depends_on:
+      - postgres
+  
+  #will exit if sns is not running
+  listener:
+    container_name: listener
+    image: ${DOCKER_REGISTRY-}listener
+    build:
+      context: .
+      dockerfile: ./Listener.Dockerfile
+    ports:
+      - "5030:80"
+    depends_on:
+      - eventstore
