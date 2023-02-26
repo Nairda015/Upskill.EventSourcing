@@ -6,6 +6,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SF", "SF", "{84CF54F3-628A-
 	ProjectSection(SolutionItems) = preProject
 		.gitignore = .gitignore
 		Conclusion.md = Conclusion.md
+		docker-compose.yml = docker-compose.yml
+		Commands.Dockerfile = Commands.Dockerfile
+		Listener.Dockerfile = Listener.Dockerfile
+		Queries.Dockerfile = Queries.Dockerfile
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Commands", "src\Commands\Commands.csproj", "{124F15CF-72BF-478D-BA47-479F01587B0F}"

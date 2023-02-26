@@ -20,4 +20,4 @@ builder.Services.AddSingleton<SnsPublisher>();
 
 var app = builder.Build();
 
-app.Run("http://localhost:5030");
+app.Run();

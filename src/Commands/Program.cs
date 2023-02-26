@@ -30,4 +30,4 @@ app.RegisterEndpoints<IApiMarker>();
 app.UseSwagger();
 app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", "Upskill"); });
 
-app.Run("http://localhost:5010");
+app.Run();

@@ -28,3 +28,8 @@
 - [ ] moving data to archives - EFS Infrequent Access  
 - [ ] logs - CloudWatch  
 - [ ] alarms for errors with mail notification - CloudWatch  
+
+
+
+
+[//]: # (docker build --platform=linux/arm64 -t commands -f Commands.Dockerfile . )

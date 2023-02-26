@@ -4,11 +4,10 @@
         <TargetFramework>net7.0</TargetFramework>
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
+        <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     </PropertyGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\Contracts\Contracts.csproj" />
-        <ProjectReference Include="..\MiWrap\MiWrap.csproj" />
         <ProjectReference Include="..\Shared\MiWrap\MiWrap.csproj" />
         <ProjectReference Include="..\Shared\Settings\Settings.csproj" />
     </ItemGroup>
@@ -22,6 +21,12 @@
         <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
         <PackageReference Include="Swashbuckle.AspNetCore.Swagger" Version="6.5.0" />
         <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="6.5.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Content Include="..\..\.dockerignore">
+        <Link>.dockerignore</Link>
+      </Content>
     </ItemGroup>
 
 </Project>

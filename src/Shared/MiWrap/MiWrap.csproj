@@ -11,10 +11,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Settings" />
-    </ItemGroup>
-
-    <ItemGroup>
       <PackageReference Include="Scrutor" Version="4.2.1" />
     </ItemGroup>
 
