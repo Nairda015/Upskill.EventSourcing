@@ -1,19 +1,16 @@
+using Contracts.Constants;
 using EventStore.Client;
 using MiWrap;
 
 namespace Commands.Configuration;
 
-internal record ConfigureSubscriptionGroup
-    (ConfigureSubscriptionGroup.ConfigureSubscriptionGroupBody Body) : IHttpCommand
-{
-    internal record ConfigureSubscriptionGroupBody(string GroupName);
-}
+internal record ConfigureSubscriptionGroup : IHttpCommand;
 
 public class ConfigureSubscriptionGroupEndpoint : IEndpoint
 {
     public void RegisterEndpoint(IEndpointRouteBuilder builder)
         => builder.MapPost<ConfigureSubscriptionGroup, ConfigureSubscriptionGroupHandler>(
-            "configure-subscription-group/{groupName}");
+            "configure-subscription-group");
 }
 
 internal class ConfigureSubscriptionGroupHandler : IHttpCommandHandler<ConfigureSubscriptionGroup>
@@ -26,7 +23,7 @@ internal class ConfigureSubscriptionGroupHandler : IHttpCommandHandler<Configure
         var settings = new PersistentSubscriptionSettings();
         
         await _client.CreateToAllAsync(
-            query.Body.GroupName,
+            Constants.SubscriptionGroup,
             settings,
             cancellationToken: cancellationToken);
         

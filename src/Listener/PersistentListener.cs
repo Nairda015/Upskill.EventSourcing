@@ -1,3 +1,4 @@
+using Contracts.Constants;
 using EventStore.Client;
 
 namespace Listener;
@@ -20,7 +21,7 @@ internal class PersistentListener : IHostedService
 
     public async Task StartAsync(CancellationToken cancellationToken)
         => await _client.SubscribeToAllAsync(
-            "af-group",
+            Constants.SubscriptionGroup,
             EventDispatcher,
             SubscriptionDropped,
             cancellationToken: cancellationToken);

@@ -37,11 +37,5 @@
       <ProjectReference Include="..\Shared\MiWrap\MiWrap.csproj" />
       <ProjectReference Include="..\Shared\Settings\Settings.csproj" />
     </ItemGroup>
-    
-    <ItemGroup>
-      <Content Include="..\..\.dockerignore">
-        <Link>.dockerignore</Link>
-      </Content>
-    </ItemGroup>
 
 </Project>

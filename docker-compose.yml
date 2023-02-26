@@ -1,3 +1,6 @@
+networks:
+  default:
+
 services:
 
   postgres:
@@ -12,6 +15,8 @@ services:
       - POSTGRES_PORT=5432
     ports:
       - 5432:5432
+    networks: 
+      - default
   
   pgadmin:
     container_name: pgadmin4_container
@@ -38,10 +43,12 @@ services:
     ports:
       - "1113:1113"
       - "2113:2113"
+    networks:
+      - default
     
   commands:
-    container_name: commands
-    image: ${DOCKER_REGISTRY-}commands
+    container_name: afranczak-commands
+    image: ${DOCKER_REGISTRY-}afranczak-commands
     build:
       context: .
       dockerfile: ./Commands.Dockerfile
@@ -50,10 +57,12 @@ services:
     depends_on:
       - postgres
       - eventstore
+    networks:
+      - default
   
   queries:
-    container_name: queries
-    image: ${DOCKER_REGISTRY-}queries
+    container_name: afranczak-queries
+    image: ${DOCKER_REGISTRY-}afranczak-queries
     build:
       context: .
       dockerfile: ./Queries.Dockerfile
@@ -61,11 +70,13 @@ services:
       - "5020:80"
     depends_on:
       - postgres
+    networks:
+      - default
   
   #will exit if sns is not running
   listener:
-    container_name: listener
-    image: ${DOCKER_REGISTRY-}listener
+    container_name: afranczak-listener
+    image: ${DOCKER_REGISTRY-}afranczak-listener
     build:
       context: .
       dockerfile: ./Listener.Dockerfile
@@ -73,3 +84,5 @@ services:
       - "5030:80"
     depends_on:
       - eventstore
+    networks:
+      - default

@@ -7,9 +7,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SF", "SF", "{84CF54F3-628A-
 		.gitignore = .gitignore
 		Conclusion.md = Conclusion.md
 		docker-compose.yml = docker-compose.yml
-		Commands.Dockerfile = Commands.Dockerfile
-		Listener.Dockerfile = Listener.Dockerfile
-		Queries.Dockerfile = Queries.Dockerfile
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Commands", "src\Commands\Commands.csproj", "{124F15CF-72BF-478D-BA47-479F01587B0F}"
@@ -28,6 +25,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MiWrap", "src\Shared\MiWrap
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Settings", "src\Shared\Settings\Settings.csproj", "{C3B1C057-D385-41CD-B233-30B8B96EECAD}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DockerFiles", "DockerFiles", "{F5FF48DC-2607-4DE3-8743-5BC2F5267070}"
+	ProjectSection(SolutionItems) = preProject
+		Commands.Dockerfile = Commands.Dockerfile
+		Listener.Dockerfile = Listener.Dockerfile
+		Queries.Dockerfile = Queries.Dockerfile
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -42,6 +46,7 @@ Global
 		{9FE4781A-FE54-43B1-AA73-4EB371BA9023} = {F3A06E5E-E542-4B83-82C1-241F95B58288}
 		{A81821FA-3778-4992-B1BC-30524016D5A1} = {F3A06E5E-E542-4B83-82C1-241F95B58288}
 		{C3B1C057-D385-41CD-B233-30B8B96EECAD} = {F3A06E5E-E542-4B83-82C1-241F95B58288}
+		{F5FF48DC-2607-4DE3-8743-5BC2F5267070} = {84CF54F3-628A-4170-B90D-FCE4616D6267}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{124F15CF-72BF-478D-BA47-479F01587B0F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
