@@ -1,1 +1,0 @@
-{"filename": "builds/c5ce7cbc9fadf2e5d4ba2cb3273206a3fba1e8a6c6e6227ebaa089326a28044c.zip", "runtime": "dotnet6", "artifacts_dir": "builds", "build_plan": [["zip", "../../src/Commands", null]]}

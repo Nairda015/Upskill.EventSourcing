@@ -30,8 +30,9 @@ internal class AddCategoryHandler : IHttpCommandHandler<AddCategory>
     {
         var product = new Category(Guid.NewGuid(), command.Body.Name, command.Body.ParentId);
 
-        // if (!await _context.Categories.AnyAsync(x => x.ParentId == product.ParentId, cancellationToken))
-        //     return Results.BadRequest();
+        if (!await IsParentValid(command, product, cancellationToken)) 
+            return Results.BadRequest();
+
         if (await _context.Categories.AnyAsync(x => x.Name == product.Name && x.ParentId == product.ParentId, cancellationToken))
             return Results.Conflict();
 
@@ -42,4 +43,8 @@ internal class AddCategoryHandler : IHttpCommandHandler<AddCategory>
             ? Results.Accepted(product.Id.ToString())
             : Results.BadRequest();
     }
+
+    private async Task<bool> IsParentValid(AddCategory command, Category product, CancellationToken cancellationToken) 
+        => command.Body.ParentId is null ||
+           await _context.Categories.AnyAsync(x => x.ParentId == product.ParentId, cancellationToken);
 }

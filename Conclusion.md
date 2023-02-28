@@ -20,7 +20,7 @@
 
 ### GetProducts Queries: - OpenSearch
 - [ ] GetPagedByCategoryWithOrder  
-- [ ] GetPriceHistory - lowest price from 30 last days :D and charts  
+- [ ] GetPriceHistory - lowest price from 30 last days :D and charts (query from es or create projection for dynamo) 
 - [ ] FullTextSearch - name and description  
 - [ ] FilterByPrice  
 - [ ] FilterByMetadata  
@@ -30,6 +30,11 @@
 - [ ] alarms for errors with mail notification - CloudWatch  
 
 
-
+### TODO:
+- [ ] replace ef with dapper in commands
+- [ ] add sql for creating category table
+- [ ] add open search to projection
+- [ ] add open search to terraform
+- [ ] implement queries
 
 [//]: # (docker build --platform=linux/arm64 -t commands -f Commands.Dockerfile . )
