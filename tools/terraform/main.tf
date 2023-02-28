@@ -10,25 +10,16 @@ provider "aws" {
   }
 }
 
+provider "github" { }
+
 locals {
   name-prefix       = "${var.owner_login}-${var.env_prefix}-${var.app_name}"
   enable_aurora     = false
   enable_eventstore = true
   enable_pub_sub    = true
+  enable_ecr        = true
+  enable_command_lambda = true
 }
-
-// for fargate:
-// vpc subnet security group with ingress rules for lambda
-//
-// dynamodb table for state
-// aurora for categories
-// elastic for products
-// sns
-// sqs
-// query lambda
-// command lambda
-// api gateway
-// cloudwatch
 
 resource "aws_iam_user" "this" {
   name = var.owner_login
@@ -44,6 +35,10 @@ resource "aws_iam_user_group_membership" "this" {
   groups = [
     data.aws_iam_group.this.group_name
   ]
+}
+
+resource "aws_iam_access_key" "this" {
+  user = aws_iam_user.this.name
 }
 
 module "vpc" {

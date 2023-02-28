@@ -17,6 +17,8 @@
         <PackageReference Include="Amazon.Lambda.Core" Version="2.1.0" />
         <PackageReference Include="Amazon.Lambda.Serialization.SystemTextJson" Version="2.3.1" />
         <PackageReference Include="Amazon.Lambda.SQSEvents" Version="2.1.0" />
+        <PackageReference Include="AWSSDK.OpenSearchServerless" Version="3.7.100.56" />
+        <PackageReference Include="AWSSDK.OpenSearchService" Version="3.7.104.3" />
         <PackageReference Include="MediatR" Version="12.0.1" />
         <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="7.0.0" />
         <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="7.0.0" />

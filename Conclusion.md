@@ -36,5 +36,10 @@
 - [ ] add open search to projection
 - [ ] add open search to terraform
 - [ ] implement queries
-
-[//]: # (docker build --platform=linux/arm64 -t commands -f Commands.Dockerfile . )
+- [ ] add CICD for ecr
+- [ ] add secrets to gh
+- [ ] create IAM for ECR
+- [ ] add service to ECS from ECR
+- [ ] add dynamo to terraform
+- [ ] add api gateway to terraform
+- [ ] enable cloudwatch logs for all apps
