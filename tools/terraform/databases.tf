@@ -1,4 +1,5 @@
 module "event-store-db" {
+  count           = local.enable_eventstore ? 1 : 0
   source          = "./modules/eventstore"
   avail_zone      = var.avail_zone
   my_ip           = var.my_ip
@@ -6,7 +7,6 @@ module "event-store-db" {
   public_key_path = var.public_key_path
   vpc_id          = module.vpc.vpc_id
   subnet_id       = module.vpc.public_subnets[0]
-  count         = local.enable_eventstore ? 1 : 0
 }
 
 data "aws_rds_engine_version" "this" {
