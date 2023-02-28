@@ -3,8 +3,6 @@ locals {
 }
 
 resource "aws_security_group" "this" {
-  count = var.enabled ? 1 : 0
-
   name   = "${var.name_prefix}-sg"
   vpc_id = var.vpc_id
   ingress {
@@ -24,8 +22,6 @@ resource "aws_security_group" "this" {
 }
 
 resource "aws_key_pair" "this" {
-  count = var.enabled ? 1 : 0
-
   key_name   = "${var.name_prefix}-server-key"
   public_key = file(var.public_key_path)
   tags       = { Name = "${var.name_prefix}-key_pair" }
@@ -36,8 +32,8 @@ resource "aws_ecs_cluster_capacity_providers" "this" {
   capacity_providers = [local.lunch-type]
 
   default_capacity_provider_strategy {
-    base              = var.enabled ? 1 : 0
-    weight            = var.enabled ? 100 : 0
+    base              = 1
+    weight            = 100
     capacity_provider = local.lunch-type
   }
 }
@@ -52,18 +48,17 @@ resource "aws_ecs_cluster" "this" {
 }
 
 resource "aws_ecs_service" "this" {
-  desired_count = var.enabled ? 1 : 0
-  
   name                               = "${var.name_prefix}-service"
   cluster                            = aws_ecs_cluster.this.arn
   deployment_maximum_percent         = 200
   deployment_minimum_healthy_percent = 0
+  desired_count = 1
   launch_type                        = local.lunch-type
   task_definition                    = "${aws_ecs_task_definition.this.family}:${aws_ecs_task_definition.this.revision}"
   wait_for_steady_state              = true
   network_configuration {
     assign_public_ip = true
-    security_groups  = [aws_security_group.this[0].id]
+    security_groups  = [aws_security_group.this.id]
     subnets          = [var.subnet_id]
   }
   tags = { Name = "${var.name_prefix}-service" }
@@ -128,7 +123,7 @@ data "aws_network_interfaces" "this" {
 
   filter {
     name   = "group-id"
-    values = [aws_security_group.this[0].id]
+    values = [aws_security_group.this.id]
   }
 }
 

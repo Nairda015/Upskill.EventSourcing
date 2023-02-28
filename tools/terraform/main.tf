@@ -11,9 +11,10 @@ provider "aws" {
 }
 
 locals {
-  name-prefix   = "${var.owner_login}-${var.env_prefix}-${var.app_name}"
-  enable_aurora = false
+  name-prefix       = "${var.owner_login}-${var.env_prefix}-${var.app_name}"
+  enable_aurora     = false
   enable_eventstore = true
+  enable_pub_sub    = true
 }
 
 // for fargate:
@@ -28,6 +29,22 @@ locals {
 // command lambda
 // api gateway
 // cloudwatch
+
+resource "aws_iam_user" "this" {
+  name = var.owner_login
+}
+
+data "aws_iam_group" "this" {
+  group_name = "AdvancedLearning"
+}
+
+resource "aws_iam_user_group_membership" "this" {
+  user = aws_iam_user.this.name
+
+  groups = [
+    data.aws_iam_group.this.group_name
+  ]
+}
 
 module "vpc" {
   source  = "terraform-aws-modules/vpc/aws"
@@ -47,45 +64,5 @@ module "vpc" {
 
   public_subnet_tags = { Name = "${local.name-prefix}-subnet" }
   vpc_tags           = { Name = "${local.name-prefix}-vpc" }
-}
-
-#resource "aws_iam_user" "this" {
-#  name = var.owner_login
-#}
-#
-#data "aws_iam_group" "this" {
-#  group_name = "AdvancedLearning"
-#}
-#
-#resource "aws_iam_user_group_membership" "this" {
-#  user = aws_iam_user.this.name
-#
-#  groups = [
-#    data.aws_iam_group.this.group_name
-#  ]
-#}
-
-module "systems_manager" {
-  source  = "cloudposse/ssm-parameter-store/aws"
-  version = "0.10.0"
-
-  parameter_write = [
-    {
-      name        = "/Upskill/Databases/Eventstore/ConnectionString"
-      value       = "esdb://${module.event-store-db.ecs_public_ipv4}:2113?tls=false",
-      type        = "String"
-      overwrite   = "true"
-      description = "Connection string for database"
-    },
-#    {
-#      name        = "/Upskill/Databases/Postgres/ConnectionString"
-#      value       = "User ID = ${module.aurora.cluster_master_username}; Password = ${module.aurora.cluster_master_password}; Server = ${module.aurora.cluster_endpoint}; Port = ${module.aurora.cluster_port}; Database = ${module.aurora.cluster_database_name}; Integrated Security = true; Pooling = true;",
-#      type        = "String"
-#      overwrite   = "true"
-#      description = "Connection string for database"
-#    },
-  ]
-
-  tags = { Name = "${local.name-prefix}-systems-manager" }
 }
 
