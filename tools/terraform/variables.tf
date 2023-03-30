@@ -8,3 +8,6 @@ variable "subnets_cidr_block" { type = list(string) }
 variable "my_ip" { type = string }
 variable "public_key_path" { type = string }
 variable "database_name" { type = string }
+variable "github_token" { type = string }
+
+

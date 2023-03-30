@@ -7,7 +7,9 @@ terraform {
   }
 }
 
-provider "github" { }
+provider "github" {
+  token = var.github_token
+}
 
 provider "aws" {
   region = var.region

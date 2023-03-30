@@ -9,6 +9,17 @@ module "event-store-db" {
   subnet_id       = module.vpc.public_subnets[0]
 }
 
+#module "opensearch" {
+#  
+#  source                                         = "cyberlabrs/opensearch/aws"
+#  name                                           = "basic-os"
+#  region                                         = "eu-central-1"
+#  advanced_security_options_enabled              = true
+#  default_policy_for_fine_grained_access_control = true
+#  
+#}
+# outputs   custom_endpoint*
+
 data "aws_rds_engine_version" "this" {
   engine             = "aurora-postgresql"
   preferred_versions = ["14.6"]

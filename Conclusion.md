@@ -20,17 +20,19 @@
 
 ### GetProducts Queries: - OpenSearch
 - [ ] GetPagedByCategoryWithOrder  
-- [ ] GetPriceHistory - lowest price from 30 last days :D and charts (query from es or create projection for dynamo) 
 - [ ] FullTextSearch - name and description  
 - [ ] FilterByPrice  
 - [ ] FilterByMetadata  
+
+### Dynamo
+- [ ]* GetPriceHistory - lowest price from 30 last days :D and charts (query from es or create projection for dynamo)
 
 - [ ] moving data to archives - EFS Infrequent Access  
 - [ ] logs - CloudWatch  
 - [ ] alarms for errors with mail notification - CloudWatch  
 
 
-### TODO:
+### Terraform:
 - [ ] replace ef with dapper in commands
 - [ ] add sql for creating category table
 - [ ] add open search to projection
@@ -38,7 +40,7 @@
 - [ ] implement queries
 - [ ] add CICD for ecr
 - [ ] add secrets to gh
-- [ ] create IAM for ECR
+- [ ] create IAM for ECR (AmazonEC2ContainerRegistryFullAccess, AssumeRole)
 - [ ] add service to ECS from ECR
 - [ ] add dynamo to terraform
 - [ ] add api gateway to terraform
