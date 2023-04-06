@@ -15,7 +15,7 @@ var settings = builder.Configuration.GetOptions<EventStoreSettings>();
 builder.Services.AddEventStorePersistentSubscriptionsClient(settings.ConnectionString);
 
 builder.Services.AddSingleton<IAmazonSimpleNotificationService, AmazonSimpleNotificationServiceClient>();
-builder.Services.RegisterOptions<SnsSettings>(builder.Configuration);
+builder.RegisterOptions<SnsSettings>();
 builder.Services.AddSingleton<SnsPublisher>();
 
 var app = builder.Build();

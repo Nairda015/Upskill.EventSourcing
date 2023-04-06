@@ -18,6 +18,6 @@ public static class Helpers
     {
         return await stream.Where(x => x.Event.EventType == nameof(MetadataChanged))
             .Select(x => JsonSerializer.Deserialize<MetadataChanged>(x.Event.Data.Span))
-            .AggregateAsync((c, n) => c.Apply(n.Metadata), cancellationToken);
+            .AggregateAsync((c, n) => c.Apply(n.Value), cancellationToken);
     }
 }

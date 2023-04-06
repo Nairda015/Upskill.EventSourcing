@@ -56,6 +56,7 @@ public class Function
         
         try
         {
+            //TODO: don't throw 
             if (JsonSerializer.Deserialize(message.Body, genericType) is not ISnsMessage eventFromStore)
                 throw new UnsupportedTypeException(messageType);
             

@@ -18,13 +18,6 @@ public static class SettingsExtensions
         builder.Services.AddOptions<TOptions>().Bind(section);
     }
     
-    public static void RegisterOptions<TOptions>(this IServiceCollection services, IConfiguration configuration)
-        where TOptions : class, ISettings
-    {
-        var section = configuration.GetSection(TOptions.SectionName);
-        services.AddOptions<TOptions>().Bind(section);
-    }
-    
     public static TOptions GetOptions<TOptions>(this IConfiguration configuration)
         where TOptions : ISettings, new()
     {

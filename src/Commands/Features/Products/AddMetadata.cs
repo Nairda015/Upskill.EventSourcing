@@ -48,7 +48,7 @@ internal class AddMetadataHandler : IHttpCommandHandler<AddMetadata>
         
         var eventData = new EventData(
             Uuid.NewUuid(),
-            nameof(MetadataChanged),
+            nameof(MetadataAdded),
             JsonSerializer.SerializeToUtf8Bytes(@event));
 
         await _client.AppendToStreamAsync(
