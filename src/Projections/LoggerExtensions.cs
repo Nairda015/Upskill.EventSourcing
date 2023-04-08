@@ -3,7 +3,7 @@ using Contracts.Projections;
 using Microsoft.Extensions.Logging;
 using OpenSearch.Client;
 
-namespace Projections.Handlers;
+namespace Projections;
 
 public static class LoggerExtensions
 {

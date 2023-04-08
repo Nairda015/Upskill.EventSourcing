@@ -7,20 +7,20 @@ using OpenSearch.Client;
 
 namespace Projections.Handlers;
 
-internal class PriceIncreasedHandler : IRequestHandler<SnsMessage<PriceIncreased>>
+internal class DescriptionChangedHandler : IRequestHandler<SnsMessage<DescriptionChanged>>
 {
-    private readonly ILogger<PriceIncreasedHandler> _logger;
+    private readonly ILogger<DescriptionChangedHandler> _logger;
     private readonly IOpenSearchClient _client;
 
-    public PriceIncreasedHandler(ILogger<PriceIncreasedHandler> logger, IOpenSearchClient client)
+    public DescriptionChangedHandler(ILogger<DescriptionChangedHandler> logger, IOpenSearchClient client)
     {
         _logger = logger;
         _client = client;
     }
 
-    public async Task Handle(SnsMessage<PriceIncreased> request, CancellationToken cancellationToken)
+    public async Task Handle(SnsMessage<DescriptionChanged> request, CancellationToken cancellationToken)
     {
-        _logger.LogInformation("PriceIncreased message received with id: {Id}", request.Metadata.StreamId);
+        _logger.LogInformation("DescriptionChanged message received with id: {Id}", request.Metadata.StreamId);
 
         var productResponse = await _client.GetAsync<ProductProjection>(request.Metadata.StreamId, x => x, cancellationToken);
         _logger.LogVersion(productResponse, request.Metadata);
