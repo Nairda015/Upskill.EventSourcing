@@ -7,14 +7,14 @@ internal class DynamoEvent
 {
     public string Pk => StreamId;
     public string Sk => Number.ToString();
-    public required string StreamId { get; init; }
-    public required ulong Number { get; init; }
-    public required string TypeName { get; init; }
+    public string StreamId { get; init; } = default!;
+    public ulong Number { get; init; } = default!;
+    public string TypeName { get; init; } = default!;
 
     /// <summary>
     /// SnsMessage as json
     /// </summary>
-    public required string Data { get; init; }
+    public string Data { get; init; }  = default!;
 }
 
 internal static class SnsMessageExtensions

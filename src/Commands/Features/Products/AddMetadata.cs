@@ -39,6 +39,7 @@ internal class AddMetadataHandler : IHttpCommandHandler<AddMetadata>
         
         if (await stream.ReadState is ReadState.StreamNotFound) return Results.NotFound();
         
+        //TODO: Add validation
         // var metadata = await stream
         //     .Where(x => x.Event.EventType == nameof(MetadataChanged))
         //     .Select(x => JsonSerializer.Deserialize<MetadataChanged>(x.Event.Data.Span))

@@ -3,7 +3,6 @@ using Dapper;
 using Microsoft.Extensions.Options;
 using MiWrap;
 using Npgsql;
-using Queries.Models;
 using Settings;
 
 namespace Queries.Features.Categories;
@@ -26,7 +25,7 @@ internal class GetMainCategoriesHandler : IHttpQueryHandler<GetMainCategories>
     public async Task<IResult> HandleAsync(GetMainCategories query, CancellationToken cancellationToken)
     {
         var result = await _connection
-            .QueryAsync<CategoryReadModel>("select * from categories c where c.parent = null");
+            .QueryAsync<CategoryReadModel>("""select * from "Categories" c where c."ParentId" is null""");
         
         return Results.Ok(new { MainCategories = result.Select(x => new { x.Id, x.Name })});
     }

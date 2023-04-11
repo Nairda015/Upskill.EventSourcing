@@ -1,4 +1,5 @@
 using System.Text.Json;
+using Commands.Features.Categories;
 using Contracts.Events.Products;
 using EventStore.Client;
 using MiWrap;
@@ -22,15 +23,20 @@ public class ChangeCategoryEndpoint : IEndpoint
 internal class ChangeCategoryHandler : IHttpCommandHandler<ChangeCategory>
 {
     private readonly EventStoreClient  _client;
+    private readonly CategoriesContext _context;
     
-    public ChangeCategoryHandler(EventStoreClient client)
+    public ChangeCategoryHandler(EventStoreClient client, CategoriesContext context)
     {
         _client = client;
+        _context = context;
     }
 
     public async Task<IResult> HandleAsync(ChangeCategory command, CancellationToken cancellationToken = default)
     {
         var (id, categoryId) = command.Body;
+        
+        var category = await _context.Categories.FindAsync(new object?[] { categoryId }, cancellationToken);
+        if (category is null) return Results.BadRequest();
 
         var stream = _client.ReadStreamAsync(
             Direction.Forwards,
@@ -40,7 +46,7 @@ internal class ChangeCategoryHandler : IHttpCommandHandler<ChangeCategory>
         
         if (await stream.ReadState is ReadState.StreamNotFound) return Results.NotFound();
         
-        var @event = new CategoryChanged(categoryId);
+        var @event = new CategoryChanged(categoryId, category.Name);
         
         var eventData = new EventData(
             Uuid.NewUuid(),

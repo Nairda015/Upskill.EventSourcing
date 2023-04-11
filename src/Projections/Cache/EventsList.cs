@@ -6,8 +6,8 @@ internal class EventsList
 {
     public string Pk => StreamId;
     public string Sk => StreamId;
-    public required string StreamId { get; set; }
-    public required ulong NextExpectedNumber { get; set; }
+    public string StreamId { get; set; }  = default!;
+    public ulong NextExpectedNumber { get; set; } = default!;
     private readonly SortedSet<ulong> _events = new();
 
     public static EventsList Default(EventMetadata newEvent) => new()

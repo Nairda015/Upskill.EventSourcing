@@ -3,7 +3,6 @@ using Dapper;
 using Microsoft.Extensions.Options;
 using MiWrap;
 using Npgsql;
-using Queries.Models;
 using Settings;
 
 namespace Queries.Features.Categories;
@@ -14,7 +13,7 @@ public class GetCategoryEndpoint : IEndpoint
 {
     public void RegisterEndpoint(IEndpointRouteBuilder builder) =>
         builder.MapGet<GetCategory, GetCategoryHandler>("categories/{id}")
-            .Produces(200)
+            .Produces<CategoryReadModel>()
             .Produces(400)
             .Produces(404);
 }
@@ -29,7 +28,7 @@ internal class GetCategoryHandler : IHttpQueryHandler<GetCategory>
     {
         if (query.Id == Guid.Empty) return Results.BadRequest();
         var product = await _connection
-            .QueryFirstAsync<CategoryReadModel>("select * from Categories where id = @Id", query.Id);
+            .QueryFirstAsync<CategoryReadModel>("""select * from "Categories" where "Id" = @Id""", query.Id);
 
         return product is null
             ? Results.NotFound()

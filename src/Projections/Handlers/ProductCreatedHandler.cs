@@ -1,3 +1,4 @@
+using Contracts.Constants;
 using Contracts.Events.Products;
 using Contracts.Messages;
 using Contracts.Projections;

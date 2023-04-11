@@ -13,24 +13,25 @@
 - [x] MarkAsObsolete
 
 ### Categories Queries - Aurora
-- [ ] ByName - first 3 chars 
+- [x] ByName - first 3 chars 
 - [x] AllChildren  
 - [X] ById  
 - [x] MainCategories - all without parent  
 
 ### GetProducts Queries: - OpenSearch
-- [ ] GetPagedByCategoryWithOrder  
-- [ ] FullTextSearch - name and description  
-- [ ] FilterByPrice  
-- [ ] FilterByMetadata  
+- [x] GetById
+- [x] GetPagedByCategory 
+- [x] FullTextSearch - name and description  
+- [x] FilterByPrice  
+- [x] FilterByMetadata  
 
 ### Dynamo
 - [ ] GetPriceHistory* - lowest price from 30 last days :D and charts (query from es or create projection for dynamo)
 
-- [ ] moving data to archives - EFS Infrequent Access  
+### Other
+- [x] moving data to archives - EFS Infrequent Access  
 - [ ] logs - CloudWatch  
 - [ ] alarms for errors with mail notification - CloudWatch  
-
 
 ### Terraform:
 - [ ] create IAMs policies for: 

@@ -1,5 +1,6 @@
 using Amazon;
 using Amazon.Lambda.Annotations;
+using Contracts.Constants;
 using Contracts.Events;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -43,5 +44,5 @@ public class Startup
 
 public class OpenSearchSettings
 {
-    public required Uri Uri { get; set; }
+    public Uri Uri { get; set; }  = default!;
 }

@@ -7,43 +7,49 @@ public class ProductProjection
     /// <summary>
     /// StreamId and ProductId are the same
     /// </summary>
-    public Guid Id { get; init; }
-
-    public string Name { get; init; }
-    public Guid CategoryId { get; set; }
-    public decimal Price { get; set; }
-    public string Description { get; set; }
-    public bool IsObsolete { get; set; }
-    public bool IsOnSale { get; set; }
-    public Dictionary<string, string> Metadata { get; set; } = new();
+    public Guid Id { get; private init; }
+    public string Name { get; private init; }
+    public string CategoryName { get; private set; }
+    public Guid CategoryId { get; private set; }
+    public decimal Price { get; private set; }
+    public string Description { get; private set; }
+    public bool IsObsolete { get; private set; }
+    public bool IsOnSale { get; private set; }
+    public int Version { get; private set; }
+    public Dictionary<string, string> Metadata { get; } = new();
 
     public static ProductProjection Create(ProductCreated productCreated) => new()
     {
         Id = productCreated.Id,
         Name = productCreated.Name,
         CategoryId = productCreated.CategoryId,
+        CategoryName = productCreated.CategoryName,
         Price = productCreated.Price,
         Description = productCreated.Description,
         IsObsolete = false,
         IsOnSale = false,
-        Metadata = new Dictionary<string, string>()
+        Version = 0
     };
 
     public ProductProjection Apply(CategoryChanged categoryChanged)
     {
-        CategoryId = categoryChanged.CategoryId;
+        CategoryId = categoryChanged.Id;
+        CategoryName = categoryChanged.Name;
+        Version++;
         return this;
     }
 
     public ProductProjection Apply(DescriptionChanged descriptionChanged)
     {
         Description = descriptionChanged.Description;
+        Version++;
         return this;
     }
 
     public ProductProjection Apply(MarkedAsObsolete _)
     {
         IsObsolete = true;
+        Version++;
         return this;
     }
 
@@ -61,12 +67,14 @@ public class ProductProjection
             }
         }
 
+        Version++;
         return this;
     }
 
     public ProductProjection Apply(MetadataRemoved metadataRemoved)
     {
         foreach (var (key, _) in metadataRemoved.Value) Metadata.Remove(key);
+        Version++;
         return this;
     }
 
@@ -74,6 +82,7 @@ public class ProductProjection
     {
         Price = priceDecreased.NewPrice;
         IsOnSale = priceDecreased.IsPromo;
+        Version++;
         return this;
     }
 
@@ -81,6 +90,7 @@ public class ProductProjection
     {
         Price = priceIncreased.NewPrice;
         IsOnSale = priceIncreased.IsPromo;
+        Version++;
         return this;
     }
 }

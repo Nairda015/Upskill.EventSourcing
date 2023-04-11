@@ -1,5 +1,5 @@
 using System.Text.Json;
-using Commands.Persistence;
+using Commands.Features.Categories;
 using Contracts.Events.Products;
 using EventStore.Client;
 using Microsoft.EntityFrameworkCore;
@@ -34,13 +34,15 @@ internal class AddProductHandler : IHttpCommandHandler<AddProduct>
     public async Task<IResult> HandleAsync(AddProduct command, CancellationToken cancellationToken = default)
     {
         var (name, price, categoryId, description) = command.Body;
-        if (!await _context.Categories.AnyAsync(x => x.Id == categoryId, cancellationToken))
-            return Results.BadRequest();
+        
+        var category = await _context.Categories.FindAsync(new object?[] { categoryId }, cancellationToken);
+        if (category is null) return Results.BadRequest();
         
         var @event = new ProductCreated(
             Guid.NewGuid(), 
             name, 
             categoryId,
+            category.Name,
             price,
             description);
 

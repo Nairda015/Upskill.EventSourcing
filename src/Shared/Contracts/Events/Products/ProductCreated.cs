@@ -5,5 +5,6 @@ public record ProductCreated(
     Guid Id,
     string Name,
     Guid CategoryId,
+    string CategoryName,
     decimal Price,
     string Description) : IEvent;

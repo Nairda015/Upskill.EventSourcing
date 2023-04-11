@@ -1,4 +1,4 @@
-namespace Commands.Entities;
+namespace Commands.Features.Categories;
 
 /// <summary>
 /// Category is fully immutable and stored only in sql database - Aurora

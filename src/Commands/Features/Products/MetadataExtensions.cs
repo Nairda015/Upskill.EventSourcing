@@ -2,9 +2,9 @@ using System.Text.Json;
 using Contracts.Events.Products;
 using EventStore.Client;
 
-namespace Commands;
+namespace Commands.Features.Products;
 
-public static class Helpers
+public static class MetadataExtensions
 {
     // public static object? Deserialize(this ResolvedEvent resolvedEvent)
     // {

@@ -1,7 +1,6 @@
-using Commands.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace Commands.Persistence;
+namespace Commands.Features.Categories;
 
 public class CategoriesContext : DbContext
 {

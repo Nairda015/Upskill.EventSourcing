@@ -1,5 +1,5 @@
 using Commands;
-using Commands.Persistence;
+using Commands.Features.Categories;
 using Microsoft.EntityFrameworkCore;
 using MiWrap;
 using Settings;

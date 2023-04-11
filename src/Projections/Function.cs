@@ -24,10 +24,10 @@ public class Function
     }
 
     [LambdaFunction]
-    public async Task<SQSBatchResponse> FunctionHandler(SQSEvent @event, ILambdaContext context)
+    public async Task<SQSBatchResponse> FunctionHandler(SQSEvent snsEvent, ILambdaContext context)
     {
         var batchItemFailures = new List<SQSBatchResponse.BatchItemFailure>();
-        foreach (var message in @event.Records)
+        foreach (var message in snsEvent.Records)
         {
             context.Logger.LogInformation($"Processed message {message.Body}");
             var isSuccess = await ProcessMessageAsync(message, context);

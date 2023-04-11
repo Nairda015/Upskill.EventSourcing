@@ -8,4 +8,5 @@ public static class AttributesNames
 public static class Constants
 {
     public static string SubscriptionGroup => "af-sub-group";
+    public static string ProductsIndexName => "products";
 }
