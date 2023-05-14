@@ -1,12 +1,12 @@
 locals {
   name-prefix       = "${var.owner_login}-${var.env_prefix}-${var.app_name}"
-  enable_aurora     = false
-  enable_eventstore = true
-  enable_pub_sub    = true
-  enable_ecr        = false
-  enable_command_lambda = false
   repo_name         = "Upskill.EventSourcing"
   repo_owner        = "Nairda015"
+  enable_aurora     = true
+  enable_eventstore = true
+  enable_pub_sub    = true
+  enable_ecr        = true
+  enable_command_lambda = false
 }
 
 resource "aws_iam_user" "this" {

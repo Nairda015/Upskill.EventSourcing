@@ -1,7 +1,5 @@
-using System.Data;
 using Contracts.Constants;
 using Contracts.Projections;
-using Dapper;
 using MiWrap;
 using OpenSearch.Client;
 

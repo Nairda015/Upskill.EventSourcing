@@ -10,13 +10,11 @@ module "event-store-db" {
 }
 
 #module "opensearch" {
-#  
 #  source                                         = "cyberlabrs/opensearch/aws"
 #  name                                           = "basic-os"
 #  region                                         = "eu-central-1"
 #  advanced_security_options_enabled              = true
 #  default_policy_for_fine_grained_access_control = true
-#  
 #}
 # outputs   custom_endpoint*
 
@@ -26,7 +24,7 @@ data "aws_rds_engine_version" "this" {
 }
 
 module "aurora" {
-  create_cluster      = local.enable_aurora
+  create      = local.enable_aurora
   source              = "terraform-aws-modules/rds-aurora/aws"
   name                = "${local.name-prefix}-aurora"
   engine              = "aurora-postgresql"
@@ -45,7 +43,6 @@ module "aurora" {
   subnets = module.vpc.public_subnets
 
   create_security_group = true
-  allowed_cidr_blocks   = module.vpc.private_subnets_cidr_blocks
 
   monitoring_interval = 60
 

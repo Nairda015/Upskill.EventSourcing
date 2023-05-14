@@ -11,25 +11,25 @@ module "ecr-commands" {
   principals_full_access = [aws_iam_user.this.arn]
   principals_lambda      = [aws_iam_user.this.arn]
   force_delete           = true
-#  image_names            = [
-#    "${var.owner_login}-commands",
-##    "${var.owner_login}-listener",
-##    "${var.owner_login}-projections",
-##    "${var.owner_login}-queries",
-#  ]
+  image_names            = [
+    "${var.owner_login}-commands",
+    "${var.owner_login}-listener",
+    "${var.owner_login}-projections",
+    "${var.owner_login}-queries",
+  ]
   tags = { "Name" = "${local.name-prefix}-ecr" }
 }
 
 #module "lambda_commands" {
 #  create = local.enable_command_lambda
-#  
+#
 #  source = "terraform-aws-modules/lambda/aws"
 #  function_name = "${local.name-prefix}-commands"
 #  create_package = false
 #
 ##  attach_policy = true
 ##  policy = data.aws_iam_policy_document.lambda_commands.json
-#  
+#
 #  image_uri    = module.ecr-commands.repository_arn_map["${var.owner_login}-commands"]
 #  package_type = "Image" 
 #}

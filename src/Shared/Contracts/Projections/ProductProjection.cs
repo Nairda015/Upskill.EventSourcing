@@ -8,11 +8,11 @@ public class ProductProjection
     /// StreamId and ProductId are the same
     /// </summary>
     public Guid Id { get; private init; }
-    public string Name { get; private init; }
-    public string CategoryName { get; private set; }
+    public string Name { get; private init; } = default!;
+    public string CategoryName { get; private set; } = default!;
     public Guid CategoryId { get; private set; }
     public decimal Price { get; private set; }
-    public string Description { get; private set; }
+    public string Description { get; private set; } = default!;
     public bool IsObsolete { get; private set; }
     public bool IsOnSale { get; private set; }
     public int Version { get; private set; }

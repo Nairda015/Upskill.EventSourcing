@@ -19,7 +19,7 @@ services:
       - default
   
   pgadmin:
-    container_name: pgadmin4_container
+    container_name: pgadmin
     image: dpage/pgadmin4
     restart: always
     environment:
@@ -45,6 +45,14 @@ services:
       - "2113:2113"
     networks:
       - default
+  
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.17.6
+    container_name: elasticsearch
+    ports:
+      - 9200:9200/tcp
+    environment:
+      - discovery.type=single-node
     
   commands:
     container_name: afranczak-commands

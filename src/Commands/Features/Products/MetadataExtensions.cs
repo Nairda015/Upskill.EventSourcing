@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using System.Text.Json;
 using Contracts.Events.Products;
 using EventStore.Client;
@@ -18,6 +19,6 @@ public static class MetadataExtensions
     {
         return await stream.Where(x => x.Event.EventType == nameof(MetadataChanged))
             .Select(x => JsonSerializer.Deserialize<MetadataChanged>(x.Event.Data.Span))
-            .AggregateAsync((c, n) => c.Apply(n.Value), cancellationToken);
+            .AggregateAsync((c, n) => c?.Apply(n!.Value), cancellationToken) ?? throw new UnreachableException();
     }
 }

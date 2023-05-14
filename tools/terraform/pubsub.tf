@@ -5,6 +5,7 @@ module "sns" {
 
   name = "${var.owner_login}-topic"
 
+  #fifo_topic = true
   topic_policy_statements = {
     sqs = {
       sid     = "SQSSubscribe"
@@ -48,7 +49,7 @@ module "sqs" {
 
   name = "${var.owner_login}-products"
 
-  #  fifo_queue = true
+  #fifo_queue = true
 
   create_queue_policy     = true
   queue_policy_statements = {
