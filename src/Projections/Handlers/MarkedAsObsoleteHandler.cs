@@ -7,7 +7,7 @@ using OpenSearch.Client;
 
 namespace Projections.Handlers;
 
-internal class MarkedAsObsoleteHandler : IRequestHandler<SnsMessage<MarkedAsObsolete>>
+public class MarkedAsObsoleteHandler : IRequestHandler<SnsMessage<MarkedAsObsolete>>
 {
     private readonly ILogger<MarkedAsObsoleteHandler> _logger;
     private readonly IOpenSearchClient _client;

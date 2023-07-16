@@ -7,7 +7,7 @@ using OpenSearch.Client;
 
 namespace Projections.Handlers;
 
-internal class CategoryChangedHandler : IRequestHandler<SnsMessage<CategoryChanged>>
+public class CategoryChangedHandler : IRequestHandler<SnsMessage<CategoryChanged>>
 {
     private readonly ILogger<CategoryChangedHandler> _logger;
     private readonly IOpenSearchClient _client;
@@ -22,7 +22,10 @@ internal class CategoryChangedHandler : IRequestHandler<SnsMessage<CategoryChang
     {
         _logger.LogInformation("CategoryChanged message received with id: {Id}", request.Metadata.StreamId);
 
-        var productResponse = await _client.GetAsync<ProductProjection>(request.Metadata.StreamId, x => x, cancellationToken);
+        var productResponse = await _client.GetAsync<ProductProjection>(
+            request.Metadata.StreamId, 
+            x => x,
+            cancellationToken);
         _logger.LogVersion(productResponse, request.Metadata);
 
         var productProjection = productResponse.Source;

@@ -7,7 +7,7 @@ using OpenSearch.Client;
 
 namespace Projections.Handlers;
 
-internal class PriceDecreasedHandler : IRequestHandler<SnsMessage<PriceDecreased>>
+public class PriceDecreasedHandler : IRequestHandler<SnsMessage<PriceDecreased>>
 {
     private readonly ILogger<PriceDecreasedHandler> _logger;
     private readonly IOpenSearchClient _client;

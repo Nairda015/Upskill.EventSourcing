@@ -7,7 +7,7 @@ using OpenSearch.Client;
 
 namespace Projections.Handlers;
 
-internal class DescriptionChangedHandler : IRequestHandler<SnsMessage<DescriptionChanged>>
+public class DescriptionChangedHandler : IRequestHandler<SnsMessage<DescriptionChanged>>
 {
     private readonly ILogger<DescriptionChangedHandler> _logger;
     private readonly IOpenSearchClient _client;
