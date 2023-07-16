@@ -6,6 +6,10 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     </PropertyGroup>
+    
+    <ItemGroup>
+        <InternalsVisibleTo Include="Upskill.Tests" />
+    </ItemGroup>
 
     <ItemGroup>
         <ProjectReference Include="..\Shared\Contracts\Contracts.csproj" />
@@ -25,5 +29,4 @@
         <PackageReference Include="Swashbuckle.AspNetCore.Swagger" Version="6.5.0" />
         <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="6.5.0" />
     </ItemGroup>
-
 </Project>

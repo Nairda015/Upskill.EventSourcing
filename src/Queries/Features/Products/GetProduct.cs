@@ -23,12 +23,11 @@ internal class GetProductHandler : IHttpQueryHandler<GetProduct>
 
     public async Task<IResult> HandleAsync(GetProduct query, CancellationToken cancellationToken)
     {
-
         var product = await _client.GetAsync<ProductProjection>(
             query.Id,
             x => x.Index(Constants.ProductsIndexName),
             cancellationToken);
 
-        return product is null ? Results.NotFound() : Results.Ok(product);
+        return product.Found ? Results.Ok(product.Source) : Results.NotFound();
     }
 }
