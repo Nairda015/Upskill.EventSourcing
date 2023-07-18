@@ -7,7 +7,7 @@ using Queries.Features.Products;
 
 namespace Upskill.Tests.Queries;
 
-public class SearchProductByPriceRangeHandlerTest : IAsyncLifetime
+public class SearchProductByNameOrDescriptionTest : IAsyncLifetime
 {
     private static readonly ConnectionSettings ConnectionSettings = new ConnectionSettings()
         .DefaultIndex(Constants.ProductsIndexName)
@@ -23,17 +23,21 @@ public class SearchProductByPriceRangeHandlerTest : IAsyncLifetime
     public async Task Should_Return_Product()
     {
         //Arrange
-        var productProjection = CreateProductTestHelper.CreateProjectionModel(StreamId, CategoryId);
+        var productProjection = CreateProductTestHelper
+            .CreateProjectionModel(StreamId, CategoryId);
+        
         await _writClient.IndexAsync<StringResponse>(
             Constants.ProductsIndexName,
             StreamId.ToString(),
             PostData.Serializable(productProjection),
             new IndexRequestParameters());
-        var getProductHandler = new SearchProductByPriceRangeHandler(_readClient);
+        var handler = new SearchProductByNameOrDescriptionHandler(_readClient);
         await Task.Delay(1000);
         
         //Act
-        var response = await getProductHandler.HandleAsync(new SearchProductByPriceRange(100_000, 200_000), CancellationToken.None);
+        var response = await handler.HandleAsync(
+            new SearchProductByNameOrDescription("Porsche"),
+            CancellationToken.None);
         var product = response as Ok<IReadOnlyCollection<ProductProjection>>;
         
         //Assert

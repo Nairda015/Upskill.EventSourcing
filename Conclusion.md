@@ -19,11 +19,11 @@
 - [x] MainCategories - all without parent  
 
 ### GetProducts Queries: - OpenSearch
-- [x] GetById
-- [x] GetPagedByCategory 
-- [x] FullTextSearch - name and description  
-- [x] FilterByPrice  
-- [x] FilterByMetadata  
+- [x] GetById - tested  
+- [x] GetPagedByCategory - tested  
+- [x] FullTextSearch - name and description - tested  
+- [x] FilterByPrice - tested  
+- [x] FilterByMetadata - tested  
 
 ### Dynamo
 - [ ] GetPriceHistory* - lowest price from 30 last days :D and charts (query from es or create projection for dynamo)

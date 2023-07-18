@@ -23,25 +23,27 @@ internal class SearchProductByMetadataHandler : IHttpQueryHandler<SearchProductB
 
     public async Task<IResult> HandleAsync(SearchProductByMetadata query, CancellationToken cancellationToken)
     {
-        //key01:value01,key02:value02
-        var metadata = query.Pairs
+        //example: key01:value01,key02:value02
+        var filters = query.Pairs
             .Split(",")
             .Select(x => x.Split(':', 2))
-            .ToDictionary(x => x[0], x => x[1]);
+            .Select(x => (QueryContainer)new MatchQuery
+            {
+                Field = $"metadata.{x[0]}",
+                Query = x[1]
+            })
+            .ToList();
 
-        var response = await _client.SearchAsync<ProductProjection>(
-            x => x
-                .Index(Constants.ProductsIndexName)
-                .Size(10)
-                .Query(q =>
-                    q.Bool(b => b
-                        .MinimumShouldMatch(new MinimumShouldMatch(1))
-                        .Should(metadata
-                            .Select(s => new Func<QueryContainerDescriptor<ProductProjection>, QueryContainer>(d => d
-                                .Term(t => t
-                                    .Field(f => f.Metadata[s.Key])
-                                    .Value(s.Value))))))),
-            cancellationToken);
+        var searchRequest = new SearchRequest
+        {
+            Query = new BoolQuery
+            {
+                MinimumShouldMatch = 1,
+                Should = filters
+            }
+        };
+
+        var response = await _client.SearchAsync<ProductProjection>(searchRequest, cancellationToken);
 
         return response.IsValid ? Results.Ok(response.Documents) : Results.BadRequest();
     }

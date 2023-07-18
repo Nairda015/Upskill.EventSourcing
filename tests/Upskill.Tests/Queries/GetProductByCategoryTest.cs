@@ -7,7 +7,7 @@ using Queries.Features.Products;
 
 namespace Upskill.Tests.Queries;
 
-public class GetProductByCategoryTest
+public class GetProductByCategoryTest : IAsyncLifetime
 {
     private static readonly ConnectionSettings ConnectionSettings = new ConnectionSettings()
         .DefaultIndex(Constants.ProductsIndexName)
@@ -16,8 +16,8 @@ public class GetProductByCategoryTest
 
     private readonly IOpenSearchLowLevelClient _writClient = new OpenSearchLowLevelClient(ConnectionSettings);
     private readonly IOpenSearchClient _readClient = new OpenSearchClient(ConnectionSettings);
-    private static readonly Guid StreamId = new("d3f2a3a0-0b7a-4b1a-8b1a-0b9a0b7a4b10");
-    private static readonly Guid CategoryId = new("d3f2a3a0-0b7a-4b1a-8b1a-0b9a0b7a4b11");
+    private static readonly Guid StreamId = Guid.NewGuid();
+    private static readonly Guid CategoryId = Guid.NewGuid();
     
     [Fact]
     public async Task Should_Return_Product()
@@ -31,13 +31,20 @@ public class GetProductByCategoryTest
             new IndexRequestParameters());
         var getProductHandler = new GetProductsByCategoryHandler(_readClient);
         
+        await Task.Delay(1000);
+        
         //Act
         var response = await getProductHandler.HandleAsync(new GetProductsByCategory(CategoryId), CancellationToken.None);
         var product = response as Ok<IReadOnlyCollection<ProductProjection>>;
         
         //Assert
-        product!.Value!.First().Should().BeEquivalentTo(productProjection);
-        
+        product!.Value!.FirstOrDefault().Should().BeEquivalentTo(productProjection);
+    }
+
+    public Task InitializeAsync() => Task.CompletedTask;
+
+    public async Task DisposeAsync()
+    {
         //Cleanup
         var deleteRequest = new DeleteRequest(Constants.ProductsIndexName, StreamId);
         await _readClient.DeleteAsync(deleteRequest);

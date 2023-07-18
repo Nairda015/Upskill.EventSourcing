@@ -8,7 +8,7 @@ using Queries.Features.Products;
 
 namespace Upskill.Tests.Queries;
 
-public class GetProductByMetadataTest
+public class SearchProductByMetadataTest
 {
     private static readonly ConnectionSettings ConnectionSettings = new ConnectionSettings()
         .DefaultIndex(Constants.ProductsIndexName)
@@ -17,8 +17,8 @@ public class GetProductByMetadataTest
 
     private readonly IOpenSearchLowLevelClient _writClient = new OpenSearchLowLevelClient(ConnectionSettings);
     private readonly IOpenSearchClient _readClient = new OpenSearchClient(ConnectionSettings);
-    private static readonly Guid StreamId = new("d3f2a3a0-0b7a-4b1a-8b1a-0b9a0b7a4b10");
-    private static readonly Guid CategoryId = new("d3f2a3a0-0b7a-4b1a-8b1a-0b9a0b7a4b11");
+    private static readonly Guid StreamId = Guid.NewGuid();
+    private static readonly Guid CategoryId = Guid.NewGuid();
     
     [Fact]
     public async Task Should_Return_Product()
