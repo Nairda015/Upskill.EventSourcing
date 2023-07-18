@@ -1,5 +1,4 @@
 module "sns" {
-  count   = local.enable_pub_sub ? 1 : 0
   source  = "terraform-aws-modules/sns/aws"
   version = ">= 5.0"
 
@@ -25,7 +24,7 @@ module "sns" {
         {
           test     = "StringLike"
           variable = "sns:Endpoint"
-          values   = [module.sqs[0].queue_arn]
+          values   = [module.sqs.queue_arn]
         }
       ]
     }
@@ -35,16 +34,15 @@ module "sns" {
     sqs = {
       raw_message_delivery = true
       protocol             = "sqs"
-      endpoint             = module.sqs[0].queue_arn
+      endpoint             = module.sqs.queue_arn
     }
   }
 
-  tags = { Name = "${local.name-prefix}-sns" }
+  tags = { Name = "${var.name_prefix}-sns" }
 }
 
 
 module "sqs" {
-  count  = local.enable_pub_sub ? 1 : 0
   source = "terraform-aws-modules/sqs/aws"
 
   name = "${var.owner_login}-products"
@@ -67,10 +65,10 @@ module "sqs" {
       condition = {
         test     = "ArnEquals"
         variable = "aws:SourceArn"
-        values   = [module.sns[0].topic_arn]
+        values   = [module.sns.topic_arn]
       }
     }
   }
 
-  tags = { Name = "${local.name-prefix}-sqs-products" }
+  tags = { Name = "${var.name_prefix}-sqs-products" }
 }

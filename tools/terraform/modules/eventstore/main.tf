@@ -130,3 +130,21 @@ data "aws_network_interfaces" "this" {
 data "aws_network_interface" "this" {
   id = join(",", data.aws_network_interfaces.this.ids)
 }
+
+module "systems_manager" {
+  source  = "cloudposse/ssm-parameter-store/aws"
+  version = "0.10.0"
+
+  parameter_write = [
+    {
+      name        = "/Upskill/Databases/EventStore/ConnectionString"
+      value       = "esdb://${data.aws_network_interface.this.association[0].public_ip}:2113?tls=false",
+      type        = "String"
+      overwrite   = "true"
+      description = "Connection string for database"
+    }
+  ]
+
+  tags = { Name = "${var.name_prefix}-systems-manager" }
+}
+
