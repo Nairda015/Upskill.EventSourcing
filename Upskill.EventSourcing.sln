@@ -34,13 +34,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DockerFiles", "DockerFiles"
 		Queries.Dockerfile = Queries.Dockerfile
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tools", "tools", "{488007B8-6FD4-4646-B58A-23DD58458D34}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tools", "tools", "{3BEFF01E-7542-4A5D-BA60-0C6D973EB594}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "terraform", "terraform", "{ED3637C0-B2CA-4818-8B4F-B0199EA1CA5B}"
 	ProjectSection(SolutionItems) = preProject
-		tools\terraform\github.tf = tools\terraform\github.tf
 		tools\terraform\main.tf = tools\terraform\main.tf
 		tools\terraform\providers.tf = tools\terraform\providers.tf
 		tools\terraform\terraform.tfvars = tools\terraform\terraform.tfvars
@@ -85,6 +82,14 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "compute", "compute", "{4C48
 		tools\terraform\modules\compute\versions.tf = tools\terraform\modules\compute\versions.tf
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "gh_integration", "gh_integration", "{FC903DFD-41E5-4D07-98AB-9145C1C5EF7C}"
+	ProjectSection(SolutionItems) = preProject
+		tools\terraform\modules\gh_integration\main.tf = tools\terraform\modules\gh_integration\main.tf
+		tools\terraform\modules\gh_integration\outputs.tf = tools\terraform\modules\gh_integration\outputs.tf
+		tools\terraform\modules\gh_integration\variables.tf = tools\terraform\modules\gh_integration\variables.tf
+		tools\terraform\modules\gh_integration\versions.tf = tools\terraform\modules\gh_integration\versions.tf
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -100,7 +105,6 @@ Global
 		{A81821FA-3778-4992-B1BC-30524016D5A1} = {F3A06E5E-E542-4B83-82C1-241F95B58288}
 		{C3B1C057-D385-41CD-B233-30B8B96EECAD} = {F3A06E5E-E542-4B83-82C1-241F95B58288}
 		{F5FF48DC-2607-4DE3-8743-5BC2F5267070} = {84CF54F3-628A-4170-B90D-FCE4616D6267}
-		{488007B8-6FD4-4646-B58A-23DD58458D34} = {84CF54F3-628A-4170-B90D-FCE4616D6267}
 		{ED3637C0-B2CA-4818-8B4F-B0199EA1CA5B} = {3BEFF01E-7542-4A5D-BA60-0C6D973EB594}
 		{64143BD1-5F33-485E-B3C4-8D1C18161422} = {ED3637C0-B2CA-4818-8B4F-B0199EA1CA5B}
 		{D6C79A75-4697-4B0A-809A-7107EC3D2810} = {64143BD1-5F33-485E-B3C4-8D1C18161422}
@@ -108,6 +112,7 @@ Global
 		{C90E89E1-9926-4CAA-AE49-0267C0E35A47} = {64143BD1-5F33-485E-B3C4-8D1C18161422}
 		{718023A7-EE2B-4780-99A9-29A382AA6EAA} = {64143BD1-5F33-485E-B3C4-8D1C18161422}
 		{4C480915-F301-4F7D-B7C8-B576DECE0F4D} = {64143BD1-5F33-485E-B3C4-8D1C18161422}
+		{FC903DFD-41E5-4D07-98AB-9145C1C5EF7C} = {64143BD1-5F33-485E-B3C4-8D1C18161422}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{124F15CF-72BF-478D-BA47-479F01587B0F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU

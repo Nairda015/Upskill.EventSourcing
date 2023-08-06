@@ -4,21 +4,17 @@ using Microsoft.AspNetCore.Http.HttpResults;
 using OpenSearch.Client;
 using OpenSearch.Net;
 using Queries.Features.Products;
+using static Upskill.Tests.ConnectionHelper;
 
 namespace Upskill.Tests.Queries;
 
 public class GetProductByCategoryTest : IAsyncLifetime
 {
-    private static readonly ConnectionSettings ConnectionSettings = new ConnectionSettings()
-        .DefaultIndex(Constants.ProductsIndexName)
-        .PrettyJson()
-        .DefaultFieldNameInferrer(x => x.ToLower());
-
-    private readonly IOpenSearchLowLevelClient _writClient = new OpenSearchLowLevelClient(ConnectionSettings);
-    private readonly IOpenSearchClient _readClient = new OpenSearchClient(ConnectionSettings);
+    private readonly IOpenSearchLowLevelClient _writClient = GetWritClient();
+    private readonly IOpenSearchClient _readClient = GetReadClient();
     private static readonly Guid StreamId = Guid.NewGuid();
     private static readonly Guid CategoryId = Guid.NewGuid();
-    
+
     [Fact]
     public async Task Should_Return_Product()
     {
@@ -30,15 +26,16 @@ public class GetProductByCategoryTest : IAsyncLifetime
             PostData.Serializable(productProjection),
             new IndexRequestParameters());
         var getProductHandler = new GetProductsByCategoryHandler(_readClient);
-        
+
         await Task.Delay(1000);
-        
+
         //Act
-        var response = await getProductHandler.HandleAsync(new GetProductsByCategory(CategoryId), CancellationToken.None);
+        var response =
+            await getProductHandler.HandleAsync(new GetProductsByCategory(CategoryId), CancellationToken.None);
         var product = response as Ok<IReadOnlyCollection<ProductProjection>>;
-        
+
         //Assert
-        product!.Value!.FirstOrDefault().Should().BeEquivalentTo(productProjection);
+        product!.Value!.FirstOrDefault(x => x.Id == StreamId).Should().BeEquivalentTo(productProjection);
     }
 
     public Task InitializeAsync() => Task.CompletedTask;

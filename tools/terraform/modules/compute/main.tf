@@ -1,26 +1,24 @@
-#
-#
-#
-#module "ecr-commands" {
-#  enabled                = local.enable_ecr
-#  source                 = "cloudposse/ecr/aws"
-#  version                = "0.35.0"
-#  namespace              = "pgs"
-#  stage                  = var.env_prefix
-#  name                   = "${local.name-prefix}-ecr"
-#  principals_full_access = [aws_iam_user.this.arn]
-#  principals_lambda      = [aws_iam_user.this.arn]
-#  force_delete           = true
-#  enable_lifecycle_policy = false
-#  image_names            = [
-#    "${var.owner_login}-commands",
-#    "${var.owner_login}-listener",
-#    "${var.owner_login}-projections",
-#    "${var.owner_login}-queries",
-#  ]
-#  tags = { "Name" = "${local.name-prefix}-ecr" }
-#}
-#
+module "lambda_commands" {
+  create = var.enable_command_lambda
+  source = "terraform-aws-modules/lambda/aws"
+  version = "5.3.0"
+
+  function_name = "${var.aws_owner_login}-commands"
+  create_package = false
+  //image_uri    = module.ecr-commands.repository_arn_map["${var.owner_login}-commands"]
+  image_uri      = "${var.ecr_repository_url}-commands:latest"
+  package_type = "Image"
+
+  //attach_policy = true
+  //policy = aws_iam_policy.policy-command.arn
+  
+  create_lambda_function_url = true
+  authorization_type         = "NONE"
+
+  tags                    = { "Name" = "${var.name_prefix}-commands" }
+}
+
+
 #resource "aws_iam_policy" "policy-command" {
 #  name        = "${local.name-prefix}-command-policy"
 #  path        = "/"
@@ -108,19 +106,8 @@
 #}
 #
 #
-#module "lambda_commands" {
-#  create = local.enable_command_lambda
-#
-#  source = "terraform-aws-modules/lambda/aws"
-#  function_name = "${local.name-prefix}-commands"
-#  create_package = false
-#
-#  attach_policy = true
-#  policy = aws_iam_policy.policy-command.arn
-#
-#  image_uri    = module.ecr-commands.repository_arn_map["${var.owner_login}-commands"]
-#  package_type = "Image" 
-#}
+
+
 #
 #
 #

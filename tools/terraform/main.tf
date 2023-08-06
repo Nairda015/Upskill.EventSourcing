@@ -1,40 +1,24 @@
 locals {
-  name-prefix           = "${var.owner_login}-${var.env_prefix}-${var.app_name}"
-  repo_name             = "Upskill.EventSourcing"
-  repo_owner            = "Nairda015"
-  enable_aurora         = false
-  enable_open_search    = false
-  enable_eventstore     = true
-  enable_pub_sub        = true
-  enable_ecr            = true
-  enable_command_lambda = false
+  name_prefix = "${var.aws_owner_login}-${var.env_prefix}-${var.app_name}"
 }
 
-#resource "aws_iam_user" "this" {
-#  name = var.owner_login
-#}
-#
-#data "aws_iam_group" "this" {
-#  group_name = "AdvancedLearning"
-#}
-#
-#resource "aws_iam_user_group_membership" "this" {
-#  user = aws_iam_user.this.name
-#
-#  groups = [
-#    data.aws_iam_group.this.group_name
-#  ]
-#}
-#
-#resource "aws_iam_access_key" "this" {
-#  user = aws_iam_user.this.name
-#}
+module "gh_integration" {
+  source          = "./modules/gh_integration"
+  name_prefix     = local.name_prefix
+  app_name        = var.app_name
+  aws_owner_login = var.aws_owner_login
+  enable_ecr      = var.enable_ecr
+  enable_github   = var.enable_github
+  env_prefix      = var.env_prefix
+  repo_name       = var.repo_name
+  repo_owner      = var.repo_owner
+}
 
 module "vpc" {
   source  = "terraform-aws-modules/vpc/aws"
-  version = "3.19.0"
+  version = "5.1.0"
 
-  name = "${local.name-prefix}-vpc"
+  name = "${local.name_prefix}-vpc"
   cidr = var.vpc_cidr_block
 
   azs            = ["${var.region}a", "${var.region}b"]
@@ -46,46 +30,78 @@ module "vpc" {
   enable_nat_gateway = false
   single_nat_gateway = true
 
-  public_subnet_tags = { Name = "${local.name-prefix}-subnet" }
-  vpc_tags           = { Name = "${local.name-prefix}-vpc" }
+  public_subnet_tags = { Name = "${local.name_prefix}-subnet" }
+  vpc_tags           = { Name = "${local.name_prefix}-vpc" }
 }
 
 #databases
 module "event_store_db" {
-  count           = local.enable_eventstore ? 1 : 0
+  count           = var.enable_eventstore ? 1 : 0
   source          = "./modules/eventstore"
   avail_zone      = var.avail_zone
   my_ip           = var.my_ip
-  name_prefix     = local.name-prefix
+  name_prefix     = local.name_prefix
   public_key_path = var.public_key_path
   vpc_id          = module.vpc.vpc_id
   subnet_id       = module.vpc.public_subnets[0]
 }
 
 module "aurora" {
-  count          = local.enable_aurora ? 1 : 0
+  count          = var.enable_aurora ? 1 : 0
   source         = "./modules/aurora"
   database_name  = var.database_name
-  name_prefix    = local.name-prefix
+  name_prefix    = local.name_prefix
   public_subnets = module.vpc.public_subnets
   region         = var.region
   vpc_id         = module.vpc.vpc_id
 }
 
 module "open_search" {
-  count                                          = local.enable_open_search ? 1 : 0
+  count                                          = var.enable_open_search ? 1 : 0
   source                                         = "cyberlabrs/opensearch/aws"
   name                                           = "basic-os"
   region                                         = "eu-central-1"
-  advanced_security_options_enabled              = true
+  advanced_security_options_enabled              = false
   default_policy_for_fine_grained_access_control = true
 }
 
 #pub_sub
 module "pub_sub" {
-  count       = local.enable_pub_sub ? 1 : 0
-  source      = "./modules/pub_sub"
-  name_prefix = local.name-prefix
-  owner_login = var.owner_login
+  count           = var.enable_pub_sub ? 1 : 0
+  source          = "./modules/pub_sub"
+  name_prefix     = local.name_prefix
+  aws_owner_login = var.aws_owner_login
 }
 
+#compute
+module "compute" {
+  count  = var.enable_compute ? 1 : 0
+  source = "./modules/compute"
+
+  aws_owner_login       = var.aws_owner_login
+  ecr_repository_url    = module.gh_integration.ecr.repository_url
+  enable_command_lambda = var.enable_command_lambda
+  name_prefix           = local.name_prefix
+}
+
+
+
+
+
+# https://github.com/integrations/terraform-provider-github/issues/1827
+# Github Actions Secrets
+resource "github_actions_secret" "aws_owner" {
+  repository      = var.repo_name
+  secret_name     = "AWS_OWNER"
+  plaintext_value = var.aws_owner_login
+}
+resource "github_actions_secret" "role_to_assume_arn" {
+  repository      = var.repo_name
+  secret_name     = "ROLE_TO_ASSUME_ARN"
+  plaintext_value = module.gh_integration.github_iam_role_arn
+}
+resource "github_actions_secret" "ecr_repository_name" {
+  repository      = var.repo_name
+  secret_name     = "ECR_REPOSITORY_NAME"
+  plaintext_value = module.gh_integration.ecr.repository_name
+}

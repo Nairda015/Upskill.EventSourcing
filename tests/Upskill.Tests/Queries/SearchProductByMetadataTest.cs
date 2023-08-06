@@ -5,18 +5,15 @@ using Microsoft.AspNetCore.Http.HttpResults;
 using OpenSearch.Client;
 using OpenSearch.Net;
 using Queries.Features.Products;
+using static Upskill.Tests.ConnectionHelper;
+
 
 namespace Upskill.Tests.Queries;
 
-public class SearchProductByMetadataTest
+public class SearchProductByMetadataTest : IAsyncLifetime
 {
-    private static readonly ConnectionSettings ConnectionSettings = new ConnectionSettings()
-        .DefaultIndex(Constants.ProductsIndexName)
-        .PrettyJson()
-        .DefaultFieldNameInferrer(x => x.ToLower());
-
-    private readonly IOpenSearchLowLevelClient _writClient = new OpenSearchLowLevelClient(ConnectionSettings);
-    private readonly IOpenSearchClient _readClient = new OpenSearchClient(ConnectionSettings);
+    private readonly IOpenSearchLowLevelClient _writClient = GetWritClient();
+    private readonly IOpenSearchClient _readClient = GetReadClient();
     private static readonly Guid StreamId = Guid.NewGuid();
     private static readonly Guid CategoryId = Guid.NewGuid();
     
@@ -37,6 +34,7 @@ public class SearchProductByMetadataTest
             PostData.Serializable(productProjection),
             new IndexRequestParameters());
         var handler = new SearchProductByMetadataHandler(_readClient);
+        await Task.Delay(1000);
         
         //Act
         var response = await handler.HandleAsync(
@@ -45,8 +43,13 @@ public class SearchProductByMetadataTest
         var product = response as Ok<IReadOnlyCollection<ProductProjection>>;
         
         //Assert
-        product!.Value!.First().Should().BeEquivalentTo(productProjection);
-        
+        product!.Value!.FirstOrDefault(x => x.Id == StreamId).Should().BeEquivalentTo(productProjection);
+    }
+
+    public Task InitializeAsync() => Task.CompletedTask;
+
+    public async Task DisposeAsync()
+    {
         //Cleanup
         var deleteRequest = new DeleteRequest(Constants.ProductsIndexName, StreamId);
         await _readClient.DeleteAsync(deleteRequest);

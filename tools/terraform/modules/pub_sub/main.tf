@@ -2,7 +2,7 @@ module "sns" {
   source  = "terraform-aws-modules/sns/aws"
   version = ">= 5.0"
 
-  name = "${var.owner_login}-topic"
+  name = "${var.aws_owner_login}-topic"
 
   #fifo_topic = true
   topic_policy_statements = {
@@ -45,7 +45,7 @@ module "sns" {
 module "sqs" {
   source = "terraform-aws-modules/sqs/aws"
 
-  name = "${var.owner_login}-products"
+  name = "${var.aws_owner_login}-products"
 
   #fifo_queue = true
 

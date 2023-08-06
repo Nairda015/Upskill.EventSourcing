@@ -1,4 +1,3 @@
-using Contracts.Constants;
 using Contracts.Events.Products;
 using Contracts.Messages;
 using Contracts.Projections;
@@ -6,21 +5,17 @@ using Microsoft.Extensions.Logging;
 using OpenSearch.Client;
 using OpenSearch.Net;
 using Projections.Handlers;
+using static Upskill.Tests.ConnectionHelper;
 
 namespace Upskill.Tests.Projections.Handlers;
 
 public class ProductCreatedHandlerTests
 {
-    private static readonly ConnectionSettings ConnectionSettings = new ConnectionSettings()
-            .DefaultIndex(Constants.ProductsIndexName)
-            .PrettyJson()
-            .DefaultFieldNameInferrer(x => x.ToLower());
-
-    private readonly IOpenSearchLowLevelClient _writClient = new OpenSearchLowLevelClient(ConnectionSettings);
-    private readonly IOpenSearchClient _readClient = new OpenSearchClient(ConnectionSettings);
+    private readonly IOpenSearchLowLevelClient _writClient = GetWritClient();
+    private readonly IOpenSearchClient _readClient = GetReadClient();
 
     [Fact]
-    public async Task Temp()
+    public async Task CreateProductTest()
     {
         //Arrange
         
