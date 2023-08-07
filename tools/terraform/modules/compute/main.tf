@@ -5,8 +5,7 @@ module "lambda_commands" {
 
   function_name = "${var.aws_owner_login}-commands"
   create_package = false
-  //image_uri    = module.ecr-commands.repository_arn_map["${var.owner_login}-commands"]
-  image_uri      = "${var.ecr_repository_url}-commands:latest"
+  image_uri      = "${var.ecr_repository_url}:Commands-latest"
   package_type = "Image"
 
   //attach_policy = true

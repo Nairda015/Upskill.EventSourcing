@@ -7,7 +7,7 @@ using Settings;
 var builder = WebApplication.CreateBuilder(args);
 
 //builder.Configuration.AddSystemsManager($"/{builder.Environment}/Commands", TimeSpan.FromMinutes(5));
-//builder.Services.AddAWSLambdaHosting(LambdaEventSource.HttpApi);
+builder.Services.AddAWSLambdaHosting(LambdaEventSource.HttpApi);
 builder.Services.RegisterHandlers<IApiMarker>();
 
 var eventStoreSettings = builder.Configuration.GetOptions<EventStoreSettings>();

@@ -3,13 +3,7 @@
         <TargetFramework>net7.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
-<!--        <GenerateRuntimeConfigurationFiles>true</GenerateRuntimeConfigurationFiles>-->
-<!--        <AWSProjectType>Lambda</AWSProjectType>-->
-<!--        &lt;!&ndash; This property makes the build directory similar to a publish directory and helps the AWS .NET Lambda Mock Test Tool find project dependencies. &ndash;&gt;-->
-<!--        <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>-->
-<!--        &lt;!&ndash; Generate ready to run images during publishing to improvement cold starts. &ndash;&gt;-->
-<!--        <PublishReadyToRun>true</PublishReadyToRun>-->
-                <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+        <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     </PropertyGroup>
     
     <ItemGroup>
