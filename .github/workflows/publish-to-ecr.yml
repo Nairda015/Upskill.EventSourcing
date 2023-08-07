@@ -16,6 +16,7 @@ on:
       image-tag:
         required: true
         type: string
+        default: 'latest'
         description: 'The image tag'
         
 jobs:
