@@ -1,20 +1,55 @@
 module "lambda_commands" {
-  create = var.enable_command_lambda
-  source = "terraform-aws-modules/lambda/aws"
+  create  = var.enable_command_lambda
+  source  = "terraform-aws-modules/lambda/aws"
   version = "5.3.0"
 
-  function_name = "${var.aws_owner_login}-commands"
+  function_name  = "${var.aws_owner_login}-commands"
   create_package = false
   image_uri      = "${var.ecr_repository_url}:Commands-latest"
-  package_type = "Image"
+  package_type   = "Image"
+  memory_size    = 256
 
   //attach_policy = true
   //policy = aws_iam_policy.policy-command.arn
-  
+
   create_lambda_function_url = true
   authorization_type         = "NONE"
 
-  tags                    = { "Name" = "${var.name_prefix}-commands" }
+  tags = { "Name" = "${var.name_prefix}-commands" }
+}
+
+module "lambda_queries" {
+  create  = var.enable_queries_lambda
+  source  = "terraform-aws-modules/lambda/aws"
+  version = "5.3.0"
+
+  function_name  = "${var.aws_owner_login}-queries"
+  create_package = false
+  image_uri      = "${var.ecr_repository_url}:Queries-latest"
+  package_type   = "Image"
+  memory_size    = 256
+
+  create_lambda_function_url = true
+  authorization_type         = "NONE"
+
+  tags = { "Name" = "${var.name_prefix}-queries" }
+}
+
+module "lambda_projections" {
+  create  = var.enable_projections_lambda
+  source  = "terraform-aws-modules/lambda/aws"
+  version = "5.3.0"
+
+  function_name  = "${var.aws_owner_login}-projections"
+  create_package = false
+  image_uri      = "${var.ecr_repository_url}:Projections-latest"
+  package_type   = "Image"
+  memory_size    = 256
+
+  create_lambda_function_url = true
+  authorization_type         = "NONE"
+
+  tags = { "Name" = "${var.name_prefix}-projections" }
 }
 
 
@@ -103,21 +138,3 @@ module "lambda_commands" {
 #    ]
 #  })
 #}
-#
-#
-
-
-#
-#
-#
-##module "lambda_function" {
-##  source = "terraform-aws-modules/lambda/aws"
-##
-##  function_name = "${local.name-prefix}-commands"
-##  handler       = "index.lambda_handler"
-##  runtime       = "dotnet6"
-##
-##  source_path = "../../src/Commands"
-##
-##  tags = { Name  = "${local.name-prefix}-commands-lambda" }
-##}

@@ -24,7 +24,12 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c => { c.OrderActionsBy(x => x.HttpMethod); });
 
 var app = builder.Build();
-app.MapGet("/", () => "Command healthy");
+app.MapGet("/", () =>
+{
+    var response = $"{DateTime.Now} Command healthy";
+    Console.WriteLine(response);
+    return response;
+});
 
 app.RegisterEndpoints<IApiMarker>();
 app.UseSwagger();

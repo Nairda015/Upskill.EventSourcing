@@ -11,14 +11,7 @@ public record MetadataAdded(Dictionary<string, string> Value) : MetadataChanged(
     {
         foreach (var (key, value) in metadata)
         {
-            if (Value.ContainsKey(key))
-            {
-                Value[key] = value;
-            }
-            else
-            {
-                Value.Add(key, value);
-            }
+            Value[key] = value;
         }
 
         return this;

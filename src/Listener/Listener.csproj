@@ -1,20 +1,21 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
 
-  <PropertyGroup>
-    <TargetFramework>net7.0</TargetFramework>
-    <Nullable>enable</Nullable>
-    <ImplicitUsings>enable</ImplicitUsings>
-  </PropertyGroup>
+    <PropertyGroup>
+        <TargetFramework>net7.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+    </PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Amazon.Extensions.Configuration.SystemsManager" Version="5.1.0" />
-    <PackageReference Include="AWSSDK.SimpleNotificationService" Version="3.7.101.88" />
-    <PackageReference Include="EventStore.Client.Grpc.PersistentSubscriptions" Version="23.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Hosting" Version="7.0.1" />
-  </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="Amazon.Extensions.Configuration.SystemsManager" Version="5.1.0"/>
+        <PackageReference Include="AWSSDK.SimpleNotificationService" Version="3.7.101.88"/>
+        <PackageReference Include="EventStore.Client.Grpc.PersistentSubscriptions" Version="23.0.0"/>
+        <PackageReference Include="Microsoft.Extensions.Hosting" Version="7.0.1"/>
+    </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\Shared\Contracts\Contracts.csproj" />
-    <ProjectReference Include="..\Shared\Settings\Settings.csproj" />
-  </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\Shared\Contracts\Contracts.csproj"/>
+        <ProjectReference Include="..\Shared\Settings\Settings.csproj"/>
+    </ItemGroup>
 </Project>

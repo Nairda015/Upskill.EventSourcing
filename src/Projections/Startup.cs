@@ -13,10 +13,9 @@ namespace Projections;
 [LambdaStartup]
 public class Startup
 {
-    private readonly IConfiguration _configuration;
-    public Startup() => _configuration = new ConfigurationBuilder()
-            .AddJsonFile("appsettings.json", optional: false)
-            .Build();
+    private readonly IConfiguration _configuration = new ConfigurationBuilder()
+        .AddJsonFile("appsettings.json", optional: false)
+        .Build();
 
     public void ConfigureServices(IServiceCollection services)
     {

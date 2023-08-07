@@ -32,6 +32,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DockerFiles", "DockerFiles"
 		Commands.Dockerfile = Commands.Dockerfile
 		Listener.Dockerfile = Listener.Dockerfile
 		Queries.Dockerfile = Queries.Dockerfile
+		Projections.Dockerfile = Projections.Dockerfile
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tools", "tools", "{3BEFF01E-7542-4A5D-BA60-0C6D973EB594}"

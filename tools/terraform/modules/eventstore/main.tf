@@ -1,7 +1,5 @@
-locals {
-  lunch-type = "FARGATE"
-}
-
+#common
+locals { lunch-type = "FARGATE" }
 resource "aws_security_group" "this" {
   name   = "${var.name_prefix}-sg"
   vpc_id = var.vpc_id
@@ -20,13 +18,41 @@ resource "aws_security_group" "this" {
   }
   tags = { Name = "${var.name_prefix}-security-group" }
 }
-
 resource "aws_key_pair" "this" {
   key_name   = "${var.name_prefix}-server-key"
   public_key = file(var.public_key_path)
   tags       = { Name = "${var.name_prefix}-key_pair" }
 }
+data "aws_network_interfaces" "this" {
+  depends_on = [aws_ecs_service.eventstore_ecs_service, aws_ecs_service.listener_ecs_service]
 
+  filter {
+    name   = "group-id"
+    values = [aws_security_group.this.id]
+  }
+}
+data "aws_network_interface" "this" {
+  id = join(",", data.aws_network_interfaces.this.ids)
+}
+module "systems_manager" {
+  source  = "cloudposse/ssm-parameter-store/aws"
+  version = "0.10.0"
+
+  parameter_write = [
+    {
+      name        = "/Upskill/Databases/EventStore/ConnectionString"
+      value       = "esdb://${data.aws_network_interface.this.association[0].public_ip}:2113?tls=false",
+      type        = "String"
+      overwrite   = "true"
+      description = "Connection string for database"
+    }
+  ]
+
+  tags = { Name = "${var.name_prefix}-systems-manager" }
+}
+
+
+#cluster
 resource "aws_ecs_cluster_capacity_providers" "this" {
   cluster_name       = aws_ecs_cluster.this.name
   capacity_providers = [local.lunch-type]
@@ -37,9 +63,8 @@ resource "aws_ecs_cluster_capacity_providers" "this" {
     capacity_provider = local.lunch-type
   }
 }
-
 resource "aws_ecs_cluster" "this" {
-  name   = "${var.name_prefix}-ecs_cluster"
+  name = "${var.name_prefix}-ecs_cluster"
   setting {
     name  = "containerInsights"
     value = "enabled"
@@ -47,14 +72,16 @@ resource "aws_ecs_cluster" "this" {
   tags = { Name = "${var.name_prefix}-ecs_cluster" }
 }
 
-resource "aws_ecs_service" "this" {
+
+#eventstore
+resource "aws_ecs_service" "eventstore_ecs_service" {
   name                               = "${var.name_prefix}-service"
   cluster                            = aws_ecs_cluster.this.arn
   deployment_maximum_percent         = 200
   deployment_minimum_healthy_percent = 0
-  desired_count = 1
+  desired_count                      = 1
   launch_type                        = local.lunch-type
-  task_definition                    = "${aws_ecs_task_definition.this.family}:${aws_ecs_task_definition.this.revision}"
+  task_definition                    = "${aws_ecs_task_definition.eventstore_ecs_task_definition.family}:${aws_ecs_task_definition.eventstore_ecs_task_definition.revision}"
   wait_for_steady_state              = true
   network_configuration {
     assign_public_ip = true
@@ -63,9 +90,8 @@ resource "aws_ecs_service" "this" {
   }
   tags = { Name = "${var.name_prefix}-service" }
 }
-
-resource "aws_ecs_task_definition" "this" {
-  container_definitions    = jsonencode([module.ecs-container-definition.json_map_object])
+resource "aws_ecs_task_definition" "eventstore_ecs_task_definition" {
+  container_definitions    = jsonencode([module.eventstore-container-definition.json_map_object])
   family                   = "${var.name_prefix}-task-definition"
   requires_compatibilities = [local.lunch-type]
   cpu                      = "512"
@@ -73,8 +99,7 @@ resource "aws_ecs_task_definition" "this" {
   network_mode             = "awsvpc"
   tags                     = { Name = "${var.name_prefix}-task-definition" }
 }
-
-module "ecs-container-definition" {
+module "eventstore-container-definition" {
   source          = "cloudposse/ecs-container-definition/aws"
   version         = "0.58.1"
   container_image = "docker.io/eventstore/eventstore:latest"
@@ -118,33 +143,45 @@ module "ecs-container-definition" {
   ]
 }
 
-data "aws_network_interfaces" "this" {
-  depends_on = [aws_ecs_service.this]
 
-  filter {
-    name   = "group-id"
-    values = [aws_security_group.this.id]
+#listener
+resource "aws_ecs_service" "listener_ecs_service" {
+  name                               = "${var.name_prefix}-service"
+  cluster                            = aws_ecs_cluster.this.arn
+  deployment_maximum_percent         = 200
+  deployment_minimum_healthy_percent = 0
+  desired_count                      = 1
+  launch_type                        = local.lunch-type
+  task_definition                    = "${aws_ecs_task_definition.listener_ecs_task_definition.family}:${aws_ecs_task_definition.listener_ecs_task_definition.revision}"
+  wait_for_steady_state              = true
+  network_configuration {
+    assign_public_ip = true
+    security_groups  = [aws_security_group.this.id]
+    subnets          = [var.subnet_id]
   }
+  tags = { Name = "${var.name_prefix}-service" }
 }
-
-data "aws_network_interface" "this" {
-  id = join(",", data.aws_network_interfaces.this.ids)
+resource "aws_ecs_task_definition" "listener_ecs_task_definition" {
+  container_definitions    = jsonencode([module.listener-container-definition.json_map_object])
+  family                   = "${var.name_prefix}-task-definition"
+  requires_compatibilities = [local.lunch-type]
+  cpu                      = "256"
+  memory                   = "256"
+  network_mode             = "awsvpc"
+  tags                     = { Name = "${var.name_prefix}-task-definition" }
 }
+module "listener-container-definition" {
+  source           = "cloudposse/ecs-container-definition/aws"
+  version          = "0.58.1"
+  container_image  = "${var.ecr_repository_url}:Listener-latest"
+  container_name   = "listener"
+  container_memory = 256
 
-module "systems_manager" {
-  source  = "cloudposse/ssm-parameter-store/aws"
-  version = "0.10.0"
-
-  parameter_write = [
+  port_mappings = [
     {
-      name        = "/Upskill/Databases/EventStore/ConnectionString"
-      value       = "esdb://${data.aws_network_interface.this.association[0].public_ip}:2113?tls=false",
-      type        = "String"
-      overwrite   = "true"
-      description = "Connection string for database"
+      containerPort = 80
+      hostPort      = 5000
+      protocol      = "tcp"
     }
   ]
-
-  tags = { Name = "${var.name_prefix}-systems-manager" }
 }
-
