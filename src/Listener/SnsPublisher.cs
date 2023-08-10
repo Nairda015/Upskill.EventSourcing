@@ -1,9 +1,9 @@
 using Amazon.SimpleNotificationService;
 using Amazon.SimpleNotificationService.Model;
 using Contracts.Constants;
+using Contracts.Settings;
 using EventStore.Client;
 using Microsoft.Extensions.Options;
-using Settings;
 
 namespace Listener;
 

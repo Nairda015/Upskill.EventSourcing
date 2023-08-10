@@ -2,12 +2,13 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{DB9E6651-9E36-4372-A181-9BC6A849FFAB}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SF", "SF", "{84CF54F3-628A-4170-B90D-FCE4616D6267}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "sf", "sf", "{84CF54F3-628A-4170-B90D-FCE4616D6267}"
 	ProjectSection(SolutionItems) = preProject
 		.gitignore = .gitignore
 		Conclusion.md = Conclusion.md
 		docker-compose.yml = docker-compose.yml
 		README.md = README.md
+		src\migrations.sql = src\migrations.sql
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Commands", "src\Commands\Commands.csproj", "{124F15CF-72BF-478D-BA47-479F01587B0F}"
@@ -24,13 +25,68 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Contracts", "src\Shared\Con
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MiWrap", "src\Shared\MiWrap\MiWrap.csproj", "{A81821FA-3778-4992-B1BC-30524016D5A1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Settings", "src\Shared\Settings\Settings.csproj", "{C3B1C057-D385-41CD-B233-30B8B96EECAD}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DockerFiles", "DockerFiles", "{F5FF48DC-2607-4DE3-8743-5BC2F5267070}"
 	ProjectSection(SolutionItems) = preProject
 		Commands.Dockerfile = Commands.Dockerfile
 		Listener.Dockerfile = Listener.Dockerfile
 		Queries.Dockerfile = Queries.Dockerfile
+		Projections.Dockerfile = Projections.Dockerfile
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tools", "tools", "{3BEFF01E-7542-4A5D-BA60-0C6D973EB594}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "terraform", "terraform", "{ED3637C0-B2CA-4818-8B4F-B0199EA1CA5B}"
+	ProjectSection(SolutionItems) = preProject
+		tools\terraform\main.tf = tools\terraform\main.tf
+		tools\terraform\providers.tf = tools\terraform\providers.tf
+		tools\terraform\terraform.tfvars = tools\terraform\terraform.tfvars
+		tools\terraform\variables.tf = tools\terraform\variables.tf
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "modules", "modules", "{64143BD1-5F33-485E-B3C4-8D1C18161422}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "eventstore", "eventstore", "{D6C79A75-4697-4B0A-809A-7107EC3D2810}"
+	ProjectSection(SolutionItems) = preProject
+		tools\terraform\modules\eventstore\main.tf = tools\terraform\modules\eventstore\main.tf
+		tools\terraform\modules\eventstore\outputs.tf = tools\terraform\modules\eventstore\outputs.tf
+		tools\terraform\modules\eventstore\variables.tf = tools\terraform\modules\eventstore\variables.tf
+		tools\terraform\modules\eventstore\versions.tf = tools\terraform\modules\eventstore\versions.tf
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{FF2DB432-9241-41B1-8CE4-AA4D8B1F83CE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Upskill.Tests", "tests\Upskill.Tests\Upskill.Tests.csproj", "{681156B6-0364-4D7E-A495-2C95AB15D4D4}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "aurora", "aurora", "{C90E89E1-9926-4CAA-AE49-0267C0E35A47}"
+	ProjectSection(SolutionItems) = preProject
+		tools\terraform\modules\aurora\main.tf = tools\terraform\modules\aurora\main.tf
+		tools\terraform\modules\aurora\outputs.tf = tools\terraform\modules\aurora\outputs.tf
+		tools\terraform\modules\aurora\variables.tf = tools\terraform\modules\aurora\variables.tf
+		tools\terraform\modules\aurora\versions.tf = tools\terraform\modules\aurora\versions.tf
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "pub_sub", "pub_sub", "{718023A7-EE2B-4780-99A9-29A382AA6EAA}"
+	ProjectSection(SolutionItems) = preProject
+		tools\terraform\modules\pub_sub\main.tf = tools\terraform\modules\pub_sub\main.tf
+		tools\terraform\modules\pub_sub\outputs.tf = tools\terraform\modules\pub_sub\outputs.tf
+		tools\terraform\modules\pub_sub\variables.tf = tools\terraform\modules\pub_sub\variables.tf
+		tools\terraform\modules\pub_sub\versions.tf = tools\terraform\modules\pub_sub\versions.tf
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "compute", "compute", "{4C480915-F301-4F7D-B7C8-B576DECE0F4D}"
+	ProjectSection(SolutionItems) = preProject
+		tools\terraform\modules\compute\main.tf = tools\terraform\modules\compute\main.tf
+		tools\terraform\modules\compute\outputs.tf = tools\terraform\modules\compute\outputs.tf
+		tools\terraform\modules\compute\variables.tf = tools\terraform\modules\compute\variables.tf
+		tools\terraform\modules\compute\versions.tf = tools\terraform\modules\compute\versions.tf
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "gh_integration", "gh_integration", "{FC903DFD-41E5-4D07-98AB-9145C1C5EF7C}"
+	ProjectSection(SolutionItems) = preProject
+		tools\terraform\modules\gh_integration\main.tf = tools\terraform\modules\gh_integration\main.tf
+		tools\terraform\modules\gh_integration\outputs.tf = tools\terraform\modules\gh_integration\outputs.tf
+		tools\terraform\modules\gh_integration\variables.tf = tools\terraform\modules\gh_integration\variables.tf
+		tools\terraform\modules\gh_integration\versions.tf = tools\terraform\modules\gh_integration\versions.tf
 	EndProjectSection
 EndProject
 Global
@@ -46,8 +102,15 @@ Global
 		{F3A06E5E-E542-4B83-82C1-241F95B58288} = {DB9E6651-9E36-4372-A181-9BC6A849FFAB}
 		{9FE4781A-FE54-43B1-AA73-4EB371BA9023} = {F3A06E5E-E542-4B83-82C1-241F95B58288}
 		{A81821FA-3778-4992-B1BC-30524016D5A1} = {F3A06E5E-E542-4B83-82C1-241F95B58288}
-		{C3B1C057-D385-41CD-B233-30B8B96EECAD} = {F3A06E5E-E542-4B83-82C1-241F95B58288}
 		{F5FF48DC-2607-4DE3-8743-5BC2F5267070} = {84CF54F3-628A-4170-B90D-FCE4616D6267}
+		{ED3637C0-B2CA-4818-8B4F-B0199EA1CA5B} = {3BEFF01E-7542-4A5D-BA60-0C6D973EB594}
+		{64143BD1-5F33-485E-B3C4-8D1C18161422} = {ED3637C0-B2CA-4818-8B4F-B0199EA1CA5B}
+		{D6C79A75-4697-4B0A-809A-7107EC3D2810} = {64143BD1-5F33-485E-B3C4-8D1C18161422}
+		{681156B6-0364-4D7E-A495-2C95AB15D4D4} = {FF2DB432-9241-41B1-8CE4-AA4D8B1F83CE}
+		{C90E89E1-9926-4CAA-AE49-0267C0E35A47} = {64143BD1-5F33-485E-B3C4-8D1C18161422}
+		{718023A7-EE2B-4780-99A9-29A382AA6EAA} = {64143BD1-5F33-485E-B3C4-8D1C18161422}
+		{4C480915-F301-4F7D-B7C8-B576DECE0F4D} = {64143BD1-5F33-485E-B3C4-8D1C18161422}
+		{FC903DFD-41E5-4D07-98AB-9145C1C5EF7C} = {64143BD1-5F33-485E-B3C4-8D1C18161422}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{124F15CF-72BF-478D-BA47-479F01587B0F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -74,9 +137,9 @@ Global
 		{A81821FA-3778-4992-B1BC-30524016D5A1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A81821FA-3778-4992-B1BC-30524016D5A1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A81821FA-3778-4992-B1BC-30524016D5A1}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C3B1C057-D385-41CD-B233-30B8B96EECAD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C3B1C057-D385-41CD-B233-30B8B96EECAD}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C3B1C057-D385-41CD-B233-30B8B96EECAD}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C3B1C057-D385-41CD-B233-30B8B96EECAD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{681156B6-0364-4D7E-A495-2C95AB15D4D4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{681156B6-0364-4D7E-A495-2C95AB15D4D4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{681156B6-0364-4D7E-A495-2C95AB15D4D4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{681156B6-0364-4D7E-A495-2C95AB15D4D4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

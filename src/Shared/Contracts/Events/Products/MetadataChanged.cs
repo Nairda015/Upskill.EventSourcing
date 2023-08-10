@@ -1,36 +1,28 @@
 namespace Contracts.Events.Products;
 
-//Important: name for this events should be MetadataChanged
-public abstract record MetadataChanged(Dictionary<string, string> Metadata) : IEvent
+public abstract record MetadataChanged(Dictionary<string, string> Value) : IEvent
 {
     public abstract MetadataChanged Apply(Dictionary<string, string> metadata);
 }
 
-public record MetadataAdded(Dictionary<string, string> Metadata) : MetadataChanged(Metadata)
+public record MetadataAdded(Dictionary<string, string> Value) : MetadataChanged(Value)
 {
     public override MetadataChanged Apply(Dictionary<string, string> metadata)
     {
         foreach (var (key, value) in metadata)
         {
-            if (Metadata.ContainsKey(key))
-            {
-                Metadata[key] = value;
-            }
-            else
-            {
-                Metadata.Add(key, value);
-            }
+            Value[key] = value;
         }
 
         return this;
     }
 }
 
-public record MetadataRemoved(Dictionary<string, string> Metadata) : MetadataChanged(Metadata)
+public record MetadataRemoved(Dictionary<string, string> Value) : MetadataChanged(Value)
 {
     public override MetadataChanged Apply(Dictionary<string, string> metadata)
     {
-        foreach (var (key, _) in metadata) Metadata.Remove(key);
+        foreach (var (key, _) in metadata) Value.Remove(key);
         return this;
     }
 }

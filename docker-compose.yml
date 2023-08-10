@@ -1,3 +1,5 @@
+version: '3.8'
+
 networks:
   default:
 
@@ -19,7 +21,7 @@ services:
       - default
   
   pgadmin:
-    container_name: pgadmin4_container
+    container_name: pgadmin
     image: dpage/pgadmin4
     restart: always
     environment:
@@ -46,6 +48,16 @@ services:
     networks:
       - default
     
+  opensearch-node:
+    image: opensearchproject/opensearch:2.8.0
+    container_name: opensearch-node
+    environment:
+      - discovery.type=single-node
+      - plugins.security.disabled=true
+    ports:
+      - "9200:9200"
+      - "9600:9600"
+  
   commands:
     container_name: afranczak-commands
     image: ${DOCKER_REGISTRY-}afranczak-commands

@@ -1,10 +1,9 @@
 using System.Data;
+using Contracts.Settings;
 using Dapper;
 using Microsoft.Extensions.Options;
 using MiWrap;
 using Npgsql;
-using Queries.Models;
-using Settings;
 
 namespace Queries.Features.Categories;
 
@@ -26,7 +25,7 @@ internal class GetCategoryChildrenHandler : IHttpQueryHandler<GetCategoryChildre
     public async Task<IResult> HandleAsync(GetCategoryChildren query, CancellationToken cancellationToken)
     {
         var result = await _connection
-            .QueryAsync<CategoryReadModel>("select * from categories c where c.parent = @Id", query.Id);
+            .QueryAsync<List<CategoryReadModel>>("""select * from "Categories" c where c."ParentId" = @Id""", query.Id);
 
         return Results.Ok(new { CategoryChildren = result });
     }

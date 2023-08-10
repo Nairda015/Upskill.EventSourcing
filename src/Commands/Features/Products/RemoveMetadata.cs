@@ -39,11 +39,11 @@ internal class RemoveMetadataHandler : IHttpCommandHandler<RemoveMetadata>
 
         if (await stream.ReadState is ReadState.StreamNotFound) return Results.NotFound();
 
-        var @event = new MetadataAdded(metadata);
+        var @event = new MetadataRemoved(metadata);
 
         var eventData = new EventData(
             Uuid.NewUuid(),
-            nameof(MetadataChanged),
+            nameof(MetadataRemoved),
             JsonSerializer.SerializeToUtf8Bytes(@event));
 
         await _client.AppendToStreamAsync(

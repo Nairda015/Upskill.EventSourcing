@@ -4,7 +4,6 @@ using Amazon.Lambda.Core;
 using Amazon.Lambda.SQSEvents;
 using Contracts.Constants;
 using Contracts.Events;
-using Contracts.Exceptions;
 using Contracts.Messages;
 using MediatR;
 
@@ -24,10 +23,10 @@ public class Function
     }
 
     [LambdaFunction]
-    public async Task<SQSBatchResponse> FunctionHandler(SQSEvent @event, ILambdaContext context)
+    public async Task<SQSBatchResponse> FunctionHandler(SQSEvent snsEvent, ILambdaContext context)
     {
         var batchItemFailures = new List<SQSBatchResponse.BatchItemFailure>();
-        foreach (var message in @event.Records)
+        foreach (var message in snsEvent.Records)
         {
             context.Logger.LogInformation($"Processed message {message.Body}");
             var isSuccess = await ProcessMessageAsync(message, context);
@@ -57,7 +56,10 @@ public class Function
         try
         {
             if (JsonSerializer.Deserialize(message.Body, genericType) is not ISnsMessage eventFromStore)
-                throw new UnsupportedTypeException(messageType);
+            {
+                context.Logger.LogError($"Message type {messageType} is not supported");
+                return false;
+            }
             
             await _mediator.Send(eventFromStore);
         }

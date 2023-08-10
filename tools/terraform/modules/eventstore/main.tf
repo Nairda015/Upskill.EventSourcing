@@ -1,7 +1,5 @@
-locals {
-  lunch-type = "FARGATE"
-}
-
+#common
+locals { lunch-type = "FARGATE" }
 resource "aws_security_group" "this" {
   name   = "${var.name_prefix}-sg"
   vpc_id = var.vpc_id
@@ -20,13 +18,41 @@ resource "aws_security_group" "this" {
   }
   tags = { Name = "${var.name_prefix}-security-group" }
 }
-
 resource "aws_key_pair" "this" {
   key_name   = "${var.name_prefix}-server-key"
   public_key = file(var.public_key_path)
   tags       = { Name = "${var.name_prefix}-key_pair" }
 }
+data "aws_network_interfaces" "this" {
+  depends_on = [aws_ecs_service.eventstore_ecs_service, aws_ecs_service.listener_ecs_service]
 
+  filter {
+    name   = "group-id"
+    values = [aws_security_group.this.id]
+  }
+}
+data "aws_network_interface" "this" {
+  id = join(",", data.aws_network_interfaces.this.ids)
+}
+module "systems_manager" {
+  source  = "cloudposse/ssm-parameter-store/aws"
+  version = "0.10.0"
+
+  parameter_write = [
+    {
+      name        = "/Upskill/Databases/EventStore/ConnectionString"
+      value       = "esdb://${data.aws_network_interface.this.association[0].public_ip}:2113?tls=false",
+      type        = "String"
+      overwrite   = "true"
+      description = "Connection string for database"
+    }
+  ]
+
+  tags = { Name = "${var.name_prefix}-systems-manager" }
+}
+
+
+#cluster
 resource "aws_ecs_cluster_capacity_providers" "this" {
   cluster_name       = aws_ecs_cluster.this.name
   capacity_providers = [local.lunch-type]
@@ -37,9 +63,8 @@ resource "aws_ecs_cluster_capacity_providers" "this" {
     capacity_provider = local.lunch-type
   }
 }
-
 resource "aws_ecs_cluster" "this" {
-  name   = "${var.name_prefix}-ecs_cluster"
+  name = "${var.name_prefix}-ecs_cluster"
   setting {
     name  = "containerInsights"
     value = "enabled"
@@ -47,14 +72,16 @@ resource "aws_ecs_cluster" "this" {
   tags = { Name = "${var.name_prefix}-ecs_cluster" }
 }
 
-resource "aws_ecs_service" "this" {
-  name                               = "${var.name_prefix}-service"
+
+#eventstore
+resource "aws_ecs_service" "eventstore_ecs_service" {
+  name                               = "${var.name_prefix}-eventstore-service"
   cluster                            = aws_ecs_cluster.this.arn
   deployment_maximum_percent         = 200
   deployment_minimum_healthy_percent = 0
-  desired_count = 1
+  desired_count                      = 1
   launch_type                        = local.lunch-type
-  task_definition                    = "${aws_ecs_task_definition.this.family}:${aws_ecs_task_definition.this.revision}"
+  task_definition                    = "${aws_ecs_task_definition.eventstore_ecs_task_definition.family}:${aws_ecs_task_definition.eventstore_ecs_task_definition.revision}"
   wait_for_steady_state              = true
   network_configuration {
     assign_public_ip = true
@@ -63,18 +90,16 @@ resource "aws_ecs_service" "this" {
   }
   tags = { Name = "${var.name_prefix}-service" }
 }
-
-resource "aws_ecs_task_definition" "this" {
-  container_definitions    = jsonencode([module.ecs-container-definition.json_map_object])
-  family                   = "${var.name_prefix}-task-definition"
+resource "aws_ecs_task_definition" "eventstore_ecs_task_definition" {
+  container_definitions    = jsonencode([module.eventstore-container-definition.json_map_object])
+  family                   = "${var.name_prefix}-eventstore-task-definition"
   requires_compatibilities = [local.lunch-type]
   cpu                      = "512"
   memory                   = "1024"
   network_mode             = "awsvpc"
   tags                     = { Name = "${var.name_prefix}-task-definition" }
 }
-
-module "ecs-container-definition" {
+module "eventstore-container-definition" {
   source          = "cloudposse/ecs-container-definition/aws"
   version         = "0.58.1"
   container_image = "docker.io/eventstore/eventstore:latest"
@@ -118,15 +143,102 @@ module "ecs-container-definition" {
   ]
 }
 
-data "aws_network_interfaces" "this" {
-  depends_on = [aws_ecs_service.this]
 
-  filter {
-    name   = "group-id"
-    values = [aws_security_group.this.id]
+#listener
+resource "aws_ecs_service" "listener_ecs_service" {
+  name                               = "${var.name_prefix}-listener-service"
+  cluster                            = aws_ecs_cluster.this.arn
+  deployment_maximum_percent         = 200
+  deployment_minimum_healthy_percent = 0
+  desired_count                      = 1
+  launch_type                        = local.lunch-type
+  task_definition                    = "${aws_ecs_task_definition.listener_ecs_task_definition.family}:${aws_ecs_task_definition.listener_ecs_task_definition.revision}"
+  wait_for_steady_state              = true
+  network_configuration {
+    assign_public_ip = true
+    security_groups  = [aws_security_group.this.id]
+    subnets          = [var.subnet_id]
   }
+  tags = { Name = "${var.name_prefix}-service" }
+}
+resource "aws_ecs_task_definition" "listener_ecs_task_definition" {
+  container_definitions    = jsonencode([module.listener-container-definition.json_map_object])
+  family                   = "${var.name_prefix}-listener-task-definition"
+  requires_compatibilities = [local.lunch-type]
+  cpu                      = "512"
+  memory                   = "1024"
+  network_mode             = "awsvpc"
+  execution_role_arn       = aws_iam_role.this.arn
+  tags                     = { Name = "${var.name_prefix}-task-definition" }
+}
+module "listener-container-definition" {
+  source           = "cloudposse/ecs-container-definition/aws"
+  version          = "0.58.1"
+  container_image  = "${var.ecr_repository_url}:Listener-latest"
+  container_name   = "listener"
+  container_memory = 1024
+  container_cpu    = 512
+
+  port_mappings = [
+    {
+      containerPort = 80
+      hostPort      = 80
+      protocol      = "tcp"
+    }
+  ]
 }
 
-data "aws_network_interface" "this" {
-  id = join(",", data.aws_network_interfaces.this.ids)
+
+#ecs-execution-role
+resource "aws_iam_role" "this" {
+  name = "ecs-execution-role"
+
+  assume_role_policy = jsonencode({
+    Version   = "2012-10-17",
+    Statement = [
+      {
+        Action    = "sts:AssumeRole",
+        Effect    = "Allow",
+        Principal = {
+          Service = "ecs-tasks.amazonaws.com"
+        }
+      }
+    ]
+  })
 }
+resource "aws_iam_policy" "this" {
+  name        = "ecs-execution-policy"
+  description = "Policy for ECS execution role"
+
+  policy = jsonencode({
+    Version   = "2012-10-17",
+    Statement = [
+      {
+        Action = [
+          "ecr:GetDownloadUrlForLayer",
+          "ecr:BatchGetImage",
+          "ecr:BatchCheckLayerAvailability"
+        ],
+        Effect   = "Allow",
+        Resource = "*"
+      },
+      {
+        Action = [
+          "logs:CreateLogStream",
+          "logs:PutLogEvents"
+        ],
+        Effect   = "Allow",
+        Resource = "*"
+      }
+    ]
+  })
+}
+resource "aws_iam_role_policy_attachment" "ecs_execution_attachment" {
+  policy_arn = aws_iam_policy.this.arn
+  role       = aws_iam_role.this.name
+}
+
+
+
+
+

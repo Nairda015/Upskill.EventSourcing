@@ -8,19 +8,24 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\Shared\MiWrap\MiWrap.csproj" />
-        <ProjectReference Include="..\Shared\Settings\Settings.csproj" />
+        <InternalsVisibleTo Include="Upskill.Tests"/>
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="Amazon.Lambda.AspNetCoreServer.Hosting" Version="1.5.0" />
-        <PackageReference Include="Amazon.Extensions.Configuration.SystemsManager" Version="5.0.0" />
-        <PackageReference Include="AWSSDK.Extensions.NETCore.Setup" Version="3.7.4" />
-        <PackageReference Include="Dapper" Version="2.0.123" />
-        <PackageReference Include="Npgsql" Version="7.0.2" />
-        <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
-        <PackageReference Include="Swashbuckle.AspNetCore.Swagger" Version="6.5.0" />
-        <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="6.5.0" />
+        <ProjectReference Include="..\Shared\Contracts\Contracts.csproj"/>
+        <ProjectReference Include="..\Shared\MiWrap\MiWrap.csproj"/>
     </ItemGroup>
 
+    <ItemGroup>
+        <PackageReference Include="Amazon.Lambda.AspNetCoreServer.Hosting" Version="1.6.0"/>
+        <PackageReference Include="Amazon.Extensions.Configuration.SystemsManager" Version="5.1.0"/>
+        <PackageReference Include="AWSSDK.Extensions.NETCore.Setup" Version="3.7.7"/>
+        <PackageReference Include="Dapper" Version="2.0.143"/>
+        <PackageReference Include="Npgsql" Version="7.0.4"/>
+        <PackageReference Include="OpenSearch.Client" Version="1.4.0"/>
+        <PackageReference Include="OpenSearch.Net.Auth.AwsSigV4" Version="1.4.0"/>
+        <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0"/>
+        <PackageReference Include="Swashbuckle.AspNetCore.Swagger" Version="6.5.0"/>
+        <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="6.5.0"/>
+    </ItemGroup>
 </Project>
