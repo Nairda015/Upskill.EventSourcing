@@ -39,7 +39,7 @@ module "systems_manager" {
 
   parameter_write = [{
     name        = "/Upskill/Databases/Postgres/ConnectionString"
-    value       = "User ID = ${module.aurora.cluster_master_username}; Password = temp; Server = ${module.aurora.cluster_endpoint}; Port = ${module.aurora.cluster_port}; Database = ${module.aurora.cluster_database_name}; Integrated Security = true; Pooling = true;",
+    value       = "User ID = ${module.aurora.cluster_master_username}; Password = ${module.aurora.cluster_master_password}; Server = ${module.aurora.cluster_endpoint}; Port = ${module.aurora.cluster_port}; Database = ${module.aurora.cluster_database_name}; Integrated Security = true; Pooling = true;",
     type        = "String"
     overwrite   = "true"
     description = "Connection string for database"

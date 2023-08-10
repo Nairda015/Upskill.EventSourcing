@@ -4,10 +4,11 @@ using Listener;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// if (!builder.Environment.IsDevelopment())
-// {
-//     builder.Configuration.AddSystemsManager($"/{builder.Environment.EnvironmentName}/Commands", TimeSpan.FromMinutes(5));
-// }
+builder.Services.AddAWSLambdaHosting(LambdaEventSource.HttpApi);
+if (!builder.Environment.IsDevelopment())
+{
+    builder.Configuration.AddSystemsManager("/Upskill/Databases/",TimeSpan.FromMinutes(5));
+}
 
 builder.Services.AddHostedService<PersistentListener>();
 

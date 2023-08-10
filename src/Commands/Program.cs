@@ -9,9 +9,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddAWSLambdaHosting(LambdaEventSource.HttpApi);
 if (!builder.Environment.IsDevelopment())
 {
-    builder.Configuration.AddSystemsManager(
-        $"/{builder.Environment}/Commands",
-        TimeSpan.FromMinutes(5));
+    builder.Configuration.AddSystemsManager("/Upskill/Databases/",TimeSpan.FromMinutes(5));
 }
 
 builder.Services.RegisterHandlers<IApiMarker>();
@@ -29,12 +27,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c => { c.OrderActionsBy(x => x.HttpMethod); });
 
 var app = builder.Build();
-app.MapGet("/", () =>
-{
-    var response = $"{DateTime.Now} Command healthy";
-    Console.WriteLine(response);
-    return response;
-});
+app.MapGet("/", () => "Command healthy");
 
 app.RegisterEndpoints<IApiMarker>();
 app.UseSwagger();

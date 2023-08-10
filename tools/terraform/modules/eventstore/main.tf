@@ -146,6 +146,7 @@ module "eventstore-container-definition" {
 
 #listener
 resource "aws_ecs_service" "listener_ecs_service" {
+  count                              = var.enable_listener_lambda ? 1 : 0
   name                               = "${var.name_prefix}-listener-service"
   cluster                            = aws_ecs_cluster.this.arn
   deployment_maximum_percent         = 200

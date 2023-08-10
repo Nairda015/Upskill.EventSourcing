@@ -29,5 +29,6 @@ variable "enable_compute" { type = bool }
 variable "enable_command_lambda" { type = bool }
 variable "enable_queries_lambda" { type = bool }
 variable "enable_projections_lambda" { type = bool }
+variable "enable_listener_lambda" { type = bool }
 
 
