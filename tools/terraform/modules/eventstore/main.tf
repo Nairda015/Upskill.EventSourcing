@@ -75,7 +75,7 @@ resource "aws_ecs_cluster" "this" {
 
 #eventstore
 resource "aws_ecs_service" "eventstore_ecs_service" {
-  name                               = "${var.name_prefix}-service"
+  name                               = "${var.name_prefix}-eventstore-service"
   cluster                            = aws_ecs_cluster.this.arn
   deployment_maximum_percent         = 200
   deployment_minimum_healthy_percent = 0
@@ -92,7 +92,7 @@ resource "aws_ecs_service" "eventstore_ecs_service" {
 }
 resource "aws_ecs_task_definition" "eventstore_ecs_task_definition" {
   container_definitions    = jsonencode([module.eventstore-container-definition.json_map_object])
-  family                   = "${var.name_prefix}-task-definition"
+  family                   = "${var.name_prefix}-eventstore-task-definition"
   requires_compatibilities = [local.lunch-type]
   cpu                      = "512"
   memory                   = "1024"
@@ -146,7 +146,7 @@ module "eventstore-container-definition" {
 
 #listener
 resource "aws_ecs_service" "listener_ecs_service" {
-  name                               = "${var.name_prefix}-service"
+  name                               = "${var.name_prefix}-listener-service"
   cluster                            = aws_ecs_cluster.this.arn
   deployment_maximum_percent         = 200
   deployment_minimum_healthy_percent = 0
@@ -163,11 +163,12 @@ resource "aws_ecs_service" "listener_ecs_service" {
 }
 resource "aws_ecs_task_definition" "listener_ecs_task_definition" {
   container_definitions    = jsonencode([module.listener-container-definition.json_map_object])
-  family                   = "${var.name_prefix}-task-definition"
+  family                   = "${var.name_prefix}-listener-task-definition"
   requires_compatibilities = [local.lunch-type]
-  cpu                      = "256"
-  memory                   = "256"
+  cpu                      = "512"
+  memory                   = "1024"
   network_mode             = "awsvpc"
+  execution_role_arn       = aws_iam_role.this.arn
   tags                     = { Name = "${var.name_prefix}-task-definition" }
 }
 module "listener-container-definition" {
@@ -175,13 +176,69 @@ module "listener-container-definition" {
   version          = "0.58.1"
   container_image  = "${var.ecr_repository_url}:Listener-latest"
   container_name   = "listener"
-  container_memory = 256
+  container_memory = 1024
+  container_cpu    = 512
 
   port_mappings = [
     {
       containerPort = 80
-      hostPort      = 5000
+      hostPort      = 80
       protocol      = "tcp"
     }
   ]
 }
+
+
+#ecs-execution-role
+resource "aws_iam_role" "this" {
+  name = "ecs-execution-role"
+
+  assume_role_policy = jsonencode({
+    Version   = "2012-10-17",
+    Statement = [
+      {
+        Action    = "sts:AssumeRole",
+        Effect    = "Allow",
+        Principal = {
+          Service = "ecs-tasks.amazonaws.com"
+        }
+      }
+    ]
+  })
+}
+resource "aws_iam_policy" "this" {
+  name        = "ecs-execution-policy"
+  description = "Policy for ECS execution role"
+
+  policy = jsonencode({
+    Version   = "2012-10-17",
+    Statement = [
+      {
+        Action = [
+          "ecr:GetDownloadUrlForLayer",
+          "ecr:BatchGetImage",
+          "ecr:BatchCheckLayerAvailability"
+        ],
+        Effect   = "Allow",
+        Resource = "*"
+      },
+      {
+        Action = [
+          "logs:CreateLogStream",
+          "logs:PutLogEvents"
+        ],
+        Effect   = "Allow",
+        Resource = "*"
+      }
+    ]
+  })
+}
+resource "aws_iam_role_policy_attachment" "ecs_execution_attachment" {
+  policy_arn = aws_iam_policy.this.arn
+  role       = aws_iam_role.this.name
+}
+
+
+
+
+

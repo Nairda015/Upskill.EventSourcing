@@ -31,7 +31,6 @@
     <ItemGroup>
         <ProjectReference Include="..\Shared\Contracts\Contracts.csproj"/>
         <ProjectReference Include="..\Shared\MiWrap\MiWrap.csproj"/>
-        <ProjectReference Include="..\Shared\Settings\Settings.csproj"/>
     </ItemGroup>
 
 </Project>

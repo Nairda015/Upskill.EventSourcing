@@ -1,6 +1,6 @@
 using Amazon.SimpleNotificationService;
+using Contracts.Settings;
 using Listener;
-using Settings;
 
 var builder = WebApplication.CreateBuilder(args);
 

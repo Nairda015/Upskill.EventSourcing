@@ -1,9 +1,9 @@
 using System.Data;
+using Contracts.Settings;
 using Dapper;
 using Microsoft.Extensions.Options;
 using MiWrap;
 using Npgsql;
-using Settings;
 
 namespace Queries.Features.Categories;
 

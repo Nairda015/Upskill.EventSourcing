@@ -1,4 +1,4 @@
-namespace Settings;
+namespace Contracts.Settings;
 
 public class PostgresSettings : ISettings
 {

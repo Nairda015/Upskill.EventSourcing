@@ -2,6 +2,7 @@ using Amazon;
 using Amazon.Lambda.Annotations;
 using Contracts.Constants;
 using Contracts.Events;
+using Contracts.Settings;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using OpenSearch.Client;
@@ -20,12 +21,10 @@ public class Startup
     public void ConfigureServices(IServiceCollection services)
     {
         services.AddSingleton<EventsDictionary>();
-        
-        var openSearchSettings = _configuration
-            .GetSection("OpenSearchSettings")
-            .Get<OpenSearchSettings>();
+
+        var openSearchSettings = _configuration.GetOptions<OpenSearchSettings>();
         var connection = new AwsSigV4HttpConnection(RegionEndpoint.EUCentral1, service: AwsSigV4HttpConnection.OpenSearchServerlessService);
-        var connectionSettings = new ConnectionSettings(openSearchSettings!.Uri, connection)
+        var connectionSettings = new ConnectionSettings(openSearchSettings.Endpoint, connection)
             .DefaultIndex(Constants.ProductsIndexName)
             .EnableHttpCompression()
             .PrettyJson()
@@ -39,9 +38,4 @@ public class Startup
             x.RegisterServicesFromAssemblyContaining<Startup>();
         });
     }
-}
-
-public class OpenSearchSettings
-{
-    public Uri Uri { get; set; }  = default!;
 }

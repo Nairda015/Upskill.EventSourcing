@@ -82,8 +82,8 @@ module "compute" {
   ecr_repository_url    = module.gh_integration.ecr.repository_url
   
   enable_command_lambda = var.enable_command_lambda
-  enable_projections_lambda = var.enable_command_lambda
-  enable_queries_lambda = var.enable_command_lambda
+  enable_projections_lambda = var.enable_projections_lambda
+  enable_queries_lambda = var.enable_queries_lambda
   
   name_prefix           = local.name_prefix
 }
