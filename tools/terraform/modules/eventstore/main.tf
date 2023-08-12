@@ -9,6 +9,12 @@ resource "aws_security_group" "this" {
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
+  ingress {
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
   egress {
     from_port       = 0
     to_port         = 0
@@ -24,15 +30,19 @@ resource "aws_key_pair" "this" {
   tags       = { Name = "${var.name_prefix}-key_pair" }
 }
 data "aws_network_interfaces" "this" {
-  depends_on = [aws_ecs_service.eventstore_ecs_service, aws_ecs_service.listener_ecs_service]
+  depends_on = [aws_ecs_service.eventstore_ecs_service]
 
   filter {
     name   = "group-id"
     values = [aws_security_group.this.id]
   }
+  filter {
+    name   = "tag:Name"
+    values = ["${var.name_prefix}-eventstore-service"]
+  }
 }
 data "aws_network_interface" "this" {
-  id = join(",", data.aws_network_interfaces.this.ids)
+  id = data.aws_network_interfaces.this.ids[0]
 }
 module "systems_manager" {
   source  = "cloudposse/ssm-parameter-store/aws"
@@ -88,7 +98,8 @@ resource "aws_ecs_service" "eventstore_ecs_service" {
     security_groups  = [aws_security_group.this.id]
     subnets          = [var.subnet_id]
   }
-  tags = { Name = "${var.name_prefix}-service" }
+  propagate_tags = "SERVICE"
+  tags           = { Name = "${var.name_prefix}-eventstore-service" }
 }
 resource "aws_ecs_task_definition" "eventstore_ecs_task_definition" {
   container_definitions    = jsonencode([module.eventstore-container-definition.json_map_object])
@@ -148,6 +159,7 @@ module "eventstore-container-definition" {
 resource "aws_ecs_service" "listener_ecs_service" {
   count                              = var.enable_listener_lambda ? 1 : 0
   name                               = "${var.name_prefix}-listener-service"
+  depends_on                         = [module.systems_manager]
   cluster                            = aws_ecs_cluster.this.arn
   deployment_maximum_percent         = 200
   deployment_minimum_healthy_percent = 0
@@ -160,7 +172,8 @@ resource "aws_ecs_service" "listener_ecs_service" {
     security_groups  = [aws_security_group.this.id]
     subnets          = [var.subnet_id]
   }
-  tags = { Name = "${var.name_prefix}-service" }
+  propagate_tags = "SERVICE"
+  tags           = { Name = "${var.name_prefix}-listener-service" }
 }
 resource "aws_ecs_task_definition" "listener_ecs_task_definition" {
   container_definitions    = jsonencode([module.listener-container-definition.json_map_object])
@@ -170,6 +183,7 @@ resource "aws_ecs_task_definition" "listener_ecs_task_definition" {
   memory                   = "1024"
   network_mode             = "awsvpc"
   execution_role_arn       = aws_iam_role.this.arn
+  task_role_arn            = aws_iam_role.this.arn
   tags                     = { Name = "${var.name_prefix}-task-definition" }
 }
 module "listener-container-definition" {
@@ -179,21 +193,33 @@ module "listener-container-definition" {
   container_name   = "listener"
   container_memory = 1024
   container_cpu    = 512
-
-  port_mappings = [
+  port_mappings    = [
     {
       containerPort = 80
       hostPort      = 80
       protocol      = "tcp"
+    },
+    {
+      containerPort = 443
+      hostPort      = 443
+      protocol      = "tcp"
     }
   ]
+  log_configuration = {
+    logDriver : "awslogs",
+    options : {
+      "awslogs-create-group" : "true",
+      "awslogs-group" : "/aws/lambda/afranczak-listener",
+      "awslogs-region" : var.region,
+      "awslogs-stream-prefix" : "awslogs-listener"
+    }
+  }
 }
 
 
-#ecs-execution-role
+#listener-role
 resource "aws_iam_role" "this" {
-  name = "ecs-execution-role"
-
+  name               = "listener-role"
   assume_role_policy = jsonencode({
     Version   = "2012-10-17",
     Statement = [
@@ -208,8 +234,8 @@ resource "aws_iam_role" "this" {
   })
 }
 resource "aws_iam_policy" "this" {
-  name        = "ecs-execution-policy"
-  description = "Policy for ECS execution role"
+  name        = "${var.name_prefix}-listener-policy"
+  description = "Policy for listener"
 
   policy = jsonencode({
     Version   = "2012-10-17",
@@ -218,7 +244,8 @@ resource "aws_iam_policy" "this" {
         Action = [
           "ecr:GetDownloadUrlForLayer",
           "ecr:BatchGetImage",
-          "ecr:BatchCheckLayerAvailability"
+          "ecr:BatchCheckLayerAvailability",
+          "ecr:GetAuthorizationToken"
         ],
         Effect   = "Allow",
         Resource = "*"
@@ -226,9 +253,18 @@ resource "aws_iam_policy" "this" {
       {
         Action = [
           "logs:CreateLogStream",
-          "logs:PutLogEvents"
+          "logs:PutLogEvents",
+          "logs:CreateLogGroup"
         ],
         Effect   = "Allow",
+        Resource = "*"
+      },
+      {
+        Action = [
+          "sns:Publish",
+          "ssm:*",
+        ]
+        Effect   = "Allow"
         Resource = "*"
       }
     ]
@@ -238,6 +274,7 @@ resource "aws_iam_role_policy_attachment" "ecs_execution_attachment" {
   policy_arn = aws_iam_policy.this.arn
   role       = aws_iam_role.this.name
 }
+
 
 
 

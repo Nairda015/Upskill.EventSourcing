@@ -1,4 +1,5 @@
 using Contracts.Constants;
+using Contracts.Settings;
 using EventStore.Client;
 
 namespace Listener;
@@ -8,23 +9,28 @@ internal class PersistentListener : IHostedService
     private readonly EventStorePersistentSubscriptionsClient _client;
     private readonly SnsPublisher _sns;
     private readonly ILogger<PersistentListener> _logger;
+    private readonly IConfiguration _configuration;
 
     public PersistentListener(
         EventStorePersistentSubscriptionsClient client,
         SnsPublisher sns,
-        ILogger<PersistentListener> logger)
+        ILogger<PersistentListener> logger, IConfiguration configuration)
     {
         _client = client;
         _sns = sns;
         _logger = logger;
+        _configuration = configuration;
     }
 
     public async Task StartAsync(CancellationToken cancellationToken)
-        => await _client.SubscribeToAllAsync(
+    {
+        _logger.LogWarning(_configuration.GetOptions<EventStoreSettings>().ConnectionString);
+        await _client.SubscribeToAllAsync(
             Constants.SubscriptionGroup,
             EventDispatcher,
             SubscriptionDropped,
             cancellationToken: cancellationToken);
+    }
 
     public Task StopAsync(CancellationToken cancellationToken)
     {

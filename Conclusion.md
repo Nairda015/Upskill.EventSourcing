@@ -41,9 +41,9 @@
     - [ ] ECR (for github - AmazonEC2ContainerRegistryFullAccess, AssumeRole)
     - [ ] ECS (for command service)
     - [ ] API Gateway (forwards request to lambda)
-- [ ] add open search to terraform
-- [ ] add CICD for ECR
-- [ ] add secrets to gh
+- [x] add open search to terraform
+- [x] add CICD for ECR
+- [x] add secrets to gh
 - [ ] add background service to ECS from ECR (listener)
 - [ ] add lambda to terraform from ECR (commands, queries and projections services)
 - [ ] add dynamo to terraform*

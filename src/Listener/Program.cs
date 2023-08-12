@@ -5,7 +5,8 @@ using Listener;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddAWSLambdaHosting(LambdaEventSource.HttpApi);
-if (!builder.Environment.IsDevelopment())
+Console.WriteLine(builder.Environment.EnvironmentName);
+if (builder.Environment.IsDevelopment())
 {
     builder.Configuration.AddSystemsManager("/Upskill/Databases/",TimeSpan.FromMinutes(5));
 }
@@ -13,6 +14,7 @@ if (!builder.Environment.IsDevelopment())
 builder.Services.AddHostedService<PersistentListener>();
 
 var settings = builder.Configuration.GetOptions<EventStoreSettings>();
+Console.WriteLine(settings.ConnectionString);
 builder.Services.AddEventStorePersistentSubscriptionsClient(settings.ConnectionString);
 
 builder.Services.AddSingleton<IAmazonSimpleNotificationService, AmazonSimpleNotificationServiceClient>();

@@ -2,6 +2,7 @@ locals {
   name_prefix = "${var.aws_owner_login}-${var.env_prefix}-${var.app_name}"
 }
 
+
 module "gh_integration" {
   source          = "./modules/gh_integration"
   name_prefix     = local.name_prefix
@@ -38,6 +39,7 @@ module "event_store_db" {
   count                  = var.enable_eventstore ? 1 : 0
   source                 = "./modules/eventstore"
   avail_zone             = var.avail_zone
+  region                 = var.region
   my_ip                  = var.my_ip
   name_prefix            = local.name_prefix
   public_key_path        = var.public_key_path

@@ -9,8 +9,8 @@ module "lambda_commands" {
   package_type   = "Image"
   memory_size    = 256
 
-  //attach_policy = true
-  //policy = aws_iam_policy.policy-command.arn
+  attach_policy = true
+  policy = aws_iam_policy.policy-command.arn
 
   create_lambda_function_url = true
   authorization_type         = "NONE"
@@ -53,26 +53,26 @@ module "lambda_projections" {
 }
 
 
-#resource "aws_iam_policy" "policy-command" {
-#  name        = "${local.name-prefix}-command-policy"
-#  path        = "/"
-#
-#  # Terraform's "jsonencode" function converts a
-#  # Terraform expression result to valid JSON syntax.
-#  policy = jsonencode({
-#    Version = "2012-10-17"
-#    Statement = [
-#      {
-#        Action = [
-#          "rds:*",
-#          "ssm:*",
-#        ]
-#        Effect   = "Allow"
-#        Resource = "*"
-#      },
-#    ]
-#  })
-#}
+resource "aws_iam_policy" "policy-command" {
+  name        = "${var.name_prefix}-command-policy"
+  path        = "/"
+
+  # Terraform's "jsonencode" function converts a
+  # Terraform expression result to valid JSON syntax.
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = [
+          "rds:*",
+          "ssm:*",
+        ]
+        Effect   = "Allow"
+        Resource = "*"
+      },
+    ]
+  })
+}
 #
 #resource "aws_iam_policy" "policy-queries" {
 #  name        = "${local.name-prefix}-queries-policy"
@@ -96,26 +96,7 @@ module "lambda_projections" {
 #  })
 #}
 #
-#resource "aws_iam_policy" "policy-listener" {
-#  name        = "${local.name-prefix}-query-policy"
-#  path        = "/"
-#
-#  # Terraform's "jsonencode" function converts a
-#  # Terraform expression result to valid JSON syntax.
-#  policy = jsonencode({
-#    Version = "2012-10-17"
-#    Statement = [
-#      {
-#        Action = [
-#          "sns:Publish",
-#          "ssm:*",
-#        ]
-#        Effect   = "Allow"
-#        Resource = "*"
-#      }
-#    ]
-#  })
-#}
+
 #
 #resource "aws_iam_policy" "policy-projections" {
 #  name        = "${local.name-prefix}-projections-policy"
