@@ -2,17 +2,17 @@ locals {
   name_prefix = "${var.aws_owner_login}-${var.env_prefix}-${var.app_name}"
 }
 
-
 module "gh_integration" {
-  source          = "./modules/gh_integration"
-  name_prefix     = local.name_prefix
+  source        = "./modules/gh_integration"
+  enable_ecr    = var.enable_ecr
+  enable_github = var.enable_github
+
   app_name        = var.app_name
   aws_owner_login = var.aws_owner_login
-  enable_ecr      = var.enable_ecr
-  enable_github   = var.enable_github
   env_prefix      = var.env_prefix
   repo_name       = var.repo_name
   repo_owner      = var.repo_owner
+  name_prefix     = local.name_prefix
 }
 
 module "vpc" {
@@ -50,13 +50,15 @@ module "event_store_db" {
 }
 
 module "aurora" {
-  count          = var.enable_aurora ? 1 : 0
-  source         = "./modules/aurora"
-  database_name  = var.database_name
-  name_prefix    = local.name_prefix
-  public_subnets = module.vpc.public_subnets
-  region         = var.region
-  vpc_id         = module.vpc.vpc_id
+  count           = var.enable_aurora ? 1 : 0
+  source          = "./modules/aurora"
+  database_name   = var.database_name
+  name_prefix     = local.name_prefix
+  public_subnets  = module.vpc.public_subnets
+  region          = var.region
+  vpc_id          = module.vpc.vpc_id
+  master_password = var.master_password
+  my_ip           = var.my_ip
 }
 
 module "open_search" {

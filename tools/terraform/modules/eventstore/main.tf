@@ -1,7 +1,7 @@
 #common
 locals { lunch-type = "FARGATE" }
 resource "aws_security_group" "this" {
-  name   = "${var.name_prefix}-sg"
+  name   = "${var.name_prefix}-eventstore-sg"
   vpc_id = var.vpc_id
   ingress {
     from_port   = 2113
@@ -52,7 +52,7 @@ module "systems_manager" {
     {
       name        = "/Upskill/Databases/EventStore/ConnectionString"
       value       = "esdb://${data.aws_network_interface.this.association[0].public_ip}:2113?tls=false",
-      type        = "String"
+      type        = "SecureString"
       overwrite   = "true"
       description = "Connection string for database"
     }

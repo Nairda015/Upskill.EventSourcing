@@ -9,22 +9,19 @@ internal class PersistentListener : IHostedService
     private readonly EventStorePersistentSubscriptionsClient _client;
     private readonly SnsPublisher _sns;
     private readonly ILogger<PersistentListener> _logger;
-    private readonly IConfiguration _configuration;
 
     public PersistentListener(
         EventStorePersistentSubscriptionsClient client,
         SnsPublisher sns,
-        ILogger<PersistentListener> logger, IConfiguration configuration)
+        ILogger<PersistentListener> logger)
     {
         _client = client;
         _sns = sns;
         _logger = logger;
-        _configuration = configuration;
     }
 
     public async Task StartAsync(CancellationToken cancellationToken)
     {
-        _logger.LogWarning(_configuration.GetOptions<EventStoreSettings>().ConnectionString);
         await _client.SubscribeToAllAsync(
             Constants.SubscriptionGroup,
             EventDispatcher,

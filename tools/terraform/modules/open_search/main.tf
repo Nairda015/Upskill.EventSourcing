@@ -15,7 +15,7 @@ module "systems_manager" {
   parameter_write = [{
     name        = "/Upskill/Databases/OpenSearch/Endpoint"
     value       = module.open_search.endpoint,
-    type        = "String"
+    type        = "SecureString"
     overwrite   = "true"
     description = "Endpoint for OpenSearch node"
   }]
