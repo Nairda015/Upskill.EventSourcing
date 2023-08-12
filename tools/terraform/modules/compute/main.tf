@@ -8,9 +8,10 @@ module "lambda_commands" {
   image_uri      = "${var.ecr_repository_url}:Commands-latest"
   package_type   = "Image"
   memory_size    = 256
+  timeout        = 10
 
   attach_policy = true
-  policy = aws_iam_policy.policy-command.arn
+  policy        = aws_iam_policy.policy-command.arn
 
   create_lambda_function_url = true
   authorization_type         = "NONE"
@@ -54,13 +55,13 @@ module "lambda_projections" {
 
 
 resource "aws_iam_policy" "policy-command" {
-  name        = "${var.name_prefix}-command-policy"
-  path        = "/"
+  name = "${var.name_prefix}-command-policy"
+  path = "/"
 
   # Terraform's "jsonencode" function converts a
   # Terraform expression result to valid JSON syntax.
   policy = jsonencode({
-    Version = "2012-10-17"
+    Version   = "2012-10-17"
     Statement = [
       {
         Action = [
