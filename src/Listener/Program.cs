@@ -13,7 +13,6 @@ if (!builder.Environment.IsDevelopment())
 builder.Services.AddHostedService<PersistentListener>();
 
 var settings = builder.Configuration.GetOptions<EventStoreSettings>();
-Console.WriteLine(settings.ConnectionString);
 builder.Services.AddEventStorePersistentSubscriptionsClient(settings.ConnectionString);
 
 builder.Services.AddSingleton<IAmazonSimpleNotificationService, AmazonSimpleNotificationServiceClient>();
