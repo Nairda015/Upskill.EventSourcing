@@ -211,7 +211,7 @@ module "listener-container-definition" {
       "awslogs-create-group" : "true",
       "awslogs-group" : "/aws/lambda/afranczak-listener",
       "awslogs-region" : var.region,
-      "awslogs-stream-prefix" : "awslogs-listener"
+      "awslogs-stream-prefix" : "/aws/lambda/afranczak-listener"
     }
   }
 }
