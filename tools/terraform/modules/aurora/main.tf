@@ -23,7 +23,6 @@ module "aurora" {
   apply_immediately    = true
   skip_final_snapshot  = true
   storage_encrypted    = true
-  enable_http_endpoint = true
 
   serverlessv2_scaling_configuration = {
     min_capacity = 1
