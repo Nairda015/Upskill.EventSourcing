@@ -16,6 +16,7 @@ public class Startup
 {
     private readonly IConfiguration _configuration = new ConfigurationBuilder()
         .AddJsonFile("appsettings.json", optional: false)
+        .AddSystemsManager("/Upskill/Databases/",TimeSpan.FromMinutes(5))
         .Build();
 
     public void ConfigureServices(IServiceCollection services)

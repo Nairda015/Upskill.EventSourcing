@@ -89,6 +89,14 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "gh_integration", "gh_integr
 		tools\terraform\modules\gh_integration\versions.tf = tools\terraform\modules\gh_integration\versions.tf
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "open_search", "open_search", "{C6710A75-BD70-4CB4-9705-4B6776C90A20}"
+	ProjectSection(SolutionItems) = preProject
+		tools\terraform\modules\open_search\main.tf = tools\terraform\modules\open_search\main.tf
+		tools\terraform\modules\open_search\outputs.tf = tools\terraform\modules\open_search\outputs.tf
+		tools\terraform\modules\open_search\variables.tf = tools\terraform\modules\open_search\variables.tf
+		tools\terraform\modules\open_search\versions.tf = tools\terraform\modules\open_search\versions.tf
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -111,6 +119,7 @@ Global
 		{718023A7-EE2B-4780-99A9-29A382AA6EAA} = {64143BD1-5F33-485E-B3C4-8D1C18161422}
 		{4C480915-F301-4F7D-B7C8-B576DECE0F4D} = {64143BD1-5F33-485E-B3C4-8D1C18161422}
 		{FC903DFD-41E5-4D07-98AB-9145C1C5EF7C} = {64143BD1-5F33-485E-B3C4-8D1C18161422}
+		{C6710A75-BD70-4CB4-9705-4B6776C90A20} = {64143BD1-5F33-485E-B3C4-8D1C18161422}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{124F15CF-72BF-478D-BA47-479F01587B0F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU

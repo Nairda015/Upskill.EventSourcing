@@ -20,10 +20,15 @@ variable "repo_name" { type = string }
 variable "enable_github" { type = bool }
 variable "enable_ecr" { type = bool }
 
-variable "enable_aurora" {type = bool}
-variable "enable_open_search" {type = bool}
+
 variable "enable_eventstore" {type = bool}
+variable "enable_listener_lambda" { type = bool }
+
+variable "enable_aurora" {type = bool}
+variable "master_password" {type = string}
+
 variable "enable_pub_sub" {type = bool}
+variable "enable_open_search" {type = bool}
 
 variable "enable_compute" { type = bool }
 variable "enable_command_lambda" { type = bool }

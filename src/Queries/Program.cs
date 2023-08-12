@@ -11,9 +11,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddAWSLambdaHosting(LambdaEventSource.HttpApi);
 if (!builder.Environment.IsDevelopment())
 {
-    builder.Configuration.AddSystemsManager(
-        $"/{builder.Environment}/Queries",
-        TimeSpan.FromMinutes(5));
+    builder.Configuration.AddSystemsManager("/Upskill/Databases/",TimeSpan.FromMinutes(5));
 }
 
 builder.Services.RegisterHandlers<IApiMarker>();
