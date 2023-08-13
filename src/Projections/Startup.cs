@@ -24,9 +24,9 @@ public class Startup
         services.AddSingleton<EventsDictionary>();
 
         var openSearchSettings = _configuration.GetOptions<OpenSearchSettings>();
-        var connection = new AwsSigV4HttpConnection(RegionEndpoint.EUCentral1, service: AwsSigV4HttpConnection.OpenSearchServerlessService);
-        var connectionSettings = new ConnectionSettings(openSearchSettings.Endpoint, connection)
+        var connectionSettings = new ConnectionSettings(openSearchSettings.Endpoint)
             .DefaultIndex(Constants.ProductsIndexName)
+            .BasicAuthentication(openSearchSettings.Username, openSearchSettings.Password)
             .EnableHttpCompression()
             .PrettyJson()
             .DefaultFieldNameInferrer(x => x.ToLower());

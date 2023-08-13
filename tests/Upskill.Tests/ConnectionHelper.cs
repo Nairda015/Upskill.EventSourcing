@@ -1,29 +1,16 @@
-using Amazon;
-using Amazon.Runtime;
 using Contracts.Constants;
 using OpenSearch.Client;
 using OpenSearch.Net;
-using OpenSearch.Net.Auth.AwsSigV4;
 
 namespace Upskill.Tests;
 
 public static class ConnectionHelper
 {
-    private static readonly Uri Endpoint = new("localhost:9200");
-
-    private static readonly AwsSigV4HttpConnection Connection = new(new AssumeRoleAWSCredentials(
-            new BasicAWSCredentials(
-                "aaaa",
-                "bbbbb"
-                ),
-            "cccccc",
-            "test"
-        ),
-        RegionEndpoint.EUCentral1);
-
-    // private static ConnectionSettings config = new(endpoint, connection);
-    private static readonly ConnectionSettings ConnectionSettings = new ConnectionSettings(Endpoint, Connection)
+    private static readonly Uri Endpoint = new("aaa");
+    
+    private static readonly ConnectionSettings ConnectionSettings = new ConnectionSettings(Endpoint)
         .DefaultIndex(Constants.ProductsIndexName)
+//        .BasicAuthentication("root", "aaaa")
         .PrettyJson()
         .DefaultFieldNameInferrer(x => x.ToLower());
 
