@@ -23,12 +23,7 @@ module "vpc" {
   cidr = var.vpc_cidr_block
 
   azs            = ["${var.region}a", "${var.region}b"]
-  #  private_subnets = [var.subnet_cidr_block]
   public_subnets = var.subnets_cidr_block
-
-  #  enable_ipv6 = true
-  #  enable_nat_gateway = false
-  #  single_nat_gateway = false
 
   public_subnet_tags = { Name = "${local.name_prefix}-subnet" }
   vpc_tags           = { Name = "${local.name_prefix}-vpc" }
@@ -54,18 +49,23 @@ module "aurora" {
   source          = "./modules/aurora"
   database_name   = var.database_name
   name_prefix     = local.name_prefix
-  public_subnets  = module.vpc.public_subnets
   region          = var.region
   vpc_id          = module.vpc.vpc_id
-  master_password = var.master_password
+  public_subnets  = module.vpc.public_subnets
+  master_username = var.aurora_master_username
+  master_password = var.aurora_master_password
   my_ip           = var.my_ip
 }
 
 module "open_search" {
-  count       = var.enable_open_search ? 1 : 0
-  source      = "./modules/open_search"
-  region      = var.region
-  name_prefix = local.name_prefix
+  count                       = var.enable_open_search ? 1 : 0
+  source                      = "./modules/open_search"
+  region                      = var.region
+  name_prefix                 = local.name_prefix
+  aws_owner_login             = var.aws_owner_login
+  open_search_master_password = var.open_search_master_password
+  open_search_master_user     = var.open_search_master_user
+  my_ip                       = var.my_ip
 }
 
 #pub_sub

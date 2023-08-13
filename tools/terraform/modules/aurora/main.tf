@@ -6,7 +6,7 @@ module "aurora" {
   engine_mode                 = "provisioned"
   deletion_protection         = false
   database_name               = var.database_name
-  master_username             = "root"
+  master_username             = var.master_username
   manage_master_user_password = false
   master_password             = var.master_password
   publicly_accessible         = true
@@ -71,6 +71,12 @@ resource "aws_security_group" "this" {
     to_port     = 5432
     protocol    = "tcp"
     cidr_blocks = [var.my_ip]
+  }
+  ingress {
+    from_port   = 5432
+    to_port     = 5432
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
   }
   egress {
     from_port       = 0

@@ -6,6 +6,7 @@ variable "region" { type = string }
 variable "avail_zone" { type = string }
 variable "vpc_cidr_block" { type = string }
 variable "subnets_cidr_block" { type = list(string) }
+variable "private_subnets_cidr_block" { type = list(string) }
 
 variable "my_ip" { type = string }
 variable "public_key_path" { type = string }
@@ -21,14 +22,18 @@ variable "enable_github" { type = bool }
 variable "enable_ecr" { type = bool }
 
 
-variable "enable_eventstore" {type = bool}
+variable "enable_eventstore" { type = bool }
 variable "enable_listener_lambda" { type = bool }
 
-variable "enable_aurora" {type = bool}
-variable "master_password" {type = string}
+variable "enable_aurora" { type = bool }
+variable "aurora_master_username" { type = string }
+variable "aurora_master_password" { type = string }
 
-variable "enable_pub_sub" {type = bool}
-variable "enable_open_search" {type = bool}
+variable "enable_pub_sub" { type = bool }
+
+variable "enable_open_search" { type = bool }
+variable "open_search_master_user" { type = string }
+variable "open_search_master_password" { type = string }
 
 variable "enable_compute" { type = bool }
 variable "enable_command_lambda" { type = bool }

@@ -262,6 +262,7 @@ resource "aws_iam_policy" "this" {
       {
         Action = [
           "sns:Publish",
+          "sns:ListTopics",
           "ssm:*",
         ]
         Effect   = "Allow"
