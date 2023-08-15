@@ -4,12 +4,12 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <AWSProjectType>Lambda</AWSProjectType>
-        <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+        <GenerateRuntimeConfigurationFiles>true</GenerateRuntimeConfigurationFiles>
         <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+<!--        <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>-->
     </PropertyGroup>
     
     <ItemGroup>
-        <PackageReference Include="Amazon.Lambda.Annotations" Version="1.0.0" />
         <PackageReference Include="Amazon.Lambda.Core" Version="2.1.0"/>
         <PackageReference Include="Amazon.Lambda.Serialization.SystemTextJson" Version="2.3.1"/>
         <PackageReference Include="Amazon.Extensions.Configuration.SystemsManager" Version="5.1.0"/>
@@ -25,7 +25,6 @@
         <PackageReference Include="Microsoft.Extensions.Options" Version="7.0.1"/>
         <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="7.0.0"/>
         <PackageReference Include="OpenSearch.Client" Version="1.4.0"/>
-        <PackageReference Include="OpenSearch.Net.Auth.AwsSigV4" Version="1.4.0"/>
     </ItemGroup>
 
     <ItemGroup>
@@ -42,5 +41,11 @@
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
             <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
         </Content>
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Update="appsettings.json">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
     </ItemGroup>
 </Project>

@@ -1,19 +1,13 @@
-﻿FROM mcr.microsoft.com/dotnet/aspnet:7.0 AS base
-WORKDIR /app
-EXPOSE 80
-EXPOSE 443
+﻿FROM public.ecr.aws/lambda/dotnet:7.2023.08.02.10 AS base
 
-FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
-WORKDIR /src
-COPY ./src ./src
-RUN dotnet restore "src/Projections/Projections.csproj"
+FROM mcr.microsoft.com/dotnet/sdk:7.0-bullseye-slim as build
+COPY src /src
+WORKDIR /src/Projections
+RUN dotnet build "Projections.csproj" -o /app/build
 
-RUN dotnet build "src/Projections/Projections.csproj" -c Release -o /app/build
-
-FROM build as publish
-RUN dotnet publish "src/Projections/Projections.csproj" -c Release -o /app/publish /p:UseAppHost=false
+FROM build AS publish
+RUN dotnet publish "Projections.csproj" -c Release -o /app/publish
 
 FROM base AS final
-WORKDIR /app
-COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "Projections.dll"]
+COPY --from=publish /app/publish ${LAMBDA_TASK_ROOT}
+CMD [ "Projections::Projections.Function::FunctionHandler" ]

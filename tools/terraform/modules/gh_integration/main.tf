@@ -1,13 +1,14 @@
 # ECR Repository
 module "ecr" {
-  enabled                 = var.enable_ecr
-  source                  = "cloudposse/ecr/aws"
-  version                 = "0.38.0"
+  enabled = var.enable_ecr
+  source  = "cloudposse/ecr/aws"
+  version = "0.38.0"
 
   namespace               = var.aws_owner_login
   stage                   = var.env_prefix
   name                    = var.app_name
   force_delete            = true
+  image_tag_mutability    = "MUTABLE"
   enable_lifecycle_policy = false
   tags                    = { "Name" = "${var.name_prefix}-ecr" }
 }

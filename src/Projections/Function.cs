@@ -1,28 +1,33 @@
 using System.Text.Json;
-using Amazon.Lambda.Annotations;
 using Amazon.Lambda.Core;
 using Amazon.Lambda.SQSEvents;
 using Contracts.Constants;
 using Contracts.Events;
 using Contracts.Messages;
 using MediatR;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 
 [assembly: LambdaSerializer(typeof(Amazon.Lambda.Serialization.SystemTextJson.DefaultLambdaJsonSerializer))]
 
 namespace Projections;
 
+public record Input(string Message);
 public class Function
 {
-    private readonly IMediator _mediator;
+    private readonly IServiceProvider _serviceProvider;
+    private readonly IConfiguration _configuration;
     private readonly EventsDictionary _eventsDictionary;
-    
-    public Function(IMediator mediator, EventsDictionary eventsDictionary)
+    private readonly IMediator _mediator;
+    public Function()
     {
-        _mediator = mediator;
-        _eventsDictionary = eventsDictionary;
+        var config = Startup.ConfigureAppConfiguration();
+        _configuration = config;
+        _serviceProvider = Startup.ConfigureServices(config);
+        _eventsDictionary = _serviceProvider.GetRequiredService<EventsDictionary>();
+        _mediator = _serviceProvider.GetRequiredService<IMediator>();
     }
-
-    [LambdaFunction]
+    
     public async Task<SQSBatchResponse> FunctionHandler(SQSEvent snsEvent, ILambdaContext context)
     {
         var batchItemFailures = new List<SQSBatchResponse.BatchItemFailure>();
@@ -42,6 +47,8 @@ public class Function
 
     private async Task<bool> ProcessMessageAsync(SQSEvent.SQSMessage message, ILambdaContext context)
     {
+        using var scope = _serviceProvider.CreateScope();
+        
         var messageType = message.MessageAttributes[AttributesNames.MessageType].StringValue;
         var type = _eventsDictionary.GetMessageType(messageType);
 

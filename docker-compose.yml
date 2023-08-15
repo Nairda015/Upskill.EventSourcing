@@ -98,3 +98,12 @@ services:
       - eventstore
     networks:
       - default
+  
+  projections:
+    container_name: afranczak-projections
+    image: ${DOCKER_REGISTRY-}afranczak-projections
+    build:
+      context: .
+      dockerfile: ./Projections.Dockerfile
+    ports:
+      - "5040:8080"
