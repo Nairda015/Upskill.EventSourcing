@@ -26,7 +26,7 @@ public static class Startup
         services.AddSingleton<EventsDictionary>();
 
         var openSearchSettings = config.GetOptions<OpenSearchSettings>();
-        var connectionSettings = new ConnectionSettings(openSearchSettings.Endpoint)
+        var connectionSettings = new ConnectionSettings(openSearchSettings.Uri)
             .DefaultIndex(Constants.ProductsIndexName)
             .BasicAuthentication(openSearchSettings.Username, openSearchSettings.Password)
             .EnableHttpCompression()

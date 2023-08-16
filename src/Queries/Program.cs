@@ -16,7 +16,7 @@ builder.Services.RegisterHandlers<IApiMarker>();
 builder.RegisterOptions<PostgresSettings>();
 
 var openSearchSettings = builder.Configuration.GetOptions<OpenSearchSettings>();
-var connectionSettings = new ConnectionSettings(openSearchSettings.Endpoint)
+var connectionSettings = new ConnectionSettings(openSearchSettings.Uri)
     .DefaultIndex(Constants.ProductsIndexName)
     .EnableHttpCompression()
     .PrettyJson()
